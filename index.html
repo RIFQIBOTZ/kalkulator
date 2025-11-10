@@ -192,7 +192,7 @@
             background: linear-gradient(45deg, #7b2ff7, #00d4ff);
             box-shadow: 0 4px 20px rgba(123, 47, 247, 0.4);
             grid-column: 1 / -1;
-            margin-bottom: 20px; /* Added margin to create space between button and results */
+            margin-bottom: 20px;
         }
 
         .btn-copy {
@@ -216,7 +216,7 @@
 
         .results {
             display: none;
-            margin-top: 20px; /* Added margin to create space between button and results */
+            margin-top: 20px;
         }
 
         .results.show {
@@ -471,151 +471,207 @@
             background: rgba(255, 51, 102, 0.3);
         }
 
+        /* 🔥 MODERN HISTORY ITEMS */
         .history-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .history-item {
-            background: rgba(13, 16, 37, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
+            background: rgba(13, 16, 37, 0.8);
+            border-radius: 16px;
+            padding: 20px;
             position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .history-item:hover {
-            border-color: rgba(123, 47, 247, 0.5);
-            transform: translateX(5px);
+        /* Gradient Border Effect */
+        .history-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 16px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(123, 47, 247, 0.4), rgba(0, 212, 255, 0.4));
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            -webkit-mask-composite: xor;
+            pointer-events: none;
+        }
+
+        /* Status-based Left Border dengan Glow Effect */
+        .history-item.running {
+            border-left: 4px solid #00d4ff;
+            background: linear-gradient(90deg, rgba(0, 212, 255, 0.08) 0%, rgba(13, 16, 37, 0.8) 30%);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.15);
         }
 
         .history-item.hit-tp {
             border-left: 4px solid #00ff88;
-            background: rgba(0, 255, 136, 0.05);
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.08) 0%, rgba(13, 16, 37, 0.8) 30%);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
         }
 
         .history-item.hit-sl {
             border-left: 4px solid #ff3366;
-            background: rgba(255, 51, 102, 0.05);
+            background: linear-gradient(90deg, rgba(255, 51, 102, 0.08) 0%, rgba(13, 16, 37, 0.8) 30%);
+            box-shadow: 0 4px 20px rgba(255, 51, 102, 0.15);
         }
 
         .history-item.break-even {
             border-left: 4px solid #ffd700;
-            background: rgba(255, 215, 0, 0.05);
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.08) 0%, rgba(13, 16, 37, 0.8) 30%);
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.15);
         }
 
-        .history-item.running {
-            border-left: 4px solid #00d4ff;
-            background: rgba(0, 212, 255, 0.05);
+        .history-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(123, 47, 247, 0.3);
+            border-color: rgba(123, 47, 247, 0.6);
         }
 
-        .history-info {
+        /* Layout dalam history item */
+        .history-item-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .history-main-info {
             flex: 1;
         }
 
         .history-pair {
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 700;
             color: #00d4ff;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .history-details {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: #8b92b8;
+            line-height: 1.4;
+            margin-bottom: 10px;
         }
 
+        /* Status Badge Modern */
         .trade-status {
-            display: inline-block;
-            padding: 4px 12px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             font-weight: 600;
-            margin-top: 5px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(10px);
         }
 
         .trade-status.running {
             background: rgba(0, 212, 255, 0.2);
             color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.4);
         }
 
         .trade-status.hit-tp {
             background: rgba(0, 255, 136, 0.2);
             color: #00ff88;
+            border: 1px solid rgba(0, 255, 136, 0.4);
         }
 
         .trade-status.hit-sl {
             background: rgba(255, 51, 102, 0.2);
             color: #ff3366;
+            border: 1px solid rgba(255, 51, 102, 0.4);
         }
 
         .trade-status.break-even {
             background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+        }
+
+        /* Profit/Loss Display */
+        .history-profit-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
         }
 
         .history-profit {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-right: 15px;
+            text-align: right;
         }
 
         .history-profit.positive {
             color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
 
         .history-profit.negative {
             color: #ff3366;
+            text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
         }
 
         .history-profit.break-even {
             color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
+        /* Action Buttons Modern */
         .history-actions {
             display: flex;
             gap: 8px;
         }
 
         .btn-history {
-            background: rgba(123, 47, 247, 0.2);
-            border: 1px solid rgba(123, 47, 247, 0.5);
-            color: #7b2ff7;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #e0e0e0;
             padding: 6px 12px;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
         }
 
         .btn-history:hover {
-            background: rgba(123, 47, 247, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
         }
 
         .btn-history.update-status {
             background: rgba(0, 212, 255, 0.2);
-            border-color: rgba(0, 212, 255, 0.5);
+            border-color: rgba(0, 212, 255, 0.4);
             color: #00d4ff;
         }
 
         .btn-history.update-status:hover {
-            background: rgba(0, 212, 255, 0.4);
+            background: rgba(0, 212, 255, 0.3);
         }
 
         .btn-history.delete {
             background: rgba(255, 51, 102, 0.2);
-            border-color: rgba(255, 51, 102, 0.5);
+            border-color: rgba(255, 51, 102, 0.4);
             color: #ff3366;
         }
 
         .btn-history.delete:hover {
-            background: rgba(255, 51, 102, 0.4);
+            background: rgba(255, 51, 102, 0.3);
         }
 
         .status-modal {
@@ -824,6 +880,167 @@
             }
         }
 
+        /* 🔥 SALDO MANAGEMENT SIDE BY SIDE */
+        .equity-management {
+            margin-bottom: 20px;
+        }
+
+        .equity-header h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .equity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .equity-column {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .equity-label {
+            color: #8b92b8;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .equity-display {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .equity-total-display {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .equity-value {
+            color: #00ff88;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .equity-value.total {
+            color: #00d4ff;
+        }
+
+        .equity-auto-label {
+            color: #8b92b8;
+            font-size: 0.75rem;
+            font-style: italic;
+        }
+
+        .btn-edit-equity {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            color: #00d4ff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit-equity:hover {
+            background: rgba(0, 212, 255, 0.4);
+        }
+
+        .equity-input-group {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .equity-input {
+            background: rgba(13, 16, 37, 0.6);
+            border: 1px solid rgba(123, 47, 247, 0.3);
+            border-radius: 10px;
+            padding: 10px 16px;
+            color: #e0e0e0;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .equity-input:focus {
+            outline: none;
+            border-color: #7b2ff7;
+            box-shadow: 0 0 20px rgba(123, 47, 247, 0.4);
+            background: rgba(13, 16, 37, 0.8);
+        }
+
+        .equity-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-save-equity, .btn-cancel-equity {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-save-equity {
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #0a0e27;
+        }
+
+        .btn-cancel-equity {
+            background: rgba(255, 51, 102, 0.2);
+            color: #ff3366;
+            border: 1px solid rgba(255, 51, 102, 0.5);
+        }
+
+        .btn-save-equity:hover, .btn-cancel-equity:hover {
+            transform: translateY(-2px);
+        }
+
+        /* 🔥 FILTER DROPDOWN STYLES */
+        .history-title-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-dropdown {
+            position: relative;
+        }
+
+        .filter-select {
+            background: rgba(13, 16, 37, 0.6);
+            border: 1px solid rgba(123, 47, 247, 0.3);
+            border-radius: 10px;
+            padding: 10px 16px;
+            color: #e0e0e0;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #7b2ff7;
+            box-shadow: 0 0 20px rgba(123, 47, 247, 0.4);
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.6rem;
@@ -854,12 +1071,18 @@
                 padding: 15px;
             }
 
-            .history-item {
+            .history-item-content {
                 flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+                gap: 15px;
             }
-
+            
+            .history-profit-section {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            
             .history-actions {
                 width: 100%;
                 justify-content: flex-end;
@@ -900,6 +1123,22 @@
 
             .status-options {
                 grid-template-columns: 1fr;
+            }
+
+            /* Responsive untuk fitur baru */
+            .equity-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .history-title-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .filter-select {
+                min-width: 100%;
             }
         }
 
@@ -1020,6 +1259,39 @@
                     <p>Track your trading performance & statistics</p>
                 </div>
 
+                <!-- 🔥 SALDO MANAGEMENT - SIDE BY SIDE -->
+                <div class="calculator-card equity-management">
+                    <div class="equity-header">
+                        <h3>💰 Saldo Management</h3>
+                        <div class="equity-grid">
+                            <!-- Modal Awal -->
+                            <div class="equity-column">
+                                <div class="equity-label">Modal Awal</div>
+                                <div class="equity-display" id="modalAwalDisplay">
+                                    <span class="equity-value" id="modalAwalValue">Rp 0</span>
+                                    <button class="btn-edit-equity" id="btnEditModal">Edit</button>
+                                </div>
+                                <div class="equity-input-group" id="modalAwalInputGroup">
+                                    <input type="tel" inputmode="decimal" id="modalAwal" placeholder="10.000.000" class="equity-input">
+                                    <div class="equity-buttons">
+                                        <button type="button" class="btn-save-equity" id="btnSaveModal">Simpan</button>
+                                        <button type="button" class="btn-cancel-equity" id="btnCancelModal">Batal</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Total Saldo (Auto) -->
+                            <div class="equity-column">
+                                <div class="equity-label">Total Saldo</div>
+                                <div class="equity-total-display">
+                                    <span class="equity-value total" id="totalSaldoValue">Rp 0</span>
+                                    <span class="equity-auto-label">Auto Calculate</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="calculator-card">
                     <div class="stats-grid" id="statsGrid">
                         <div class="stat-card total">
@@ -1046,8 +1318,20 @@
                 </div>
 
                 <div class="calculator-card history-section">
+                    <!-- 🔥 FILTER DROPDOWN - BARU -->
                     <div class="history-header">
-                        <h2>All Trades</h2>
+                        <div class="history-title-group">
+                            <h2>All Trades</h2>
+                            <div class="filter-dropdown">
+                                <select id="statusFilter" class="filter-select">
+                                    <option value="all">All Status</option>
+                                    <option value="running">⏳ Running</option>
+                                    <option value="hit-tp">✅ Hit TP</option>
+                                    <option value="hit-sl">❌ Hit SL</option>
+                                    <option value="break-even">🔄 Break Even</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="history-actions-group">
                             <button class="btn-database" id="btnExportDB">💾 Export DB</button>
                             <button class="btn-load-db" id="btnImportDB">📂 Import DB</button>
@@ -1108,6 +1392,94 @@
         let currentView = 'calculator';
         let selectedStatus = null;
         let currentEditIndex = null;
+        let currentFilter = 'all';
+
+        // 🔥 FUNGSI SALDO MANAGEMENT
+        function loadModalAwal() {
+            const savedModal = localStorage.getItem('modalAwal');
+            if (savedModal) {
+                document.getElementById('modalAwalValue').textContent = formatRupiah(parseFloat(savedModal));
+                updateSaldoDisplay();
+            }
+        }
+
+        function toggleEditModal() {
+            const display = document.getElementById('modalAwalDisplay');
+            const inputGroup = document.getElementById('modalAwalInputGroup');
+            
+            if (display.style.display !== 'none') {
+                display.style.display = 'none';
+                inputGroup.style.display = 'flex';
+                // Isi input dengan nilai saat ini
+                const currentValue = document.getElementById('modalAwalValue').textContent;
+                const numericValue = currentValue.replace(/[^\d]/g, '');
+                document.getElementById('modalAwal').value = formatNumber(numericValue);
+                document.getElementById('modalAwal').focus();
+            } else {
+                display.style.display = 'flex';
+                inputGroup.style.display = 'none';
+            }
+        }
+
+        function saveModalAwal() {
+            const inputValue = document.getElementById('modalAwal').value;
+            const numericValue = parseNumber(inputValue);
+            
+            if (numericValue > 0) {
+                localStorage.setItem('modalAwal', numericValue.toString());
+                document.getElementById('modalAwalValue').textContent = formatRupiah(numericValue);
+                toggleEditModal();
+                updateSaldoDisplay();
+                showToast('💾 Modal awal berhasil disimpan!');
+            } else {
+                showToast('❌ Masukkan jumlah modal yang valid!');
+            }
+        }
+
+        // 🔥 AUTO FORMAT UNTUK INPUT SALDO
+        document.getElementById('modalAwal').addEventListener('input', function(e) {
+            let input = e.target;
+            let value = input.value.replace(/\./g, '');
+            
+            if (value === '') return;
+            
+            // Format dengan titik
+            input.value = formatNumber(value);
+        });
+
+        // 🔥 FUNGSI HITUNG TOTAL SALDO OTOMATIS
+        function calculateTotalSaldo() {
+            const modalAwal = parseFloat(localStorage.getItem('modalAwal') || '0');
+            const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+            
+            // Hitung total profit/loss dari trade yang sudah selesai (bukan running)
+            const realizedTrades = history.filter(trade => trade.status !== 'running');
+            const totalProfitLoss = realizedTrades.reduce((total, trade) => {
+                if (trade.status === 'hit-tp') {
+                    return total + trade.profit;
+                } else if (trade.status === 'hit-sl') {
+                    return total - trade.loss;
+                }
+                return total;
+            }, 0);
+            
+            const totalSaldo = modalAwal + totalProfitLoss;
+            
+            // Update tampilan
+            document.getElementById('totalSaldoValue').textContent = formatRupiah(totalSaldo);
+            
+            return totalSaldo;
+        }
+
+        function updateSaldoDisplay() {
+            calculateTotalSaldo();
+        }
+
+        // 🔥 FUNGSI FILTER HISTORY
+        function filterHistory() {
+            currentFilter = document.getElementById('statusFilter').value;
+            loadHistory();
+        }
 
         // Fetch kurs USD/IDR dari API dengan fallback
         async function fetchKurs() {
@@ -1328,6 +1700,7 @@ Generated by TP/SL Calculator by RIFQI
 
             localStorage.setItem('tpslHistory', JSON.stringify(history));
             updateStats();
+            updateSaldoDisplay();
             showToast('💾 Saved to history!');
         }
 
@@ -1335,14 +1708,20 @@ Generated by TP/SL Calculator by RIFQI
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
             const historyList = document.getElementById('historyList');
 
-            if (history.length === 0) {
-                historyList.innerHTML = '<p style="text-align: center; color: #8b92b8; padding: 40px 0;">No trading history yet. Start calculating!</p>';
+            // Filter history berdasarkan status yang dipilih
+            let filteredHistory = history;
+            if (currentFilter !== 'all') {
+                filteredHistory = history.filter(item => item.status === currentFilter);
+            }
+
+            if (filteredHistory.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: #8b92b8; padding: 40px 0;">No trading history found.</p>';
                 return;
             }
 
             historyList.innerHTML = '';
 
-            history.forEach((item, index) => {
+            filteredHistory.forEach((item, index) => {
                 const date = new Date(item.timestamp);
                 const dateStr = date.toLocaleString('id-ID', {
                     day: '2-digit',
@@ -1370,7 +1749,7 @@ Generated by TP/SL Calculator by RIFQI
                 let displayAmount = 0;
                 let displayClass = 'positive';
                 
-                if (status === 'hit-tp' || status === 'running') {
+                if (status === 'hit-tp') {
                     displayAmount = item.profit;
                     displayClass = 'positive';
                 } else if (status === 'hit-sl') {
@@ -1379,26 +1758,36 @@ Generated by TP/SL Calculator by RIFQI
                 } else if (status === 'break-even') {
                     displayAmount = 0;
                     displayClass = 'break-even';
+                } else if (status === 'running') {
+                    displayAmount = item.profit; // Show potential profit for running trades
+                    displayClass = 'positive';
                 }
 
                 const div = document.createElement('div');
                 div.className = `history-item ${status}`;
                 div.innerHTML = `
-                    <div class="history-info">
-                        <div class="history-pair">${item.pair.toUpperCase()}</div>
-                        <div class="history-details">
-                            Entry: $${item.entry} → TP: $${item.tp} | SL: $${item.sl}<br>
-                            ${dateStr}
+                    <div class="history-item-content">
+                        <div class="history-main-info">
+                            <div class="history-pair">
+                                ${item.pair.toUpperCase()}
+                                <span class="trade-status ${status}">${statusEmoji[status]} ${statusText[status]}</span>
+                            </div>
+                            <div class="history-details">
+                                Entry: $${item.entry} → TP: $${item.tp} | SL: $${item.sl}<br>
+                                ${dateStr}
+                            </div>
                         </div>
-                        <span class="trade-status ${status}">${statusEmoji[status]} ${statusText[status]}</span>
-                    </div>
-                    <div class="history-profit ${displayClass}">
-                        ${displayAmount === 0 ? 'Rp 0' : formatRupiah(displayAmount)}
-                    </div>
-                    <div class="history-actions">
-                        <button class="btn-history update-status" onclick="openStatusModal(${index})">Update</button>
-                        <button class="btn-history" onclick="loadCalculation(${index})">Load</button>
-                        <button class="btn-history delete" onclick="deleteHistory(${index})">Delete</button>
+                        
+                        <div class="history-profit-section">
+                            <div class="history-profit ${displayClass}">
+                                ${displayAmount === 0 ? 'Rp 0' : (displayAmount > 0 ? '+' : '') + formatRupiah(displayAmount)}
+                            </div>
+                            <div class="history-actions">
+                                <button class="btn-history update-status" onclick="openStatusModal(${history.indexOf(item)})">Update</button>
+                                <button class="btn-history" onclick="loadCalculation(${history.indexOf(item)})">Load</button>
+                                <button class="btn-history delete" onclick="deleteHistory(${history.indexOf(item)})">Delete</button>
+                            </div>
+                        </div>
                     </div>
                 `;
                 historyList.appendChild(div);
@@ -1428,6 +1817,7 @@ Generated by TP/SL Calculator by RIFQI
             localStorage.setItem('tpslHistory', JSON.stringify(history));
             loadHistory();
             updateStats();
+            updateSaldoDisplay();
             showToast('🗑️ Deleted from history!');
         }
 
@@ -1436,6 +1826,7 @@ Generated by TP/SL Calculator by RIFQI
                 localStorage.removeItem('tpslHistory');
                 loadHistory();
                 updateStats();
+                updateSaldoDisplay();
                 showToast('🗑️ All history cleared!');
             }
         }
@@ -1454,6 +1845,7 @@ Generated by TP/SL Calculator by RIFQI
                 toggleText.textContent = 'Back to Calculator';
                 loadHistory();
                 updateStats();
+                updateSaldoDisplay();
             } else {
                 histView.classList.remove('active');
                 calcView.classList.add('active');
@@ -1497,6 +1889,7 @@ Generated by TP/SL Calculator by RIFQI
             
             loadHistory();
             updateStats();
+            updateSaldoDisplay();
             closeStatusModal();
             
             const statusText = {
@@ -1585,6 +1978,7 @@ Generated by TP/SL Calculator by RIFQI
                         localStorage.setItem('tpslHistory', JSON.stringify(importedData));
                         loadHistory();
                         updateStats();
+                        updateSaldoDisplay();
                         showToast(`✅ Successfully imported ${importedData.length} trades!`);
                     }
                 } catch (error) {
@@ -1606,6 +2000,7 @@ Generated by TP/SL Calculator by RIFQI
             }, 3000);
         }
 
+        // Event Listeners
         form.addEventListener('submit', calculate);
         document.getElementById('btnCopy').addEventListener('click', copyResults);
         document.getElementById('btnSave').addEventListener('click', saveToHistory);
@@ -1645,9 +2040,18 @@ Generated by TP/SL Calculator by RIFQI
             document.getElementById('fileInput').click();
         });
 
+        // 🔥 EVENT LISTENERS BARU
+        document.getElementById('btnEditModal').addEventListener('click', toggleEditModal);
+        document.getElementById('btnSaveModal').addEventListener('click', saveModalAwal);
+        document.getElementById('btnCancelModal').addEventListener('click', toggleEditModal);
+        document.getElementById('statusFilter').addEventListener('change', filterHistory);
+
+        // Initialize
         fetchKurs();
         setInterval(fetchKurs, 300000);
         updateStats();
+        loadModalAwal();
+        updateSaldoDisplay();
     </script>
 </body>
 </html>
