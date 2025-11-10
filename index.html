@@ -1128,37 +1128,42 @@
 
                 <div class="calculator-card">
                     <div class="stats-grid" id="statsGrid">
-                        <div class="stat-card total">
-                            <div class="stat-label">Total Trades</div>
-                            <div class="stat-value" id="statTotal">0</div>
-                            <div class="stat-subtitle">All time</div>
-                        </div>
-                        <div class="stat-card winrate">
-                            <div class="stat-label">Win Rate</div>
-                            <div class="stat-value" id="statWinRate">0%</div>
-                            <div class="stat-subtitle">Success ratio</div>
-                        </div>
-                        <div class="stat-card profit">
-                            <div class="stat-label">Total Profit</div>
-                            <div class="stat-value" id="statProfit">Rp 0</div>
-                            <div class="stat-subtitle">Realized gains</div>
-                        </div>
-                        <div class="stat-card loss">
-                            <div class="stat-label">Total Loss</div>
-                            <div class="stat-value" id="statLoss">Rp 0</div>
-                            <div class="stat-subtitle">Realized losses</div>
-                        </div>
-                        <!-- NEW: Initial Balance Card -->
+                        <!-- REVISI: Saldo Awal & Total Saldo dipindah ke atas -->
                         <div class="stat-card initial-balance" id="initialBalanceCard">
                             <div class="stat-label">Saldo Awal</div>
                             <div class="stat-value" id="initialBalanceValue">Rp 0</div>
                             <div class="stat-subtitle">Click to edit</div>
                         </div>
-                        <!-- NEW: Current Balance Card -->
+                        
                         <div class="stat-card current-balance">
                             <div class="stat-label">Total Saldo</div>
                             <div class="stat-value" id="currentBalanceValue">Rp 0</div>
                             <div class="stat-subtitle">Current balance</div>
+                        </div>
+                        
+                        <div class="stat-card profit">
+                            <div class="stat-label">Total Profit</div>
+                            <div class="stat-value" id="statProfit">Rp 0</div>
+                            <div class="stat-subtitle">Realized gains</div>
+                        </div>
+                        
+                        <div class="stat-card loss">
+                            <div class="stat-label">Total Loss</div>
+                            <div class="stat-value" id="statLoss">Rp 0</div>
+                            <div class="stat-subtitle">Realized losses</div>
+                        </div>
+                        
+                        <!-- REVISI: Total Trades & Win Rate dipindah ke bawah -->
+                        <div class="stat-card total">
+                            <div class="stat-label">Total Trades</div>
+                            <div class="stat-value" id="statTotal">0</div>
+                            <div class="stat-subtitle">All time</div>
+                        </div>
+                        
+                        <div class="stat-card winrate">
+                            <div class="stat-label">Win Rate</div>
+                            <div class="stat-value" id="statWinRate">0%</div>
+                            <div class="stat-subtitle">Success ratio</div>
                         </div>
                     </div>
                 </div>
@@ -1173,7 +1178,7 @@
                         </div>
                     </div>
                     
-                    <!-- NEW: Filter Buttons -->
+                    <!-- Filter Buttons -->
                     <div class="history-filters" id="historyFilters">
                         <button class="filter-btn all active" data-filter="all">All (0)</button>
                         <button class="filter-btn running" data-filter="running">⏳ Running (0)</button>
@@ -1215,7 +1220,7 @@
         </div>
     </div>
 
-    <!-- NEW: Balance Edit Modal -->
+    <!-- Balance Edit Modal -->
     <div class="balance-modal" id="balanceModal">
         <div class="balance-modal-content">
             <h3>Edit Saldo Awal</h3>
@@ -1241,6 +1246,10 @@
     <input type="file" id="fileInput" accept=".json">
 
     <script>
+        // ... (JavaScript code remains exactly the same as previous version)
+        // All the JavaScript functions and event listeners stay unchanged
+        // Only the HTML structure of stats-grid has been rearranged
+
         const form = document.getElementById('calcForm');
         const results = document.getElementById('results');
         let currentKurs = 0;
@@ -1472,7 +1481,7 @@ Generated by TP/SL Calculator by RIFQI
             showToast('💾 Saved to history!');
         }
 
-        // NEW: Function to update filter counts
+        // Function to update filter counts
         function updateFilterCounts() {
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
             
@@ -1489,7 +1498,7 @@ Generated by TP/SL Calculator by RIFQI
             document.querySelector('.filter-btn.break-even').textContent = `🔄 Break Even (${breakEvenCount})`;
         }
 
-        // NEW: Function to apply filter
+        // Function to apply filter
         function applyFilter(filter) {
             currentFilter = filter;
             
@@ -1694,25 +1703,25 @@ Generated by TP/SL Calculator by RIFQI
             showToast(`✅ Status updated to ${statusText[selectedStatus]}!`);
         }
 
-        // NEW: Function to load initial balance
+        // Function to load initial balance
         function loadInitialBalance() {
             const initialBalance = localStorage.getItem('initialBalance') || '0';
             document.getElementById('initialBalanceValue').textContent = formatRupiah(parseFloat(initialBalance));
         }
 
-        // NEW: Function to open balance edit modal
+        // Function to open balance edit modal
         function openBalanceModal() {
             const initialBalance = localStorage.getItem('initialBalance') || '0';
             document.getElementById('balanceInput').value = formatNumber(initialBalance);
             document.getElementById('balanceModal').classList.add('show');
         }
 
-        // NEW: Function to close balance edit modal
+        // Function to close balance edit modal
         function closeBalanceModal() {
             document.getElementById('balanceModal').classList.remove('show');
         }
 
-        // NEW: Function to save initial balance
+        // Function to save initial balance
         function saveInitialBalance() {
             let balanceValue = document.getElementById('balanceInput').value;
             
@@ -1740,7 +1749,7 @@ Generated by TP/SL Calculator by RIFQI
             showToast('✅ Initial balance saved!');
         }
 
-        // NEW: Function to calculate current balance
+        // Function to calculate current balance
         function calculateCurrentBalance() {
             const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
@@ -1768,7 +1777,7 @@ Generated by TP/SL Calculator by RIFQI
             return currentBalance;
         }
 
-        // NEW: Function to update current balance display
+        // Function to update current balance display
         function updateCurrentBalance() {
             const currentBalance = calculateCurrentBalance();
             const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
@@ -1806,7 +1815,7 @@ Generated by TP/SL Calculator by RIFQI
             document.getElementById('statProfit').textContent = formatRupiah(totalProfit);
             document.getElementById('statLoss').textContent = formatRupiah(totalLoss);
             
-            // NEW: Update current balance
+            // Update current balance
             updateCurrentBalance();
         }
 
@@ -1887,7 +1896,7 @@ Generated by TP/SL Calculator by RIFQI
             }, 3000);
         }
 
-        // NEW: Auto-format balance input
+        // Auto-format balance input
         document.getElementById('balanceInput').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\./g, '');
             if (value === '') return;
@@ -1919,7 +1928,7 @@ Generated by TP/SL Calculator by RIFQI
             }
         });
 
-        // NEW: Event listeners for balance modal
+        // Event listeners for balance modal
         document.getElementById('initialBalanceCard').addEventListener('click', openBalanceModal);
         document.getElementById('btnConfirmBalance').addEventListener('click', saveInitialBalance);
         document.getElementById('btnCancelBalance').addEventListener('click', closeBalanceModal);
@@ -1930,7 +1939,7 @@ Generated by TP/SL Calculator by RIFQI
             }
         });
 
-        // NEW: Event listeners for filter buttons
+        // Event listeners for filter buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 applyFilter(this.dataset.filter);
