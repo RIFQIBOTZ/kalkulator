@@ -154,6 +154,149 @@
             font-weight: 500;
         }
 
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(123, 47, 247, 0.1);
+            border: 1px solid rgba(123, 47, 247, 0.3);
+            border-radius: 10px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(45deg, #7b2ff7, #00d4ff);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .toggle-label {
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        .partial-tp-section {
+            display: none;
+            background: rgba(13, 16, 37, 0.4);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .partial-tp-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .partial-tp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .partial-tp-header h3 {
+            font-size: 1rem;
+            color: #00d4ff;
+        }
+
+        .tp-level {
+            display: grid;
+            grid-template-columns: 1fr 1fr 100px auto;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: end;
+        }
+
+        .tp-percentage {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .percentage-input {
+            width: 70px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .btn-remove-tp {
+            background: rgba(255, 51, 102, 0.2);
+            border: 1px solid rgba(255, 51, 102, 0.5);
+            color: #ff3366;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-remove-tp:hover {
+            background: rgba(255, 51, 102, 0.4);
+        }
+
+        .btn-add-tp {
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.5);
+            color: #00d4ff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-add-tp:hover {
+            background: rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-add-tp:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .percentage-total {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .percentage-total.valid {
+            color: #00ff88;
+        }
+
+        .percentage-total.invalid {
+            color: #ff3366;
+        }
+
         .position-size-info {
             background: rgba(123, 47, 247, 0.1);
             border: 1px solid rgba(123, 47, 247, 0.3);
@@ -202,7 +345,7 @@
             background: linear-gradient(45deg, #7b2ff7, #00d4ff);
             box-shadow: 0 4px 20px rgba(123, 47, 247, 0.4);
             grid-column: 1 / -1;
-            margin-bottom: 20px; /* Added margin to create space between button and results */
+            margin-bottom: 20px;
         }
 
         .btn-copy {
@@ -226,7 +369,7 @@
 
         .results {
             display: none;
-            margin-top: 20px; /* Added margin to create space between button and results */
+            margin-top: 20px;
         }
 
         .results.show {
@@ -298,6 +441,46 @@
         .result-subtitle {
             font-size: 0.75rem;
             color: #8b92b8;
+        }
+
+        .partial-tp-results {
+            display: none;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .partial-tp-results.show {
+            display: block;
+        }
+
+        .partial-tp-results h4 {
+            color: #00d4ff;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .tp-result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tp-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .tp-result-label {
+            color: #8b92b8;
+            font-size: 0.85rem;
+        }
+
+        .tp-result-value {
+            color: #00ff88;
+            font-weight: 600;
         }
 
         .view-toggle {
@@ -596,6 +779,12 @@
             color: #ffd700;
         }
 
+        .filter-btn.partial.active {
+            background: rgba(255, 165, 0, 0.2);
+            border-color: #ffa500;
+            color: #ffa500;
+        }
+
         .history-list {
             display: flex;
             flex-direction: column;
@@ -637,6 +826,11 @@
         .history-item.running {
             border-left: 4px solid #00d4ff;
             background: rgba(0, 212, 255, 0.05);
+        }
+
+        .history-item.partial {
+            border-left: 4px solid #ffa500;
+            background: rgba(255, 165, 0, 0.05);
         }
 
         .history-info {
@@ -683,6 +877,11 @@
         .trade-status.break-even {
             background: rgba(255, 215, 0, 0.2);
             color: #ffd700;
+        }
+
+        .trade-status.partial {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
         }
 
         .history-profit {
@@ -743,7 +942,7 @@
             background: rgba(255, 51, 102, 0.4);
         }
 
-        .status-modal, .balance-modal {
+        .status-modal, .balance-modal, .edit-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -754,23 +953,31 @@
             z-index: 1001;
             align-items: center;
             justify-content: center;
+            overflow-y: auto;
+            padding: 20px;
         }
 
-        .status-modal.show, .balance-modal.show {
+        .status-modal.show, .balance-modal.show, .edit-modal.show {
             display: flex;
             animation: fadeIn 0.3s ease;
         }
 
-        .status-modal-content, .balance-modal-content {
+        .status-modal-content, .balance-modal-content, .edit-modal-content {
             background: rgba(26, 29, 62, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 30px;
-            max-width: 400px;
+            max-width: 500px;
             width: 90%;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.1);
             animation: slideUp 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .edit-modal-content {
+            max-width: 800px;
         }
 
         @keyframes slideUp {
@@ -784,7 +991,7 @@
             }
         }
 
-        .status-modal h3, .balance-modal h3 {
+        .status-modal h3, .balance-modal h3, .edit-modal h3 {
             color: #00d4ff;
             margin-bottom: 20px;
             font-size: 1.2rem;
@@ -857,6 +1064,76 @@
         .status-option.break-even.selected {
             background: rgba(255, 215, 0, 0.3);
             border-color: #ffd700;
+        }
+
+        .partial-tp-checkboxes {
+            background: rgba(13, 16, 37, 0.6);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .partial-tp-checkboxes h4 {
+            color: #ffa500;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .tp-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tp-checkbox-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tp-checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .tp-checkbox-label {
+            flex: 1;
+            color: #e0e0e0;
+            font-size: 0.85rem;
+        }
+
+        .sl-checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background: rgba(255, 51, 102, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .sl-checkbox-item:hover {
+            background: rgba(255, 51, 102, 0.2);
+        }
+
+        .sl-checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .sl-checkbox-label {
+            flex: 1;
+            color: #ff3366;
+            font-size: 0.85rem;
+            font-weight: 600;
         }
 
         .modal-buttons {
@@ -981,6 +1258,11 @@
                 grid-template-columns: 1fr;
             }
 
+            .tp-level {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
             .results-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
@@ -1038,7 +1320,7 @@
                 justify-content: space-between;
             }
 
-            .status-modal-content, .balance-modal-content {
+            .status-modal-content, .balance-modal-content, .edit-modal-content {
                 padding: 20px;
             }
 
@@ -1096,13 +1378,44 @@
                                 <label for="entry">Entry Price (USD)</label>
                                 <input type="tel" inputmode="decimal" id="entry" placeholder="4.000" required>
                             </div>
+                        </div>
+
+                        <!-- Partial TP Toggle -->
+                        <div class="toggle-container">
+                            <div class="toggle-switch" id="partialTPToggle">
+                                <div class="toggle-slider"></div>
+                            </div>
+                            <span class="toggle-label">Use Partial Take Profit (Optional)</span>
+                        </div>
+
+                        <!-- Regular TP/SL -->
+                        <div class="form-grid" id="regularTPSection">
                             <div class="form-group">
                                 <label for="tp">Take Profit (USD)</label>
-                                <input type="tel" inputmode="decimal" id="tp" placeholder="4.200" required>
+                                <input type="tel" inputmode="decimal" id="tp" placeholder="4.200">
                             </div>
                             <div class="form-group">
                                 <label for="sl">Stop Loss (USD)</label>
                                 <input type="tel" inputmode="decimal" id="sl" placeholder="3.800" required>
+                            </div>
+                        </div>
+
+                        <!-- Partial TP Section -->
+                        <div class="partial-tp-section" id="partialTPSection">
+                            <div class="partial-tp-header">
+                                <h3>📊 Take Profit Levels</h3>
+                            </div>
+                            <div id="tpLevelsContainer">
+                                <!-- TP levels will be added dynamically -->
+                            </div>
+                            <button type="button" class="btn-add-tp" id="btnAddTP">+ Add TP Level</button>
+                            <div class="percentage-total" id="percentageTotal">Total: 0%</div>
+
+                            <div class="form-grid" style="margin-top: 20px;">
+                                <div class="form-group">
+                                    <label for="slPartial">Stop Loss (USD)</label>
+                                    <input type="tel" inputmode="decimal" id="slPartial" placeholder="3.800" required>
+                                </div>
                             </div>
                         </div>
 
@@ -1115,6 +1428,12 @@
                     </form>
 
                     <div class="results" id="results">
+                        <!-- Partial TP Results -->
+                        <div class="partial-tp-results" id="partialTPResults">
+                            <h4>🎯 Partial Take Profit Breakdown</h4>
+                            <div id="partialTPResultsContent"></div>
+                        </div>
+
                         <div class="results-grid">
                             <div class="result-box profit">
                                 <div class="result-label">Take Profit Target</div>
@@ -1168,7 +1487,7 @@
                     <p>Track your trading performance & statistics</p>
                 </div>
 
-                <!-- NEW: Performance Summary Card -->
+                <!-- Performance Summary Card -->
                 <div class="calculator-card">
                     <div class="card-header">
                         <span>💰</span>
@@ -1187,14 +1506,12 @@
                             <div class="stat-subtitle">Current balance</div>
                         </div>
                         
-                        <!-- NEW: Net Profit/Loss Card -->
                         <div class="stat-card net-profit">
                             <div class="stat-label">Net Profit/Loss</div>
                             <div class="stat-value" id="netProfitLossValue">Rp 0</div>
                             <div class="stat-subtitle">Overall performance</div>
                         </div>
                         
-                        <!-- NEW: ROI Card -->
                         <div class="stat-card roi">
                             <div class="stat-label">ROI</div>
                             <div class="stat-value" id="roiValue">0%</div>
@@ -1250,6 +1567,7 @@
                     <div class="history-filters" id="historyFilters">
                         <button class="filter-btn all active" data-filter="all">All (0)</button>
                         <button class="filter-btn running" data-filter="running">⏳ Running (0)</button>
+                        <button class="filter-btn partial" data-filter="partial">🎯 Partial (0)</button>
                         <button class="filter-btn hit-tp" data-filter="hit-tp">✅ Hit TP (0)</button>
                         <button class="filter-btn hit-sl" data-filter="hit-sl">❌ Hit SL (0)</button>
                         <button class="filter-btn break-even" data-filter="break-even">🔄 Break Even (0)</button>
@@ -1267,19 +1585,8 @@
     <div class="status-modal" id="statusModal">
         <div class="status-modal-content">
             <h3>Update Trade Status</h3>
-            <div class="status-options" id="statusOptions">
-                <div class="status-option running" data-status="running">
-                    ⏳ Running
-                </div>
-                <div class="status-option hit-tp" data-status="hit-tp">
-                    ✅ Hit TP
-                </div>
-                <div class="status-option hit-sl" data-status="hit-sl">
-                    ❌ Hit SL
-                </div>
-                <div class="status-option break-even" data-status="break-even">
-                    🔄 Break Even
-                </div>
+            <div id="statusModalContent">
+                <!-- Content will be dynamically generated -->
             </div>
             <div class="modal-buttons">
                 <button class="modal-btn cancel" id="btnCancelStatus">Cancel</button>
@@ -1296,6 +1603,16 @@
             <div class="modal-buttons">
                 <button class="modal-btn cancel" id="btnCancelBalance">Cancel</button>
                 <button class="modal-btn confirm" id="btnConfirmBalance">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Trade Modal -->
+    <div class="edit-modal" id="editModal">
+        <div class="edit-modal-content">
+            <h3>Edit Trade</h3>
+            <div id="editFormContainer">
+                <!-- Edit form will be dynamically generated -->
             </div>
         </div>
     </div>
@@ -1322,10 +1639,162 @@
         let selectedStatus = null;
         let currentEditIndex = null;
         let currentFilter = 'all';
+        let usePartialTP = false;
+        let tpLevels = [];
+        let currentEditTradeIndex = null;
+
+        // Initialize TP Levels
+        function initializeTPLevels() {
+            tpLevels = [
+                { price: '', percentage: 50 },
+                { price: '', percentage: 50 }
+            ];
+            renderTPLevels();
+        }
+
+        // Render TP Levels
+        function renderTPLevels() {
+            const container = document.getElementById('tpLevelsContainer');
+            container.innerHTML = '';
+
+            tpLevels.forEach((tp, index) => {
+                const div = document.createElement('div');
+                div.className = 'tp-level';
+                div.innerHTML = `
+                    <div class="form-group">
+                        <label>TP${index + 1} Price (USD)</label>
+                        <input type="tel" inputmode="decimal" class="tp-price" data-index="${index}" 
+                               placeholder="4.${200 + index * 100}" value="${tp.price}">
+                    </div>
+                    <div class="form-group">
+                        <label>Percentage (%)</label>
+                        <div class="tp-percentage">
+                            <input type="number" class="percentage-input tp-percentage-input" 
+                                   data-index="${index}" min="1" max="100" value="${tp.percentage}">
+                            <span>%</span>
+                        </div>
+                    </div>
+                    ${tpLevels.length > 2 ? `
+                        <button type="button" class="btn-remove-tp" data-index="${index}">Remove</button>
+                    ` : '<div></div>'}
+                `;
+                container.appendChild(div);
+            });
+
+            updatePercentageTotal();
+            attachTPEventListeners();
+        }
+
+        // Attach Event Listeners to TP inputs
+        function attachTPEventListeners() {
+            document.querySelectorAll('.tp-price').forEach(input => {
+                input.addEventListener('input', function() {
+                    const index = parseInt(this.dataset.index);
+                    tpLevels[index].price = this.value;
+                    autoFormatInput({ target: this });
+                });
+            });
+
+            document.querySelectorAll('.tp-percentage-input').forEach(input => {
+                input.addEventListener('input', function() {
+                    const index = parseInt(this.dataset.index);
+                    let value = parseInt(this.value) || 0;
+                    if (value > 100) value = 100;
+                    if (value < 0) value = 0;
+                    this.value = value;
+                    tpLevels[index].percentage = value;
+                    updatePercentageTotal();
+                });
+            });
+
+            document.querySelectorAll('.btn-remove-tp').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    removeTPLevel(index);
+                });
+            });
+        }
+
+        // Add TP Level
+        function addTPLevel() {
+            if (tpLevels.length >= 5) {
+                showToast('⚠️ Maximum 5 TP levels!');
+                return;
+            }
+
+            tpLevels.push({ price: '', percentage: 0 });
+            redistributePercentages();
+            renderTPLevels();
+        }
+
+        // Remove TP Level
+        function removeTPLevel(index) {
+            if (tpLevels.length <= 2) {
+                showToast('⚠️ Minimum 2 TP levels!');
+                return;
+            }
+
+            tpLevels.splice(index, 1);
+            redistributePercentages();
+            renderTPLevels();
+        }
+
+        // Redistribute Percentages Evenly
+        function redistributePercentages() {
+            const evenPercentage = Math.floor(100 / tpLevels.length);
+            const remainder = 100 - (evenPercentage * tpLevels.length);
+
+            tpLevels.forEach((tp, index) => {
+                tp.percentage = evenPercentage + (index === tpLevels.length - 1 ? remainder : 0);
+            });
+        }
+
+        // Update Percentage Total
+        function updatePercentageTotal() {
+            const total = tpLevels.reduce((sum, tp) => sum + tp.percentage, 0);
+            const totalElement = document.getElementById('percentageTotal');
+            totalElement.textContent = `Total: ${total}%`;
+            
+            if (total === 100) {
+                totalElement.className = 'percentage-total valid';
+            } else {
+                totalElement.className = 'percentage-total invalid';
+            }
+
+            // Update Add TP button state
+            const btnAddTP = document.getElementById('btnAddTP');
+            btnAddTP.disabled = tpLevels.length >= 5;
+        }
+
+        // Toggle Partial TP
+        document.getElementById('partialTPToggle').addEventListener('click', function() {
+            usePartialTP = !usePartialTP;
+            this.classList.toggle('active');
+            
+            const partialSection = document.getElementById('partialTPSection');
+            const regularSection = document.getElementById('regularTPSection');
+            
+            if (usePartialTP) {
+                partialSection.classList.add('active');
+                regularSection.style.display = 'none';
+                document.getElementById('tp').removeAttribute('required');
+                document.getElementById('sl').removeAttribute('required');
+                document.getElementById('slPartial').setAttribute('required', 'required');
+                initializeTPLevels();
+            } else {
+                partialSection.classList.remove('active');
+                regularSection.style.display = 'grid';
+                document.getElementById('tp').setAttribute('required', 'required');
+                document.getElementById('sl').setAttribute('required', 'required');
+                document.getElementById('slPartial').removeAttribute('required');
+            }
+        });
+
+        // Add TP Button
+        document.getElementById('btnAddTP').addEventListener('click', addTPLevel);
 
         // Fetch kurs USD/IDR dari API dengan fallback
         async function fetchKurs() {
-            // Set default dulu
             currentKurs = 15750;
             document.getElementById('kursRate').textContent = `Rp ${formatNumber(currentKurs.toFixed(0))}`;
             
@@ -1365,17 +1834,13 @@
                         document.getElementById('kursRate').textContent = `Rp ${formatNumber(currentKurs.toFixed(0))}`;
                         updateModalUSD();
                         updatePositionSize();
-                        console.log('Kurs updated from API:', currentKurs);
                         return;
                     }
                 } catch (error) {
-                    console.log(`API ${api.url} failed:`, error.message);
                     continue;
                 }
             }
 
-            // Jika semua API gagal, tetap pakai default
-            console.log('All APIs failed, using default rate:', currentKurs);
             document.getElementById('kursRate').textContent = `Rp ${formatNumber(currentKurs.toFixed(0))} (Default)`;
             updateModalUSD();
             updatePositionSize();
@@ -1422,7 +1887,14 @@
         function updatePositionSize() {
             const modalIDR = parseNumber(document.getElementById('modal').value || '0');
             const entry = parseNumber(document.getElementById('entry').value.replace(',', '.') || '0');
-            const sl = parseNumber(document.getElementById('sl').value.replace(',', '.') || '0');
+            
+            let sl = 0;
+            if (usePartialTP) {
+                sl = parseNumber(document.getElementById('slPartial').value.replace(',', '.') || '0');
+            } else {
+                sl = parseNumber(document.getElementById('sl').value.replace(',', '.') || '0');
+            }
+            
             const riskPercent = parseFloat(document.getElementById('riskPercent').value);
 
             if (modalIDR > 0 && entry > 0 && sl > 0 && currentKurs > 0) {
@@ -1445,6 +1917,7 @@
         document.getElementById('entry').addEventListener('input', autoFormatInput);
         document.getElementById('tp').addEventListener('input', autoFormatInput);
         document.getElementById('sl').addEventListener('input', autoFormatInput);
+        document.getElementById('slPartial').addEventListener('input', autoFormatInput);
         document.getElementById('riskPercent').addEventListener('change', updatePositionSize);
 
         function formatRupiah(amount) {
@@ -1461,9 +1934,32 @@
             const pair = document.getElementById('pair').value;
             const modalIDR = parseNumber(document.getElementById('modal').value);
             const entry = parseNumber(document.getElementById('entry').value.replace(',', '.'));
-            const tp = parseNumber(document.getElementById('tp').value.replace(',', '.'));
-            const sl = parseNumber(document.getElementById('sl').value.replace(',', '.'));
 
+            if (usePartialTP) {
+                // Validate percentages
+                const totalPercentage = tpLevels.reduce((sum, tp) => sum + tp.percentage, 0);
+                if (totalPercentage !== 100) {
+                    showToast('⚠️ Total percentage must be 100%!');
+                    return;
+                }
+
+                // Validate all TP prices filled
+                const allFilled = tpLevels.every(tp => tp.price && parseNumber(tp.price.replace(',', '.')) > 0);
+                if (!allFilled) {
+                    showToast('⚠️ Please fill all TP prices!');
+                    return;
+                }
+
+                const sl = parseNumber(document.getElementById('slPartial').value.replace(',', '.'));
+                calculatePartialTP(pair, modalIDR, entry, sl);
+            } else {
+                const tp = parseNumber(document.getElementById('tp').value.replace(',', '.'));
+                const sl = parseNumber(document.getElementById('sl').value.replace(',', '.'));
+                calculateRegular(pair, modalIDR, entry, tp, sl);
+            }
+        }
+
+        function calculateRegular(pair, modalIDR, entry, tp, sl) {
             const modalUSDT = modalIDR / currentKurs;
             const jumlahCoin = modalUSDT / entry;
 
@@ -1473,31 +1969,142 @@
             const nilaiSLUSDT = jumlahCoin * sl;
             const nilaiSLIDR = nilaiSLUSDT * currentKurs;
 
-            const profit = nilaiTPIDR - modalIDR;
-            const loss = modalIDR - nilaiSLIDR;
+            // Handle SL Plus (trailing stop in profit zone)
+            let profit, loss, slPercent;
+            
+            if (sl > entry) {
+                // SL in profit zone
+                profit = nilaiTPIDR - modalIDR;
+                loss = nilaiSLIDR - modalIDR; // This is actually a profit, but smaller than TP
+                slPercent = ((sl - entry) / entry) * 100;
+            } else {
+                // Normal SL below entry
+                profit = nilaiTPIDR - modalIDR;
+                loss = modalIDR - nilaiSLIDR;
+                slPercent = ((sl - entry) / entry) * 100;
+            }
 
             const tpPercent = ((tp - entry) / entry) * 100;
-            const slPercent = ((sl - entry) / entry) * 100;
             const rrRatio = Math.abs(tpPercent / slPercent);
 
             lastCalculation = {
                 pair, modalIDR, entry, tp, sl,
                 profit, loss, tpPercent, slPercent, rrRatio,
                 nilaiTPIDR, nilaiSLIDR,
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                usePartialTP: false,
+                slInProfit: sl > entry
             };
 
             document.getElementById('tpPercent').textContent = `+${tpPercent.toFixed(2)}%`;
             document.getElementById('tpValue').textContent = `Total: ${formatRupiah(nilaiTPIDR)}`;
             
-            document.getElementById('slPercent').textContent = `${slPercent.toFixed(2)}%`;
-            document.getElementById('slValue').textContent = `Total: ${formatRupiah(nilaiSLIDR)}`;
+            if (sl > entry) {
+                document.getElementById('slPercent').textContent = `+${slPercent.toFixed(2)}%`;
+                document.getElementById('slValue').textContent = `Total: ${formatRupiah(nilaiSLIDR)} (Profit Zone)`;
+                document.getElementById('lossAmount').textContent = `+${formatRupiah(loss)}`;
+                document.querySelector('#lossAmount').parentElement.querySelector('.result-label').textContent = 'Min Profit (SL)';
+            } else {
+                document.getElementById('slPercent').textContent = `${slPercent.toFixed(2)}%`;
+                document.getElementById('slValue').textContent = `Total: ${formatRupiah(nilaiSLIDR)}`;
+                document.getElementById('lossAmount').textContent = `-${formatRupiah(loss)}`;
+                document.querySelector('#lossAmount').parentElement.querySelector('.result-label').textContent = 'Kerugian Bersih';
+            }
             
             document.getElementById('rrRatio').textContent = `1 : ${rrRatio.toFixed(2)}`;
-            
             document.getElementById('profitAmount').textContent = `+${formatRupiah(profit)}`;
-            document.getElementById('lossAmount').textContent = `-${formatRupiah(loss)}`;
+            document.getElementById('pairDisplay').textContent = pair.toUpperCase();
+
+            document.getElementById('partialTPResults').classList.remove('show');
+            results.classList.add('show');
+        }
+
+        function calculatePartialTP(pair, modalIDR, entry, sl) {
+            const modalUSDT = modalIDR / currentKurs;
+            const jumlahCoin = modalUSDT / entry;
+
+            // Calculate each TP level
+            const tpResults = tpLevels.map(tp => {
+                const tpPrice = parseNumber(tp.price.replace(',', '.'));
+                const percentage = tp.percentage / 100;
+                const coinsAtTP = jumlahCoin * percentage;
+                const valueAtTP = coinsAtTP * tpPrice;
+                const valueAtTPIDR = valueAtTP * currentKurs;
+                const modalPortionIDR = modalIDR * percentage;
+                const profitIDR = valueAtTPIDR - modalPortionIDR;
+                const profitPercent = ((tpPrice - entry) / entry) * 100;
+
+                return {
+                    price: tpPrice,
+                    percentage: tp.percentage,
+                    profit: profitIDR,
+                    profitPercent: profitPercent,
+                    status: 'pending'
+                };
+            });
+
+            // Calculate total if all TP hit
+            const totalProfit = tpResults.reduce((sum, tp) => sum + tp.profit, 0);
             
+            // Calculate average TP for display
+            const weightedTP = tpResults.reduce((sum, tp) => sum + (tp.price * tp.percentage / 100), 0);
+            const avgTPPercent = ((weightedTP - entry) / entry) * 100;
+
+            // Calculate SL
+            const nilaiSLUSDT = jumlahCoin * sl;
+            const nilaiSLIDR = nilaiSLUSDT * currentKurs;
+            
+            let loss, slPercent;
+            if (sl > entry) {
+                loss = nilaiSLIDR - modalIDR;
+                slPercent = ((sl - entry) / entry) * 100;
+            } else {
+                loss = modalIDR - nilaiSLIDR;
+                slPercent = ((sl - entry) / entry) * 100;
+            }
+
+            const rrRatio = Math.abs(avgTPPercent / slPercent);
+
+            lastCalculation = {
+                pair, modalIDR, entry, sl,
+                profit: totalProfit,
+                loss, slPercent, rrRatio,
+                nilaiSLIDR,
+                timestamp: new Date().toISOString(),
+                usePartialTP: true,
+                tpLevels: tpResults,
+                slInProfit: sl > entry
+            };
+
+            // Display partial TP results
+            const partialTPResultsContent = document.getElementById('partialTPResultsContent');
+            partialTPResultsContent.innerHTML = tpResults.map((tp, index) => `
+                <div class="tp-result-item">
+                    <span class="tp-result-label">TP${index + 1} ($${tp.price.toFixed(2)}) - ${tp.percentage}%</span>
+                    <span class="tp-result-value">+${formatRupiah(tp.profit)} (+${tp.profitPercent.toFixed(2)}%)</span>
+                </div>
+            `).join('');
+
+            document.getElementById('partialTPResults').classList.add('show');
+
+            // Display summary
+            document.getElementById('tpPercent').textContent = `+${avgTPPercent.toFixed(2)}%`;
+            document.getElementById('tpValue').textContent = `Total if all TP hit: ${formatRupiah(modalIDR + totalProfit)}`;
+            
+            if (sl > entry) {
+                document.getElementById('slPercent').textContent = `+${slPercent.toFixed(2)}%`;
+                document.getElementById('slValue').textContent = `Total: ${formatRupiah(nilaiSLIDR)} (Profit Zone)`;
+                document.getElementById('lossAmount').textContent = `+${formatRupiah(loss)}`;
+                document.querySelector('#lossAmount').parentElement.querySelector('.result-label').textContent = 'Min Profit (SL)';
+            } else {
+                document.getElementById('slPercent').textContent = `${slPercent.toFixed(2)}%`;
+                document.getElementById('slValue').textContent = `Total: ${formatRupiah(nilaiSLIDR)}`;
+                document.getElementById('lossAmount').textContent = `-${formatRupiah(loss)}`;
+                document.querySelector('#lossAmount').parentElement.querySelector('.result-label').textContent = 'Kerugian Bersih';
+            }
+            
+            document.getElementById('rrRatio').textContent = `1 : ${rrRatio.toFixed(2)}`;
+            document.getElementById('profitAmount').textContent = `+${formatRupiah(totalProfit)}`;
             document.getElementById('pairDisplay').textContent = pair.toUpperCase();
 
             results.classList.add('show');
@@ -1506,23 +2113,37 @@
         function copyResults() {
             if (!lastCalculation) return;
 
-            const text = `
+            let text = `
 🎯 TP/SL Calculator Results
 
 📊 Pair: ${lastCalculation.pair.toUpperCase()}
 💰 Modal: ${formatRupiah(lastCalculation.modalIDR)}
 📈 Entry: $${lastCalculation.entry}
-🎯 TP: $${lastCalculation.tp} (+${lastCalculation.tpPercent.toFixed(2)}%)
-🛑 SL: $${lastCalculation.sl} (${lastCalculation.slPercent.toFixed(2)}%)
+`;
 
-✅ Profit Potensial: ${formatRupiah(lastCalculation.profit)}
-❌ Loss Potensial: ${formatRupiah(lastCalculation.loss)}
-⚖️ Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}
+            if (lastCalculation.usePartialTP) {
+                text += `\n🎯 Partial Take Profit:\n`;
+                lastCalculation.tpLevels.forEach((tp, index) => {
+                    text += `   TP${index + 1}: $${tp.price.toFixed(2)} (${tp.percentage}%) - Profit: ${formatRupiah(tp.profit)}\n`;
+                });
+                text += `\n✅ Total Profit if all TP hit: ${formatRupiah(lastCalculation.profit)}`;
+            } else {
+                text += `🎯 TP: $${lastCalculation.tp} (+${lastCalculation.tpPercent.toFixed(2)}%)`;
+                text += `\n✅ Profit Potensial: ${formatRupiah(lastCalculation.profit)}`;
+            }
 
-Generated by TP/SL Calculator by RIFQI
-            `.trim();
+            if (lastCalculation.slInProfit) {
+                text += `\n🛑 SL: $${lastCalculation.sl} (+${lastCalculation.slPercent.toFixed(2)}%) - In Profit Zone`;
+                text += `\n✅ Min Profit (SL): ${formatRupiah(lastCalculation.loss)}`;
+            } else {
+                text += `\n🛑 SL: $${lastCalculation.sl} (${lastCalculation.slPercent.toFixed(2)}%)`;
+                text += `\n❌ Loss Potensial: ${formatRupiah(lastCalculation.loss)}`;
+            }
 
-            navigator.clipboard.writeText(text).then(() => {
+            text += `\n⚖️ Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}`;
+            text += `\n\nGenerated by TP/SL Calculator by RIFQI`;
+
+            navigator.clipboard.writeText(text.trim()).then(() => {
                 showToast('✅ Results copied to clipboard!');
             });
         }
@@ -1545,28 +2166,27 @@ Generated by TP/SL Calculator by RIFQI
             showToast('💾 Saved to history!');
         }
 
-        // Function to update filter counts
         function updateFilterCounts() {
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
             
             const allCount = history.length;
             const runningCount = history.filter(t => t.status === 'running').length;
+            const partialCount = history.filter(t => t.status === 'partial').length;
             const hitTpCount = history.filter(t => t.status === 'hit-tp').length;
             const hitSlCount = history.filter(t => t.status === 'hit-sl').length;
             const breakEvenCount = history.filter(t => t.status === 'break-even').length;
             
             document.querySelector('.filter-btn.all').textContent = `All (${allCount})`;
             document.querySelector('.filter-btn.running').textContent = `⏳ Running (${runningCount})`;
+            document.querySelector('.filter-btn.partial').textContent = `🎯 Partial (${partialCount})`;
             document.querySelector('.filter-btn.hit-tp').textContent = `✅ Hit TP (${hitTpCount})`;
             document.querySelector('.filter-btn.hit-sl').textContent = `❌ Hit SL (${hitSlCount})`;
             document.querySelector('.filter-btn.break-even').textContent = `🔄 Break Even (${breakEvenCount})`;
         }
 
-        // Function to apply filter
         function applyFilter(filter) {
             currentFilter = filter;
             
-            // Update active state of filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -1579,7 +2199,6 @@ Generated by TP/SL Calculator by RIFQI
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
             const historyList = document.getElementById('historyList');
 
-            // Apply filter
             let filteredHistory = history;
             if (currentFilter !== 'all') {
                 filteredHistory = history.filter(t => t.status === currentFilter);
@@ -1597,6 +2216,9 @@ Generated by TP/SL Calculator by RIFQI
             historyList.innerHTML = '';
 
             filteredHistory.forEach((item, index) => {
+                // Find actual index in full history
+                const actualIndex = history.indexOf(item);
+                
                 const date = new Date(item.timestamp);
                 const dateStr = date.toLocaleString('id-ID', {
                     day: '2-digit',
@@ -1609,30 +2231,51 @@ Generated by TP/SL Calculator by RIFQI
                 const status = item.status || 'running';
                 const statusEmoji = {
                     'running': '⏳',
+                    'partial': '🎯',
                     'hit-tp': '✅',
                     'hit-sl': '❌',
                     'break-even': '🔄'
                 };
                 const statusText = {
                     'running': 'Running',
+                    'partial': 'Partial Hit',
                     'hit-tp': 'Hit TP',
                     'hit-sl': 'Hit SL',
                     'break-even': 'Break Even'
                 };
 
-                // Determine profit/loss display based on status
                 let displayAmount = 0;
                 let displayClass = 'positive';
                 
-                if (status === 'hit-tp' || status === 'running') {
+                if (status === 'partial') {
+                    // Calculate partial profit
+                    if (item.usePartialTP && item.tpLevels) {
+                        const hitTPs = item.tpLevels.filter(tp => tp.status === 'hit');
+                        displayAmount = hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                    }
+                    displayClass = 'positive';
+                } else if (status === 'hit-tp' || status === 'running') {
                     displayAmount = item.profit;
                     displayClass = 'positive';
                 } else if (status === 'hit-sl') {
-                    displayAmount = -item.loss;
-                    displayClass = 'negative';
+                    if (item.slInProfit) {
+                        displayAmount = item.loss;
+                        displayClass = 'positive';
+                    } else {
+                        displayAmount = -item.loss;
+                        displayClass = 'negative';
+                    }
                 } else if (status === 'break-even') {
                     displayAmount = 0;
                     displayClass = 'break-even';
+                }
+
+                let detailsText = '';
+                if (item.usePartialTP) {
+                    const tpPrices = item.tpLevels.map(tp => `$${tp.price}`).join(', ');
+                    detailsText = `Entry: $${item.entry} → TPs: ${tpPrices} | SL: $${item.sl}`;
+                } else {
+                    detailsText = `Entry: $${item.entry} → TP: $${item.tp} | SL: $${item.sl}`;
                 }
 
                 const div = document.createElement('div');
@@ -1641,7 +2284,7 @@ Generated by TP/SL Calculator by RIFQI
                     <div class="history-info">
                         <div class="history-pair">${item.pair.toUpperCase()}</div>
                         <div class="history-details">
-                            Entry: $${item.entry} → TP: $${item.tp} | SL: $${item.sl}<br>
+                            ${detailsText}<br>
                             ${dateStr}
                         </div>
                         <span class="trade-status ${status}">${statusEmoji[status]} ${statusText[status]}</span>
@@ -1650,9 +2293,10 @@ Generated by TP/SL Calculator by RIFQI
                         ${displayAmount === 0 ? 'Rp 0' : formatRupiah(displayAmount)}
                     </div>
                     <div class="history-actions">
-                        <button class="btn-history update-status" onclick="openStatusModal(${index})">Update</button>
-                        <button class="btn-history" onclick="loadCalculation(${index})">Load</button>
-                        <button class="btn-history delete" onclick="deleteHistory(${index})">Delete</button>
+                        <button class="btn-history update-status" onclick="openStatusModal(${actualIndex})">Update</button>
+                        <button class="btn-history" onclick="openEditModal(${actualIndex})">Edit</button>
+                        <button class="btn-history" onclick="loadCalculation(${actualIndex})">Load</button>
+                        <button class="btn-history delete" onclick="deleteHistory(${actualIndex})">Delete</button>
                     </div>
                 `;
                 historyList.appendChild(div);
@@ -1666,14 +2310,261 @@ Generated by TP/SL Calculator by RIFQI
             document.getElementById('pair').value = item.pair;
             document.getElementById('modal').value = formatNumber(item.modalIDR.toString());
             document.getElementById('entry').value = formatNumber(item.entry.toString());
-            document.getElementById('tp').value = formatNumber(item.tp.toString());
-            document.getElementById('sl').value = formatNumber(item.sl.toString());
+
+            if (item.usePartialTP) {
+                if (!usePartialTP) {
+                    document.getElementById('partialTPToggle').click();
+                }
+                
+                tpLevels = item.tpLevels.map(tp => ({
+                    price: tp.price.toString(),
+                    percentage: tp.percentage
+                }));
+                renderTPLevels();
+                
+                document.getElementById('slPartial').value = formatNumber(item.sl.toString());
+            } else {
+                if (usePartialTP) {
+                    document.getElementById('partialTPToggle').click();
+                }
+                
+                document.getElementById('tp').value = formatNumber(item.tp.toString());
+                document.getElementById('sl').value = formatNumber(item.sl.toString());
+            }
 
             updateModalUSD();
             updatePositionSize();
 
             toggleView();
             showToast('📥 Calculation loaded!');
+        }
+
+        function openEditModal(index) {
+            currentEditTradeIndex = index;
+            const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+            const item = history[index];
+
+            const editFormContainer = document.getElementById('editFormContainer');
+            
+            if (item.usePartialTP) {
+                // Partial TP Edit Form
+                const tpInputs = item.tpLevels.map((tp, idx) => `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <div class="form-group">
+                            <label>TP${idx + 1} Price (USD)</label>
+                            <input type="tel" inputmode="decimal" class="edit-tp-price" data-index="${idx}" value="${formatNumber(tp.price.toString())}">
+                        </div>
+                        <div class="form-group">
+                            <label>Percentage (%)</label>
+                            <input type="number" class="edit-tp-percentage" data-index="${idx}" min="1" max="100" value="${tp.percentage}">
+                        </div>
+                    </div>
+                `).join('');
+
+                editFormContainer.innerHTML = `
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Trading Pair</label>
+                            <input type="text" id="editPair" value="${item.pair}">
+                        </div>
+                        <div class="form-group">
+                            <label>Modal (IDR)</label>
+                            <input type="tel" inputmode="decimal" id="editModal" value="${formatNumber(item.modalIDR.toString())}">
+                        </div>
+                        <div class="form-group">
+                            <label>Entry Price (USD)</label>
+                            <input type="tel" inputmode="decimal" id="editEntry" value="${formatNumber(item.entry.toString())}">
+                        </div>
+                        <div class="form-group">
+                            <label>Stop Loss (USD)</label>
+                            <input type="tel" inputmode="decimal" id="editSL" value="${formatNumber(item.sl.toString())}">
+                        </div>
+                    </div>
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px;">
+                        <h4 style="color: #00d4ff; margin-bottom: 10px;">Take Profit Levels</h4>
+                        ${tpInputs}
+                    </div>
+                    <div class="modal-buttons" style="margin-top: 20px;">
+                        <button class="modal-btn cancel" onclick="closeEditModal()">Cancel</button>
+                        <button class="modal-btn confirm" onclick="saveEditTrade()">Save Changes</button>
+                    </div>
+                `;
+            } else {
+                // Regular TP Edit Form
+                editFormContainer.innerHTML = `
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Trading Pair</label>
+                            <input type="text" id="editPair" value="${item.pair}">
+                        </div>
+                        <div class="form-group">
+                            <label>Modal (IDR)</label>
+                            <input type="tel" inputmode="decimal" id="editModal" value="${formatNumber(item.modalIDR.toString())}">
+                        </div>
+                        <div class="form-group">
+                            <label>Entry Price (USD)</label>
+                            <input type="tel" inputmode="decimal" id="editEntry" value="${formatNumber(item.entry.toString())}">
+                        </div>
+                        <div class="form-group">
+                            <label>Take Profit (USD)</label>
+                            <input type="tel" inputmode="decimal" id="editTP" value="${formatNumber(item.tp.toString())}">
+                        </div>
+                        <div class="form-group">
+                            <label>Stop Loss (USD)</label>
+                            <input type="tel" inputmode="decimal" id="editSL" value="${formatNumber(item.sl.toString())}">
+                        </div>
+                    </div>
+                    <div class="modal-buttons" style="margin-top: 20px;">
+                        <button class="modal-btn cancel" onclick="closeEditModal()">Cancel</button>
+                        <button class="modal-btn confirm" onclick="saveEditTrade()">Save Changes</button>
+                    </div>
+                `;
+            }
+
+            // Attach auto-format listeners
+            editFormContainer.querySelectorAll('input[type="tel"]').forEach(input => {
+                if (input.id !== 'editPair') {
+                    input.addEventListener('input', autoFormatInput);
+                }
+            });
+
+            document.getElementById('editModal').classList.add('show');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            currentEditTradeIndex = null;
+        }
+
+        function saveEditTrade() {
+            if (currentEditTradeIndex === null) return;
+
+            const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+            const item = history[currentEditTradeIndex];
+
+            const pair = document.getElementById('editPair').value;
+            const modalIDR = parseNumber(document.getElementById('editModal').value);
+            const entry = parseNumber(document.getElementById('editEntry').value.replace(',', '.'));
+            const sl = parseNumber(document.getElementById('editSL').value.replace(',', '.'));
+
+            if (item.usePartialTP) {
+                // Update partial TP trade
+                const editedTPLevels = item.tpLevels.map((tp, idx) => {
+                    const priceInput = document.querySelector(`.edit-tp-price[data-index="${idx}"]`);
+                    const percentageInput = document.querySelector(`.edit-tp-percentage[data-index="${idx}"]`);
+                    
+                    return {
+                        ...tp,
+                        price: parseNumber(priceInput.value.replace(',', '.')),
+                        percentage: parseInt(percentageInput.value)
+                    };
+                });
+
+                // Validate percentages
+                const totalPercentage = editedTPLevels.reduce((sum, tp) => sum + tp.percentage, 0);
+                if (totalPercentage !== 100) {
+                    showToast('⚠️ Total percentage must be 100%!');
+                    return;
+                }
+
+                // Recalculate profits
+                const modalUSDT = modalIDR / currentKurs;
+                const jumlahCoin = modalUSDT / entry;
+
+                const recalculatedTPLevels = editedTPLevels.map(tp => {
+                    const percentage = tp.percentage / 100;
+                    const coinsAtTP = jumlahCoin * percentage;
+                    const valueAtTP = coinsAtTP * tp.price;
+                    const valueAtTPIDR = valueAtTP * currentKurs;
+                    const modalPortionIDR = modalIDR * percentage;
+                    const profitIDR = valueAtTPIDR - modalPortionIDR;
+                    const profitPercent = ((tp.price - entry) / entry) * 100;
+
+                    return {
+                        price: tp.price,
+                        percentage: tp.percentage,
+                        profit: profitIDR,
+                        profitPercent: profitPercent,
+                        status: tp.status
+                    };
+                });
+
+                const totalProfit = recalculatedTPLevels.reduce((sum, tp) => sum + tp.profit, 0);
+
+                // Update item
+                history[currentEditTradeIndex].pair = pair;
+                history[currentEditTradeIndex].modalIDR = modalIDR;
+                history[currentEditTradeIndex].entry = entry;
+                history[currentEditTradeIndex].sl = sl;
+                history[currentEditTradeIndex].tpLevels = recalculatedTPLevels;
+                history[currentEditTradeIndex].profit = totalProfit;
+
+                // Recalculate SL
+                const nilaiSLUSDT = jumlahCoin * sl;
+                const nilaiSLIDR = nilaiSLUSDT * currentKurs;
+                
+                if (sl > entry) {
+                    history[currentEditTradeIndex].loss = nilaiSLIDR - modalIDR;
+                    history[currentEditTradeIndex].slInProfit = true;
+                } else {
+                    history[currentEditTradeIndex].loss = modalIDR - nilaiSLIDR;
+                    history[currentEditTradeIndex].slInProfit = false;
+                }
+
+                const slPercent = ((sl - entry) / entry) * 100;
+                history[currentEditTradeIndex].slPercent = slPercent;
+
+                const weightedTP = recalculatedTPLevels.reduce((sum, tp) => sum + (tp.price * tp.percentage / 100), 0);
+                const avgTPPercent = ((weightedTP - entry) / entry) * 100;
+                history[currentEditTradeIndex].rrRatio = Math.abs(avgTPPercent / slPercent);
+
+            } else {
+                // Update regular TP trade
+                const tp = parseNumber(document.getElementById('editTP').value.replace(',', '.'));
+
+                const modalUSDT = modalIDR / currentKurs;
+                const jumlahCoin = modalUSDT / entry;
+
+                const nilaiTPUSDT = jumlahCoin * tp;
+                const nilaiTPIDR = nilaiTPUSDT * currentKurs;
+
+                const nilaiSLUSDT = jumlahCoin * sl;
+                const nilaiSLIDR = nilaiSLUSDT * currentKurs;
+
+                let profit, loss;
+                if (sl > entry) {
+                    profit = nilaiTPIDR - modalIDR;
+                    loss = nilaiSLIDR - modalIDR;
+                    history[currentEditTradeIndex].slInProfit = true;
+                } else {
+                    profit = nilaiTPIDR - modalIDR;
+                    loss = modalIDR - nilaiSLIDR;
+                    history[currentEditTradeIndex].slInProfit = false;
+                }
+
+                const tpPercent = ((tp - entry) / entry) * 100;
+                const slPercent = ((sl - entry) / entry) * 100;
+                const rrRatio = Math.abs(tpPercent / slPercent);
+
+                history[currentEditTradeIndex].pair = pair;
+                history[currentEditTradeIndex].modalIDR = modalIDR;
+                history[currentEditTradeIndex].entry = entry;
+                history[currentEditTradeIndex].tp = tp;
+                history[currentEditTradeIndex].sl = sl;
+                history[currentEditTradeIndex].profit = profit;
+                history[currentEditTradeIndex].loss = loss;
+                history[currentEditTradeIndex].tpPercent = tpPercent;
+                history[currentEditTradeIndex].slPercent = slPercent;
+                history[currentEditTradeIndex].rrRatio = rrRatio;
+                history[currentEditTradeIndex].nilaiTPIDR = nilaiTPIDR;
+                history[currentEditTradeIndex].nilaiSLIDR = nilaiSLIDR;
+            }
+
+            localStorage.setItem('tpslHistory', JSON.stringify(history));
+            loadHistory();
+            updateStats();
+            closeEditModal();
+            showToast('✅ Trade updated successfully!');
         }
 
         function deleteHistory(index) {
@@ -1725,16 +2616,76 @@ Generated by TP/SL Calculator by RIFQI
         function openStatusModal(index) {
             currentEditIndex = index;
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
-            const currentStatus = history[index].status || 'running';
+            const item = history[index];
+            const currentStatus = item.status || 'running';
             
             selectedStatus = currentStatus;
-            
-            document.querySelectorAll('.status-option').forEach(opt => {
-                opt.classList.remove('selected');
-                if (opt.dataset.status === currentStatus) {
-                    opt.classList.add('selected');
-                }
-            });
+
+            const statusModalContent = document.getElementById('statusModalContent');
+
+            if (item.usePartialTP) {
+                // Partial TP status update
+                const tpCheckboxes = item.tpLevels.map((tp, idx) => `
+                    <div class="tp-checkbox-item">
+                        <input type="checkbox" id="tpCheck${idx}" ${tp.status === 'hit' ? 'checked' : ''}>
+                        <label for="tpCheck${idx}" class="tp-checkbox-label">
+                            TP${idx + 1}: $${tp.price.toFixed(2)} (${tp.percentage}%) - ${formatRupiah(tp.profit)}
+                        </label>
+                    </div>
+                `).join('');
+
+                statusModalContent.innerHTML = `
+                    <div class="partial-tp-checkboxes">
+                        <h4>Select TP Levels Hit:</h4>
+                        ${tpCheckboxes}
+                        <div class="sl-checkbox-item">
+                            <input type="checkbox" id="slCheck" ${currentStatus === 'hit-sl' ? 'checked' : ''}>
+                            <label for="slCheck" class="sl-checkbox-label">
+                                Hit Stop Loss: $${item.sl}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="status-options">
+                        <div class="status-option break-even ${currentStatus === 'break-even' ? 'selected' : ''}" data-status="break-even">
+                            🔄 Break Even
+                        </div>
+                    </div>
+                `;
+
+                // Add click listeners for break-even
+                statusModalContent.querySelector('.status-option.break-even').addEventListener('click', function() {
+                    statusModalContent.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedStatus = 'break-even';
+                });
+
+            } else {
+                // Regular status update
+                statusModalContent.innerHTML = `
+                    <div class="status-options">
+                        <div class="status-option running ${currentStatus === 'running' ? 'selected' : ''}" data-status="running">
+                            ⏳ Running
+                        </div>
+                        <div class="status-option hit-tp ${currentStatus === 'hit-tp' ? 'selected' : ''}" data-status="hit-tp">
+                            ✅ Hit TP
+                        </div>
+                        <div class="status-option hit-sl ${currentStatus === 'hit-sl' ? 'selected' : ''}" data-status="hit-sl">
+                            ❌ Hit SL
+                        </div>
+                        <div class="status-option break-even ${currentStatus === 'break-even' ? 'selected' : ''}" data-status="break-even">
+                            🔄 Break Even
+                        </div>
+                    </div>
+                `;
+
+                statusModalContent.querySelectorAll('.status-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        statusModalContent.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedStatus = this.dataset.status;
+                    });
+                });
+            }
             
             document.getElementById('statusModal').classList.add('show');
         }
@@ -1746,10 +2697,44 @@ Generated by TP/SL Calculator by RIFQI
         }
 
         function updateTradeStatus() {
-            if (currentEditIndex === null || !selectedStatus) return;
+            if (currentEditIndex === null) return;
 
             let history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
-            history[currentEditIndex].status = selectedStatus;
+            const item = history[currentEditIndex];
+
+            if (item.usePartialTP) {
+                // Update partial TP statuses
+                const slChecked = document.getElementById('slCheck').checked;
+                
+                let anyTPHit = false;
+                item.tpLevels.forEach((tp, idx) => {
+                    const checkbox = document.getElementById(`tpCheck${idx}`);
+                    tp.status = checkbox.checked ? 'hit' : 'pending';
+                    if (checkbox.checked) anyTPHit = true;
+                });
+
+                if (slChecked) {
+                    history[currentEditIndex].status = 'hit-sl';
+                } else if (selectedStatus === 'break-even') {
+                    history[currentEditIndex].status = 'break-even';
+                } else {
+                    const allTPHit = item.tpLevels.every(tp => tp.status === 'hit');
+                    if (allTPHit) {
+                        history[currentEditIndex].status = 'hit-tp';
+                    } else if (anyTPHit) {
+                        history[currentEditIndex].status = 'partial';
+                    } else {
+                        history[currentEditIndex].status = 'running';
+                    }
+                }
+
+                history[currentEditIndex].tpLevels = item.tpLevels;
+
+            } else {
+                // Regular status update
+                history[currentEditIndex].status = selectedStatus;
+            }
+
             localStorage.setItem('tpslHistory', JSON.stringify(history));
             
             loadHistory();
@@ -1759,40 +2744,35 @@ Generated by TP/SL Calculator by RIFQI
             
             const statusText = {
                 'running': 'Running',
+                'partial': 'Partial Hit',
                 'hit-tp': 'Hit TP',
                 'hit-sl': 'Hit SL',
                 'break-even': 'Break Even'
             };
             
-            showToast(`✅ Status updated to ${statusText[selectedStatus]}!`);
+            showToast(`✅ Status updated to ${statusText[history[currentEditIndex].status]}!`);
         }
 
-        // Function to load initial balance
         function loadInitialBalance() {
             const initialBalance = localStorage.getItem('initialBalance') || '0';
             document.getElementById('initialBalanceValue').textContent = formatRupiah(parseFloat(initialBalance));
         }
 
-        // Function to open balance edit modal
         function openBalanceModal() {
             const initialBalance = localStorage.getItem('initialBalance') || '0';
             document.getElementById('balanceInput').value = formatNumber(initialBalance);
             document.getElementById('balanceModal').classList.add('show');
         }
 
-        // Function to close balance edit modal
         function closeBalanceModal() {
             document.getElementById('balanceModal').classList.remove('show');
         }
 
-        // Function to save initial balance
         function saveInitialBalance() {
             let balanceValue = document.getElementById('balanceInput').value;
             
-            // Remove formatting dots
             balanceValue = balanceValue.replace(/\./g, '');
             
-            // Validate input
             if (isNaN(balanceValue) || balanceValue.trim() === '') {
                 showToast('❌ Please enter a valid number!');
                 return;
@@ -1800,7 +2780,6 @@ Generated by TP/SL Calculator by RIFQI
             
             const balanceNum = parseFloat(balanceValue);
             
-            // Validate not negative
             if (balanceNum < 0) {
                 showToast('❌ Balance cannot be negative!');
                 return;
@@ -1813,16 +2792,15 @@ Generated by TP/SL Calculator by RIFQI
             showToast('✅ Initial balance saved!');
         }
 
-        // NEW: Function to calculate current balance
         function calculateCurrentBalance() {
             const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
             
-            // Filter only closed trades
             const closedTrades = history.filter(t => 
                 t.status === 'hit-tp' || 
                 t.status === 'hit-sl' || 
-                t.status === 'break-even'
+                t.status === 'break-even' ||
+                t.status === 'partial'
             );
             
             let totalProfit = 0;
@@ -1832,23 +2810,30 @@ Generated by TP/SL Calculator by RIFQI
                 if (trade.status === 'hit-tp') {
                     totalProfit += trade.profit;
                 } else if (trade.status === 'hit-sl') {
-                    totalLoss += trade.loss;
+                    if (trade.slInProfit) {
+                        totalProfit += trade.loss;
+                    } else {
+                        totalLoss += trade.loss;
+                    }
+                } else if (trade.status === 'partial') {
+                    if (trade.usePartialTP && trade.tpLevels) {
+                        const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                        totalProfit += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                    }
                 }
-                // break-even = 0, tidak perlu dihitung
             });
             
             const currentBalance = initialBalance + totalProfit - totalLoss;
             return currentBalance;
         }
 
-        // NEW: Function to calculate net profit/loss
         function calculateNetProfitLoss() {
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
             
-            // Filter only closed trades
             const closedTrades = history.filter(t => 
                 t.status === 'hit-tp' || 
-                t.status === 'hit-sl'
+                t.status === 'hit-sl' ||
+                t.status === 'partial'
             );
             
             let totalProfit = 0;
@@ -1858,7 +2843,16 @@ Generated by TP/SL Calculator by RIFQI
                 if (trade.status === 'hit-tp') {
                     totalProfit += trade.profit;
                 } else if (trade.status === 'hit-sl') {
-                    totalLoss += trade.loss;
+                    if (trade.slInProfit) {
+                        totalProfit += trade.loss;
+                    } else {
+                        totalLoss += trade.loss;
+                    }
+                } else if (trade.status === 'partial') {
+                    if (trade.usePartialTP && trade.tpLevels) {
+                        const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                        totalProfit += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                    }
                 }
             });
             
@@ -1866,7 +2860,6 @@ Generated by TP/SL Calculator by RIFQI
             return netProfitLoss;
         }
 
-        // NEW: Function to calculate ROI
         function calculateROI() {
             const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
             const netProfitLoss = calculateNetProfitLoss();
@@ -1877,7 +2870,6 @@ Generated by TP/SL Calculator by RIFQI
             return roi;
         }
 
-        // NEW: Function to update current balance display
         function updateCurrentBalance() {
             const currentBalance = calculateCurrentBalance();
             const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
@@ -1885,7 +2877,6 @@ Generated by TP/SL Calculator by RIFQI
             const currentBalanceElement = document.getElementById('currentBalanceValue');
             currentBalanceElement.textContent = formatRupiah(currentBalance);
             
-            // Set color based on profit/loss
             if (currentBalance > initialBalance) {
                 currentBalanceElement.className = 'stat-value positive';
             } else if (currentBalance < initialBalance) {
@@ -1895,13 +2886,11 @@ Generated by TP/SL Calculator by RIFQI
             }
         }
 
-        // NEW: Function to update net profit/loss display
         function updateNetProfitLoss() {
             const netProfitLoss = calculateNetProfitLoss();
             const netProfitLossElement = document.getElementById('netProfitLossValue');
             netProfitLossElement.textContent = formatRupiah(netProfitLoss);
             
-            // Set color based on profit/loss
             if (netProfitLoss > 0) {
                 netProfitLossElement.className = 'stat-value positive';
             } else if (netProfitLoss < 0) {
@@ -1911,13 +2900,11 @@ Generated by TP/SL Calculator by RIFQI
             }
         }
 
-        // NEW: Function to update ROI display
         function updateROI() {
             const roi = calculateROI();
             const roiElement = document.getElementById('roiValue');
             roiElement.textContent = `${roi.toFixed(2)}%`;
             
-            // Set color based on ROI
             if (roi > 0) {
                 roiElement.className = 'stat-value positive';
             } else if (roi < 0) {
@@ -1932,22 +2919,38 @@ Generated by TP/SL Calculator by RIFQI
             
             const totalTrades = history.length;
             const closedTrades = history.filter(t => t.status && t.status !== 'running');
-            const wonTrades = closedTrades.filter(t => t.status === 'hit-tp');
-            const lostTrades = closedTrades.filter(t => t.status === 'hit-sl');
+            const wonTrades = closedTrades.filter(t => t.status === 'hit-tp' || t.status === 'partial');
+            const lostTrades = closedTrades.filter(t => t.status === 'hit-sl' && !t.slInProfit);
             
             const winRate = closedTrades.length > 0 
                 ? ((wonTrades.length / closedTrades.length) * 100).toFixed(1)
                 : 0;
             
-            const totalProfit = wonTrades.reduce((sum, t) => sum + t.profit, 0);
-            const totalLoss = lostTrades.reduce((sum, t) => sum + t.loss, 0);
+            let totalProfit = 0;
+            let totalLoss = 0;
+
+            closedTrades.forEach(trade => {
+                if (trade.status === 'hit-tp') {
+                    totalProfit += trade.profit;
+                } else if (trade.status === 'hit-sl') {
+                    if (trade.slInProfit) {
+                        totalProfit += trade.loss;
+                    } else {
+                        totalLoss += trade.loss;
+                    }
+                } else if (trade.status === 'partial') {
+                    if (trade.usePartialTP && trade.tpLevels) {
+                        const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                        totalProfit += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                    }
+                }
+            });
             
             document.getElementById('statTotal').textContent = totalTrades;
             document.getElementById('statWinRate').textContent = `${winRate}%`;
             document.getElementById('statProfit').textContent = formatRupiah(totalProfit);
             document.getElementById('statLoss').textContent = formatRupiah(totalLoss);
             
-            // Update new stats
             updateCurrentBalance();
             updateNetProfitLoss();
             updateROI();
@@ -1989,12 +2992,10 @@ Generated by TP/SL Calculator by RIFQI
                         return;
                     }
                     
-                    // Validasi data
                     const isValid = importedData.every(item => 
                         item.pair && 
                         typeof item.modalIDR === 'number' && 
                         typeof item.entry === 'number' && 
-                        typeof item.tp === 'number' && 
                         typeof item.sl === 'number'
                     );
                     
@@ -2003,7 +3004,6 @@ Generated by TP/SL Calculator by RIFQI
                         return;
                     }
                     
-                    // Konfirmasi sebelum overwrite
                     if (confirm(`Import ${importedData.length} trades? This will replace your current history.`)) {
                         localStorage.setItem('tpslHistory', JSON.stringify(importedData));
                         loadHistory();
@@ -2030,7 +3030,6 @@ Generated by TP/SL Calculator by RIFQI
             }, 3000);
         }
 
-        // Auto-format balance input
         document.getElementById('balanceInput').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\./g, '');
             if (value === '') return;
@@ -2045,14 +3044,6 @@ Generated by TP/SL Calculator by RIFQI
         document.getElementById('btnToggleView').addEventListener('click', toggleView);
         document.getElementById('btnExportDB').addEventListener('click', exportToJSON);
         
-        document.querySelectorAll('.status-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
-                selectedStatus = this.dataset.status;
-            });
-        });
-        
         document.getElementById('btnConfirmStatus').addEventListener('click', updateTradeStatus);
         document.getElementById('btnCancelStatus').addEventListener('click', closeStatusModal);
         
@@ -2062,7 +3053,6 @@ Generated by TP/SL Calculator by RIFQI
             }
         });
 
-        // Event listeners for balance modal
         document.getElementById('initialBalanceCard').addEventListener('click', openBalanceModal);
         document.getElementById('btnConfirmBalance').addEventListener('click', saveInitialBalance);
         document.getElementById('btnCancelBalance').addEventListener('click', closeBalanceModal);
@@ -2073,24 +3063,26 @@ Generated by TP/SL Calculator by RIFQI
             }
         });
 
-        // Event listeners for filter buttons
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
+
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 applyFilter(this.dataset.filter);
             });
         });
 
-        // Event listener untuk file input
         document.getElementById('fileInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 importFromJSON(file);
             }
-            // Reset input
             e.target.value = '';
         });
 
-        // Event listener untuk tombol import
         document.getElementById('btnImportDB').addEventListener('click', function() {
             document.getElementById('fileInput').click();
         });
