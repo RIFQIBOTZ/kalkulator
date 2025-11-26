@@ -226,35 +226,90 @@
             color: #00d4ff;
         }
 
-        .tp-level {
-            display: grid;
-            grid-template-columns: 1fr 1fr 100px auto;
-            gap: 10px;
-            margin-bottom: 10px;
-            align-items: end;
+        /* Table Style for TP Levels */
+        .tp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
         }
 
-        .tp-percentage {
+        .tp-table-header {
+            background: rgba(0, 212, 255, 0.1);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .tp-table-header th {
+            padding: 12px 10px;
+            text-align: left;
+            font-size: 0.75rem;
+            color: #00d4ff;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tp-row {
+            background: rgba(13, 16, 37, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tp-row:last-child {
+            border-bottom: none;
+        }
+
+        .tp-row td {
+            padding: 12px 10px;
+        }
+
+        .tp-number {
+            font-weight: 600;
+            color: #00d4ff;
+            width: 40px;
+        }
+
+        .tp-price-input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(123, 47, 247, 0.3);
+            background: rgba(13, 16, 37, 0.8);
+            color: #e0e0e0;
+            font-size: 0.9rem;
+        }
+
+        .tp-percentage-container {
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .percentage-input {
+        .tp-percentage-input {
             width: 70px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(123, 47, 247, 0.3);
+            background: rgba(13, 16, 37, 0.8);
+            color: #e0e0e0;
+            font-size: 0.9rem;
             text-align: center;
-            padding: 10px;
+        }
+
+        .tp-action {
+            width: 60px;
         }
 
         .btn-remove-tp {
             background: rgba(255, 51, 102, 0.2);
             border: 1px solid rgba(255, 51, 102, 0.5);
             color: #ff3366;
-            padding: 10px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.85rem;
             transition: all 0.3s ease;
+            width: 100%;
         }
 
         .btn-remove-tp:hover {
@@ -1136,6 +1191,11 @@
             font-weight: 600;
         }
 
+        .tp-checkbox-item.disabled, .sl-checkbox-item.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
         .modal-buttons {
             display: flex;
             gap: 10px;
@@ -1245,6 +1305,7 @@
             }
         }
 
+        /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.6rem;
@@ -1258,9 +1319,31 @@
                 grid-template-columns: 1fr;
             }
 
-            .tp-level {
-                grid-template-columns: 1fr;
+            .tp-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .tp-table-header, .tp-row {
+                display: grid;
+                grid-template-columns: 50px 1fr 1fr 70px;
                 gap: 10px;
+                padding: 10px 5px;
+            }
+
+            .tp-table-header th, .tp-row td {
+                padding: 8px 5px;
+                font-size: 0.8rem;
+            }
+
+            .tp-price-input, .tp-percentage-input {
+                font-size: 0.8rem;
+                padding: 6px 8px;
+            }
+
+            .btn-remove-tp {
+                padding: 6px 8px;
+                font-size: 0.75rem;
             }
 
             .results-grid {
@@ -1330,6 +1413,29 @@
 
             .history-filters {
                 justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tp-table-header, .tp-row {
+                grid-template-columns: 40px 1fr 1fr 60px;
+                gap: 5px;
+                padding: 8px 3px;
+            }
+
+            .tp-table-header th, .tp-row td {
+                padding: 6px 3px;
+                font-size: 0.75rem;
+            }
+
+            .tp-price-input, .tp-percentage-input {
+                font-size: 0.75rem;
+                padding: 4px 6px;
+            }
+
+            .btn-remove-tp {
+                padding: 4px 6px;
+                font-size: 0.7rem;
             }
         }
 
@@ -1405,16 +1511,29 @@
                             <div class="partial-tp-header">
                                 <h3>📊 Take Profit Levels</h3>
                             </div>
-                            <div id="tpLevelsContainer">
-                                <!-- TP levels will be added dynamically -->
-                            </div>
+                            
+                            <!-- Table Style TP Levels -->
+                            <table class="tp-table">
+                                <thead class="tp-table-header">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Price (USD)</th>
+                                        <th>Close (%)</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tpLevelsContainer">
+                                    <!-- TP levels will be added dynamically -->
+                                </tbody>
+                            </table>
+                            
                             <button type="button" class="btn-add-tp" id="btnAddTP">+ Add TP Level</button>
                             <div class="percentage-total" id="percentageTotal">Total: 0%</div>
 
                             <div class="form-grid" style="margin-top: 20px;">
                                 <div class="form-group">
                                     <label for="slPartial">Stop Loss (USD)</label>
-                                    <input type="tel" inputmode="decimal" id="slPartial" placeholder="3.800" required>
+                                    <input type="tel" inputmode="decimal" id="slPartial" placeholder="3.800">
                                 </div>
                             </div>
                         </div>
@@ -1658,27 +1777,28 @@
             container.innerHTML = '';
 
             tpLevels.forEach((tp, index) => {
-                const div = document.createElement('div');
-                div.className = 'tp-level';
-                div.innerHTML = `
-                    <div class="form-group">
-                        <label>TP${index + 1} Price (USD)</label>
-                        <input type="tel" inputmode="decimal" class="tp-price" data-index="${index}" 
+                const row = document.createElement('tr');
+                row.className = 'tp-row';
+                row.innerHTML = `
+                    <td class="tp-number">${index + 1}</td>
+                    <td>
+                        <input type="tel" inputmode="decimal" class="tp-price-input tp-price" data-index="${index}" 
                                placeholder="4.${200 + index * 100}" value="${tp.price}">
-                    </div>
-                    <div class="form-group">
-                        <label>Percentage (%)</label>
-                        <div class="tp-percentage">
-                            <input type="number" class="percentage-input tp-percentage-input" 
+                    </td>
+                    <td>
+                        <div class="tp-percentage-container">
+                            <input type="number" class="tp-percentage-input tp-percentage-input" 
                                    data-index="${index}" min="1" max="100" value="${tp.percentage}">
                             <span>%</span>
                         </div>
-                    </div>
-                    ${tpLevels.length > 2 ? `
-                        <button type="button" class="btn-remove-tp" data-index="${index}">Remove</button>
-                    ` : '<div></div>'}
+                    </td>
+                    <td class="tp-action">
+                        ${tpLevels.length > 2 ? `
+                            <button type="button" class="btn-remove-tp" data-index="${index}">🗑️</button>
+                        ` : ''}
+                    </td>
                 `;
-                container.appendChild(div);
+                container.appendChild(row);
             });
 
             updatePercentageTotal();
@@ -2626,7 +2746,7 @@
             if (item.usePartialTP) {
                 // Partial TP status update
                 const tpCheckboxes = item.tpLevels.map((tp, idx) => `
-                    <div class="tp-checkbox-item">
+                    <div class="tp-checkbox-item" id="tpCheckItem${idx}">
                         <input type="checkbox" id="tpCheck${idx}" ${tp.status === 'hit' ? 'checked' : ''}>
                         <label for="tpCheck${idx}" class="tp-checkbox-label">
                             TP${idx + 1}: $${tp.price.toFixed(2)} (${tp.percentage}%) - ${formatRupiah(tp.profit)}
@@ -2638,26 +2758,100 @@
                     <div class="partial-tp-checkboxes">
                         <h4>Select TP Levels Hit:</h4>
                         ${tpCheckboxes}
-                        <div class="sl-checkbox-item">
+                        <div class="sl-checkbox-item" id="slCheckItem">
                             <input type="checkbox" id="slCheck" ${currentStatus === 'hit-sl' ? 'checked' : ''}>
                             <label for="slCheck" class="sl-checkbox-label">
                                 Hit Stop Loss: $${item.sl}
                             </label>
                         </div>
-                    </div>
-                    <div class="status-options">
-                        <div class="status-option break-even ${currentStatus === 'break-even' ? 'selected' : ''}" data-status="break-even">
-                            🔄 Break Even
+                        <div class="tp-checkbox-item" id="breakEvenCheckItem">
+                            <input type="checkbox" id="breakEvenCheck" ${currentStatus === 'break-even' ? 'checked' : ''}>
+                            <label for="breakEvenCheck" class="tp-checkbox-label">
+                                Break Even
+                            </label>
                         </div>
                     </div>
                 `;
 
-                // Add click listeners for break-even
-                statusModalContent.querySelector('.status-option.break-even').addEventListener('click', function() {
-                    statusModalContent.querySelectorAll('.status-option').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedStatus = 'break-even';
+                // Add hybrid system logic
+                const slCheck = document.getElementById('slCheck');
+                const breakEvenCheck = document.getElementById('breakEvenCheck');
+                const tpChecks = item.tpLevels.map((_, idx) => document.getElementById(`tpCheck${idx}`));
+
+                // Function to update checkbox states
+                function updateCheckboxStates() {
+                    const slChecked = slCheck.checked;
+                    const breakEvenChecked = breakEvenCheck.checked;
+                    const anyTPChecked = tpChecks.some(check => check.checked);
+
+                    // Disable conflicting options
+                    if (slChecked) {
+                        // If SL is checked, disable TP and Break Even
+                        tpChecks.forEach(check => {
+                            check.disabled = true;
+                            document.getElementById(`tpCheckItem${tpChecks.indexOf(check)}`).classList.add('disabled');
+                        });
+                        breakEvenCheck.disabled = true;
+                        document.getElementById('breakEvenCheckItem').classList.add('disabled');
+                    } else if (breakEvenChecked) {
+                        // If Break Even is checked, disable TP and SL
+                        tpChecks.forEach(check => {
+                            check.disabled = true;
+                            document.getElementById(`tpCheckItem${tpChecks.indexOf(check)}`).classList.add('disabled');
+                        });
+                        slCheck.disabled = true;
+                        document.getElementById('slCheckItem').classList.add('disabled');
+                    } else if (anyTPChecked) {
+                        // If any TP is checked, disable SL and Break Even
+                        slCheck.disabled = true;
+                        document.getElementById('slCheckItem').classList.add('disabled');
+                        breakEvenCheck.disabled = true;
+                        document.getElementById('breakEvenCheckItem').classList.add('disabled');
+                    } else {
+                        // If nothing is checked, enable all
+                        tpChecks.forEach(check => {
+                            check.disabled = false;
+                            document.getElementById(`tpCheckItem${tpChecks.indexOf(check)}`).classList.remove('disabled');
+                        });
+                        slCheck.disabled = false;
+                        document.getElementById('slCheckItem').classList.remove('disabled');
+                        breakEvenCheck.disabled = false;
+                        document.getElementById('breakEvenCheckItem').classList.remove('disabled');
+                    }
+                }
+
+                // Add event listeners for hybrid system
+                slCheck.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Uncheck all TP and Break Even
+                        tpChecks.forEach(check => check.checked = false);
+                        breakEvenCheck.checked = false;
+                    }
+                    updateCheckboxStates();
                 });
+
+                breakEvenCheck.addEventListener('change', function() {
+                    if (this.checked) {
+                        // Uncheck all TP and SL
+                        tpChecks.forEach(check => check.checked = false);
+                        slCheck.checked = false;
+                    }
+                    updateCheckboxStates();
+                });
+
+                tpChecks.forEach(check => {
+                    check.addEventListener('change', function() {
+                        if (this.checked) {
+                            // Uncheck SL and Break Even
+                            slCheck.checked = false;
+                            breakEvenCheck.checked = false;
+                        }
+                        updateCheckboxStates();
+                    });
+                });
+
+                // Initialize checkbox states
+                updateCheckboxStates();
 
             } else {
                 // Regular status update
@@ -2705,27 +2899,28 @@
             if (item.usePartialTP) {
                 // Update partial TP statuses
                 const slChecked = document.getElementById('slCheck').checked;
+                const breakEvenChecked = document.getElementById('breakEvenCheck').checked;
                 
                 let anyTPHit = false;
+                let allTPHit = true;
+                
                 item.tpLevels.forEach((tp, idx) => {
                     const checkbox = document.getElementById(`tpCheck${idx}`);
                     tp.status = checkbox.checked ? 'hit' : 'pending';
                     if (checkbox.checked) anyTPHit = true;
+                    if (!checkbox.checked) allTPHit = false;
                 });
 
                 if (slChecked) {
                     history[currentEditIndex].status = 'hit-sl';
-                } else if (selectedStatus === 'break-even') {
+                } else if (breakEvenChecked) {
                     history[currentEditIndex].status = 'break-even';
+                } else if (allTPHit) {
+                    history[currentEditIndex].status = 'hit-tp';
+                } else if (anyTPHit) {
+                    history[currentEditIndex].status = 'partial';
                 } else {
-                    const allTPHit = item.tpLevels.every(tp => tp.status === 'hit');
-                    if (allTPHit) {
-                        history[currentEditIndex].status = 'hit-tp';
-                    } else if (anyTPHit) {
-                        history[currentEditIndex].status = 'partial';
-                    } else {
-                        history[currentEditIndex].status = 'running';
-                    }
+                    history[currentEditIndex].status = 'running';
                 }
 
                 history[currentEditIndex].tpLevels = item.tpLevels;
