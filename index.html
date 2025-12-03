@@ -2016,13 +2016,13 @@
                     <!-- Header Actions -->
                     <div class="header-actions">
                         <button class="btn-header mexc" id="btnConnectMEXC">
-                             Connect MEXC
+                            🔗 Connect MEXC
                         </button>
                         <button class="btn-header" id="btnViewPortfolio">
-                             View Portfolio
+                            📊 View Portfolio
                         </button>
                         <button class="btn-header" id="btnSyncTrades">
-                             Sync Trades
+                            🔄 Sync Trades
                         </button>
                     </div>
                 </div>
@@ -2042,7 +2042,7 @@
                             <div class="form-group">
                                 <label for="modal">Modal (IDR)</label>
                                 <input type="tel" inputmode="decimal" id="modal" placeholder="5.000.000" required>
-                                <div class="usd-display" id="modalUSD"> $0.00 USD</div>
+                                <div class="usd-display" id="modalUSD">≈ $0.00 USD</div>
                             </div>
                             <div class="form-group">
                                 <label for="riskPercent">Risk (%)</label>
@@ -2082,7 +2082,7 @@
                         <!-- Partial TP Section -->
                         <div class="partial-tp-section" id="partialTPSection">
                             <div class="partial-tp-header">
-                                <h3> Take Profit Levels</h3>
+                                <h3>📊 Take Profit Levels</h3>
                             </div>
                             
                             <!-- Table Style TP Levels -->
@@ -2112,7 +2112,7 @@
                         </div>
 
                         <div class="position-size-info" id="positionSizeInfo" style="display: none;">
-                            <h3> Position Size Recommendation</h3>
+                            <h3>📊 Position Size Recommendation</h3>
                             <div class="position-size-result" id="positionSizeResult"></div>
                         </div>
 
@@ -2122,7 +2122,7 @@
                     <div class="results" id="results">
                         <!-- Partial TP Results -->
                         <div class="partial-tp-results" id="partialTPResults">
-                            <h4> Partial Take Profit Breakdown</h4>
+                            <h4>🎯 Partial Take Profit Breakdown</h4>
                             <div id="partialTPResultsContent"></div>
                         </div>
 
@@ -2165,8 +2165,8 @@
                         </div>
 
                         <div class="btn-group">
-                            <button type="button" class="btn-copy" id="btnCopy"> Copy Results</button>
-                            <button type="button" class="btn-save" id="btnSave"> Save to History</button>
+                            <button type="button" class="btn-copy" id="btnCopy">📋 Copy Results</button>
+                            <button type="button" class="btn-save" id="btnSave">💾 Save to History</button>
                         </div>
                     </div>
                 </div>
@@ -2176,13 +2176,13 @@
                     <div class="calculator-card">
                         <div class="mexc-header">
                             <div class="mexc-title">
-                                <span></span>
+                                <span>📊</span>
                                 <span>MEXC Spot Portfolio</span>
                                 <span class="sync-status" id="mexcSyncStatus"></span>
                             </div>
                             <div class="mexc-actions">
                                 <button class="btn-mexc sync" id="btnSyncPortfolio">
-                                     Refresh
+                                    🔄 Refresh
                                 </button>
                                 <button class="btn-mexc disconnect" id="btnDisconnectMEXC">
                                     Disconnect
@@ -2204,14 +2204,14 @@
             <!-- History View -->
             <div class="history-view">
                 <div class="header">
-                    <h1> Trading History</h1>
+                    <h1>📜 Trading History</h1>
                     <p>Track your trading performance & statistics</p>
                 </div>
 
                 <!-- Performance Summary Card -->
                 <div class="calculator-card">
                     <div class="card-header">
-                        <span></span>
+                        <span>💰</span>
                         <span>Performance Summary</span>
                     </div>
                     <div class="stats-grid" id="performanceStats">
@@ -2244,7 +2244,7 @@
                 <!-- Trading Statistics Card -->
                 <div class="calculator-card">
                     <div class="card-header">
-                        <span></span>
+                        <span>📊</span>
                         <span>Trading Statistics</span>
                     </div>
                     <div class="stats-grid" id="tradingStats">
@@ -2278,20 +2278,20 @@
                     <div class="history-header">
                         <h2>All Trades</h2>
                         <div class="history-actions-group">
-                            <button class="btn-database" id="btnExportDB"> Export DB</button>
-                            <button class="btn-load-db" id="btnImportDB"> Import DB</button>
-                            <button class="btn-clear-history" id="btnClearHistory"> Clear All</button>
+                            <button class="btn-database" id="btnExportDB">💾 Export DB</button>
+                            <button class="btn-load-db" id="btnImportDB">📂 Import DB</button>
+                            <button class="btn-clear-history" id="btnClearHistory">🗑️ Clear All</button>
                         </div>
                     </div>
                     
                     <!-- Filter Buttons -->
                     <div class="history-filters" id="historyFilters">
                         <button class="filter-btn all active" data-filter="all">All (0)</button>
-                        <button class="filter-btn running" data-filter="running"> Running (0)</button>
-                        <button class="filter-btn partial" data-filter="partial"> Partial (0)</button>
-                        <button class="filter-btn hit-tp" data-filter="hit-tp"> Hit TP (0)</button>
-                        <button class="filter-btn hit-sl" data-filter="hit-sl"> Hit SL (0)</button>
-                        <button class="filter-btn break-even" data-filter="break-even"> Break Even (0)</button>
+                        <button class="filter-btn running" data-filter="running">⏳ Running (0)</button>
+                        <button class="filter-btn partial" data-filter="partial">🎯 Partial (0)</button>
+                        <button class="filter-btn hit-tp" data-filter="hit-tp">✅ Hit TP (0)</button>
+                        <button class="filter-btn hit-sl" data-filter="hit-sl">❌ Hit SL (0)</button>
+                        <button class="filter-btn break-even" data-filter="break-even">🔄 Break Even (0)</button>
                     </div>
                     
                     <div class="history-list" id="historyList">
@@ -2306,7 +2306,7 @@
     <div class="mexc-modal" id="mexcModal">
         <div class="mexc-modal-content">
             <h3 style="color: #00d4ff; margin-bottom: 20px;">
-                 Connect MEXC Exchange
+                🔗 Connect MEXC Exchange
             </h3>
             
             <div class="api-tabs">
@@ -2336,22 +2336,22 @@
                 
                 <div class="permission-list">
                     <h4 style="color: #00ff88; margin-bottom: 10px; font-size: 0.9rem;">
-                         Permissions Required (Spot):
+                        ✅ Permissions Required (Spot):
                     </h4>
                     <div class="permission-item">
-                        <span class="permission-icon"></span>
+                        <span class="permission-icon">✓</span>
                         <span class="permission-text">View Account Details</span>
                     </div>
                     <div class="permission-item">
-                        <span class="permission-icon"></span>
+                        <span class="permission-icon">✓</span>
                         <span class="permission-text">View Order Details & Trade</span>
                     </div>
                     <div class="permission-item">
-                        <span class="permission-icon"></span>
+                        <span class="permission-icon">✓</span>
                         <span class="permission-text">View Deposit/Withdrawal</span>
                     </div>
                     <div class="permission-item">
-                        <span class="permission-icon"></span>
+                        <span class="permission-icon">✓</span>
                         <span class="permission-text">Read Transfer Information</span>
                     </div>
                 </div>
@@ -2399,7 +2399,7 @@
     <div class="import-modal" id="importModal">
         <div class="import-modal-content">
             <h3 style="color: #00d4ff; margin-bottom: 20px;">
-                 Import Trades from MEXC
+                📥 Import Trades from MEXC
             </h3>
             <p style="color: #8b92b8; margin-bottom: 20px; font-size: 0.9rem;">
                 Select trades to import into your history. Only trades without SL/TP orders will be shown.
@@ -2424,7 +2424,7 @@
     <div class="mexc-order-modal" id="mexcOrderModal">
         <div class="mexc-order-content">
             <h3 style="color: #00d4ff; margin-bottom: 20px;">
-                 Place Order on MEXC
+                📤 Place Order on MEXC
             </h3>
             
             <div id="orderFormContainer">
@@ -2472,7 +2472,7 @@
     <!-- View Toggle Button -->
     <div class="view-toggle">
         <button class="btn-toggle-view" id="btnToggleView">
-            <span id="toggleIcon"></span>
+            <span id="toggleIcon">📜</span>
             <span id="toggleText">View History</span>
         </button>
     </div>
@@ -2546,7 +2546,7 @@
                     </td>
                     <td class="tp-action">
                         ${tpLevels.length > 2 ? `
-                            <button type="button" class="btn-remove-tp" data-index="${index}"></button>
+                            <button type="button" class="btn-remove-tp" data-index="${index}">🗑️</button>
                         ` : ''}
                     </td>
                 `;
@@ -2594,7 +2594,7 @@
         // Add TP Level
         function addTPLevel() {
             if (tpLevels.length >= 5) {
-                showToast(' Maximum 5 TP levels!');
+                showToast('⚠️ Maximum 5 TP levels!');
                 return;
             }
 
@@ -2606,7 +2606,7 @@
         // Remove TP Level
         function removeTPLevel(index) {
             if (tpLevels.length <= 2) {
-                showToast(' Minimum 2 TP levels!');
+                showToast('⚠️ Minimum 2 TP levels!');
                 return;
             }
 
@@ -2762,7 +2762,7 @@
             const modalIDR = parseNumber(document.getElementById('modal').value || '0');
             if (currentKurs > 0 && modalIDR > 0) {
                 const modalUSD = modalIDR / currentKurs;
-                document.getElementById('modalUSD').textContent = ` $${modalUSD.toFixed(2)} USD`;
+                document.getElementById('modalUSD').textContent = `≈ $${modalUSD.toFixed(2)} USD`;
             }
         }
 
@@ -2825,14 +2825,14 @@
                 // Validate percentages
                 const totalPercentage = tpLevels.reduce((sum, tp) => sum + tp.percentage, 0);
                 if (totalPercentage !== 100) {
-                    showToast(' Total percentage must be 100%!');
+                    showToast('⚠️ Total percentage must be 100%!');
                     return;
                 }
 
                 // Validate all TP prices filled
                 const allFilled = tpLevels.every(tp => tp.price && parseNumber(tp.price.replace(',', '.')) > 0);
                 if (!allFilled) {
-                    showToast(' Please fill all TP prices!');
+                    showToast('⚠️ Please fill all TP prices!');
                     return;
                 }
 
@@ -3004,37 +3004,37 @@
             if (!lastCalculation) return;
 
             let text = `
- TP/SL Calculator Results
+🎯 TP/SL Calculator Results
 
- Pair: ${lastCalculation.pair.toUpperCase()}
- Modal: ${formatRupiah(lastCalculation.modalIDR)}
- Entry: $${lastCalculation.entry}
+📊 Pair: ${lastCalculation.pair.toUpperCase()}
+💰 Modal: ${formatRupiah(lastCalculation.modalIDR)}
+📈 Entry: $${lastCalculation.entry}
 `;
 
             if (lastCalculation.usePartialTP) {
-                text += `\n Partial Take Profit:\n`;
+                text += `\n🎯 Partial Take Profit:\n`;
                 lastCalculation.tpLevels.forEach((tp, index) => {
                     text += `   TP${index + 1}: $${tp.price.toFixed(2)} (${tp.percentage}%) - Profit: ${formatRupiah(tp.profit)}\n`;
                 });
-                text += `\n Total Profit if all TP hit: ${formatRupiah(lastCalculation.profit)}`;
+                text += `\n✅ Total Profit if all TP hit: ${formatRupiah(lastCalculation.profit)}`;
             } else {
-                text += ` TP: $${lastCalculation.tp} (+${lastCalculation.tpPercent.toFixed(2)}%)`;
-                text += `\n Profit Potensial: ${formatRupiah(lastCalculation.profit)}`;
+                text += `🎯 TP: $${lastCalculation.tp} (+${lastCalculation.tpPercent.toFixed(2)}%)`;
+                text += `\n✅ Profit Potensial: ${formatRupiah(lastCalculation.profit)}`;
             }
 
             if (lastCalculation.slInProfit) {
-                text += `\n SL: $${lastCalculation.sl} (+${lastCalculation.slPercent.toFixed(2)}%) - In Profit Zone`;
-                text += `\n Min Profit (SL): ${formatRupiah(lastCalculation.loss)}`;
+                text += `\n🛑 SL: $${lastCalculation.sl} (+${lastCalculation.slPercent.toFixed(2)}%) - In Profit Zone`;
+                text += `\n✅ Min Profit (SL): ${formatRupiah(lastCalculation.loss)}`;
             } else {
-                text += `\n SL: $${lastCalculation.sl} (${lastCalculation.slPercent.toFixed(2)}%)`;
-                text += `\n Loss Potensial: ${formatRupiah(lastCalculation.loss)}`;
+                text += `\n🛑 SL: $${lastCalculation.sl} (${lastCalculation.slPercent.toFixed(2)}%)`;
+                text += `\n❌ Loss Potensial: ${formatRupiah(lastCalculation.loss)}`;
             }
 
-            text += `\n Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}`;
+            text += `\n⚖️ Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}`;
             text += `\n\nGenerated by TP/SL Calculator by RIFQI`;
 
             navigator.clipboard.writeText(text.trim()).then(() => {
-                showToast(' Results copied to clipboard!');
+                showToast('✅ Results copied to clipboard!');
             });
         }
 
@@ -3053,7 +3053,7 @@
 
             localStorage.setItem('tpslHistory', JSON.stringify(history));
             updateStats();
-            showToast(' Saved to history!');
+            showToast('💾 Saved to history!');
         }
 
         // ============================================
@@ -3071,11 +3071,11 @@
             const breakEvenCount = history.filter(t => t.status === 'break-even').length;
             
             document.querySelector('.filter-btn.all').textContent = `All (${allCount})`;
-            document.querySelector('.filter-btn.running').textContent = ` Running (${runningCount})`;
-            document.querySelector('.filter-btn.partial').textContent = ` Partial (${partialCount})`;
-            document.querySelector('.filter-btn.hit-tp').textContent = ` Hit TP (${hitTpCount})`;
-            document.querySelector('.filter-btn.hit-sl').textContent = ` Hit SL (${hitSlCount})`;
-            document.querySelector('.filter-btn.break-even').textContent = ` Break Even (${breakEvenCount})`;
+            document.querySelector('.filter-btn.running').textContent = `⏳ Running (${runningCount})`;
+            document.querySelector('.filter-btn.partial').textContent = `🎯 Partial (${partialCount})`;
+            document.querySelector('.filter-btn.hit-tp').textContent = `✅ Hit TP (${hitTpCount})`;
+            document.querySelector('.filter-btn.hit-sl').textContent = `❌ Hit SL (${hitSlCount})`;
+            document.querySelector('.filter-btn.break-even').textContent = `🔄 Break Even (${breakEvenCount})`;
         }
 
         function applyFilter(filter) {
@@ -3124,11 +3124,11 @@
 
                 const status = item.status || 'running';
                 const statusEmoji = {
-                    'running': '',
-                    'partial': '',
-                    'hit-tp': '',
-                    'hit-sl': '',
-                    'break-even': ''
+                    'running': '⏳',
+                    'partial': '🎯',
+                    'hit-tp': '✅',
+                    'hit-sl': '❌',
+                    'break-even': '🔄'
                 };
                 const statusText = {
                     'running': 'Running',
@@ -3167,9 +3167,9 @@
                 let detailsText = '';
                 if (item.usePartialTP) {
                     const tpPrices = item.tpLevels.map(tp => `$${tp.price}`).join(', ');
-                    detailsText = `Entry: $${item.entry}  TPs: ${tpPrices} | SL: $${item.sl}`;
+                    detailsText = `Entry: $${item.entry} → TPs: ${tpPrices} | SL: $${item.sl}`;
                 } else {
-                    detailsText = `Entry: $${item.entry}  TP: $${item.tp} | SL: $${item.sl}`;
+                    detailsText = `Entry: $${item.entry} → TP: $${item.tp} | SL: $${item.sl}`;
                 }
 
                 const div = document.createElement('div');
@@ -3230,7 +3230,7 @@
             updatePositionSize();
 
             toggleView();
-            showToast(' Calculation loaded!');
+            showToast('📥 Calculation loaded!');
         }
 
         function openEditModal(index) {
@@ -3357,7 +3357,7 @@
                 // Validate percentages
                 const totalPercentage = editedTPLevels.reduce((sum, tp) => sum + tp.percentage, 0);
                 if (totalPercentage !== 100) {
-                    showToast(' Total percentage must be 100%!');
+                    showToast('⚠️ Total percentage must be 100%!');
                     return;
                 }
 
@@ -3458,7 +3458,7 @@
             loadHistory();
             updateStats();
             closeEditModal();
-            showToast(' Trade updated successfully!');
+            showToast('✅ Trade updated successfully!');
         }
 
         function deleteHistory(index) {
@@ -3468,7 +3468,7 @@
             loadHistory();
             updateStats();
             updateFilterCounts();
-            showToast(' Deleted from history!');
+            showToast('🗑️ Deleted from history!');
         }
 
         function clearHistory() {
@@ -3477,7 +3477,7 @@
                 loadHistory();
                 updateStats();
                 updateFilterCounts();
-                showToast(' All history cleared!');
+                showToast('🗑️ All history cleared!');
             }
         }
 
@@ -3495,7 +3495,7 @@
                 calcView.classList.remove('active');
                 histView.classList.add('active');
                 currentView = 'history';
-                toggleIcon.textContent = '';
+                toggleIcon.textContent = '🧮';
                 toggleText.textContent = 'Back to Calculator';
                 loadHistory();
                 updateStats();
@@ -3504,7 +3504,7 @@
                 histView.classList.remove('active');
                 calcView.classList.add('active');
                 currentView = 'calculator';
-                toggleIcon.textContent = '';
+                toggleIcon.textContent = '📜';
                 toggleText.textContent = 'View History';
             }
 
@@ -3640,16 +3640,16 @@
                 statusModalContent.innerHTML = `
                     <div class="status-options">
                         <div class="status-option running ${currentStatus === 'running' ? 'selected' : ''}" data-status="running">
-                             Running
+                            ⏳ Running
                         </div>
                         <div class="status-option hit-tp ${currentStatus === 'hit-tp' ? 'selected' : ''}" data-status="hit-tp">
-                             Hit TP
+                            ✅ Hit TP
                         </div>
                         <div class="status-option hit-sl ${currentStatus === 'hit-sl' ? 'selected' : ''}" data-status="hit-sl">
-                             Hit SL
+                            ❌ Hit SL
                         </div>
                         <div class="status-option break-even ${currentStatus === 'break-even' ? 'selected' : ''}" data-status="break-even">
-                             Break Even
+                            🔄 Break Even
                         </div>
                     </div>
                 `;
@@ -3727,7 +3727,7 @@
                 'break-even': 'Break Even'
             };
             
-            showToast(` Status updated to ${statusText[history[currentEditIndex].status]}!`);
+            showToast(`✅ Status updated to ${statusText[history[currentEditIndex].status]}!`);
         }
 
         // ============================================
@@ -3755,14 +3755,14 @@
             balanceValue = balanceValue.replace(/\./g, '');
             
             if (isNaN(balanceValue) || balanceValue.trim() === '') {
-                showToast(' Please enter a valid number!');
+                showToast('❌ Please enter a valid number!');
                 return;
             }
             
             const balanceNum = parseFloat(balanceValue);
             
             if (balanceNum < 0) {
-                showToast(' Balance cannot be negative!');
+                showToast('❌ Balance cannot be negative!');
                 return;
             }
             
@@ -3770,7 +3770,7 @@
             loadInitialBalance();
             updateStats();
             closeBalanceModal();
-            showToast(' Initial balance saved!');
+            showToast('✅ Initial balance saved!');
         }
 
         function calculateCurrentBalance() {
@@ -3949,7 +3949,7 @@
             const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
             
             if (history.length === 0) {
-                showToast(' No data to export!');
+                showToast('⚠️ No data to export!');
                 return;
             }
 
@@ -3966,7 +3966,7 @@
             link.click();
             document.body.removeChild(link);
             
-            showToast(' Database exported successfully!');
+            showToast('💾 Database exported successfully!');
         }
 
         function importFromJSON(file) {
@@ -3977,7 +3977,7 @@
                     const importedData = JSON.parse(e.target.result);
                     
                     if (!Array.isArray(importedData)) {
-                        showToast(' Invalid database format!');
+                        showToast('❌ Invalid database format!');
                         return;
                     }
                     
@@ -3989,7 +3989,7 @@
                     );
                     
                     if (!isValid) {
-                        showToast(' Invalid data in database file!');
+                        showToast('❌ Invalid data in database file!');
                         return;
                     }
                     
@@ -3998,11 +3998,11 @@
                         loadHistory();
                         updateStats();
                         updateFilterCounts();
-                        showToast(` Successfully imported ${importedData.length} trades!`);
+                        showToast(`✅ Successfully imported ${importedData.length} trades!`);
                     }
                 } catch (error) {
                     console.error('Import error:', error);
-                    showToast(' Error importing database!');
+                    showToast('❌ Error importing database!');
                 }
             };
             
@@ -4133,85 +4133,69 @@
         // ============================================
 
         async function callMEXCAPI(endpoint, params = {}, method = 'GET') {
-    if (!mexcAPI.key || !mexcAPI.secret) {
-        throw new Error('MEXC API not configured');
-    }
+            if (!mexcAPI.key || !mexcAPI.secret) {
+                throw new Error('MEXC API not configured');
+            }
 
-    const baseURL = 'https://api.mexc.com';
-    const timestamp = Date.now();
-    const recvWindow = 5000;
-    
-    // Prepare signature parameters
-    const signatureParams = {
-        ...params,
-        timestamp,
-        recvWindow
-    };
-    
-    // Sort parameters alphabetically for signature
-    const signatureString = Object.keys(signatureParams)
-        .sort()
-        .map(key => `${key}=${signatureParams[key]}`)
-        .join('&');
-    
-    const signature = CryptoJS.HmacSHA256(signatureString, mexcAPI.secret).toString();
-    
-    // Build query string for GET requests
-    let queryString = '';
-    if (method === 'GET' && Object.keys(params).length > 0) {
-        queryString = '?' + new URLSearchParams(params).toString();
-    }
-    
-    // Construct full endpoint with signature
-    let fullEndpoint = endpoint + queryString;
-    if (queryString) {
-        fullEndpoint += `&timestamp=${timestamp}&signature=${signature}`;
-    } else {
-        fullEndpoint += `?timestamp=${timestamp}&signature=${signature}`;
-    }
-    
-    const headers = {
-        'X-MEXC-APIKEY': mexcAPI.key,
-        'Content-Type': 'application/json'
-    };
+            const baseURL = 'https://api.mexc.com';
+            const timestamp = Date.now();
+            
+            // Prepare query string for GET requests
+            let queryString = '';
+            if (method === 'GET' && Object.keys(params).length > 0) {
+                queryString = '?' + new URLSearchParams(params).toString();
+            }
 
-    const requestOptions = {
-        method,
-        headers,
-        mode: 'cors',
-        credentials: 'omit'
-    };
+            // Generate signature for MEXC
+            const signatureParams = {
+                ...params,
+                timestamp,
+                recvWindow: 5000
+            };
+            
+            const signatureString = Object.keys(signatureParams)
+                .sort()
+                .map(key => `${key}=${signatureParams[key]}`)
+                .join('&');
+                
+            const signature = CryptoJS.HmacSHA256(signatureString, mexcAPI.secret).toString();
 
-    // For POST requests, send body
-    if (method === 'POST') {
-        requestOptions.body = JSON.stringify({
-            ...params,
-            timestamp,
-            recvWindow,
-            signature
-        });
-    }
+            const headers = {
+                'X-MEXC-APIKEY': mexcAPI.key,
+                'Content-Type': 'application/json'
+            };
 
-    try {
-        const response = await fetch(`${baseURL}${fullEndpoint}`, requestOptions);
-        
-        if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(`MEXC API Error ${response.status}: ${errorText}`);
+            const requestOptions = {
+                method,
+                headers,
+                signal: AbortSignal.timeout(10000) // 10 second timeout
+            };
+
+            if (method === 'POST') {
+                requestOptions.body = JSON.stringify({
+                    ...signatureParams,
+                    signature
+                });
+            } else {
+                // For GET requests, add signature to query string
+                endpoint += queryString + (queryString ? '&' : '?') + 
+                           `timestamp=${timestamp}&signature=${signature}`;
+            }
+
+            try {
+                const response = await fetch(`${baseURL}${endpoint}`, requestOptions);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`MEXC API Error: ${response.status} - ${errorText}`);
+                }
+                
+                return await response.json();
+            } catch (error) {
+                console.error('MEXC API call failed:', error);
+                throw error;
+            }
         }
-        
-        return await response.json();
-    } catch (error) {
-        console.error('MEXC API call failed:', error);
-        
-        // Provide more specific error messages
-        if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
-            throw new Error('CORS/Network Error: Please check your API permissions or try disabling browser CORS restrictions. MEXC API requires CORS-enabled requests.');
-        }
-        
-        throw error;
-    }
-}
 
         async function testMEXCConnection() {
             const apiKey = document.getElementById('apiKey').value.trim();
@@ -4219,12 +4203,12 @@
             const password = document.getElementById('encryptionPassword').value.trim();
 
             if (!apiKey || !apiSecret) {
-                showToast(' Please enter API Key and Secret');
+                showToast('⚠️ Please enter API Key and Secret');
                 return;
             }
 
             if (!password) {
-                showToast(' Please enter encryption password');
+                showToast('⚠️ Please enter encryption password');
                 return;
             }
 
@@ -4254,7 +4238,7 @@
 
                 if (accountInfo && accountInfo.balances) {
                     testResult.classList.add('success');
-                    resultText.textContent = ' Connection successful!';
+                    resultText.textContent = '✅ Connection successful!';
                     
                     // Show sample balance
                     const usdtBalance = accountInfo.balances.find(b => b.asset === 'USDT');
@@ -4272,13 +4256,13 @@
                         balanceInfo.textContent = `Balances: ${balanceText}`;
                     }
                     
-                    showToast(' MEXC connection test successful!');
+                    showToast('✅ MEXC connection test successful!');
                 } else {
                     throw new Error('Invalid response from MEXC API');
                 }
             } catch (error) {
                 testResult.classList.add('error');
-                resultText.textContent = ` Connection failed: ${error.message}`;
+                resultText.textContent = `❌ Connection failed: ${error.message}`;
                 console.error('Connection test error:', error);
             }
         }
@@ -4289,7 +4273,7 @@
             const password = document.getElementById('encryptionPassword').value.trim();
 
             if (!apiKey || !apiSecret || !password) {
-                showToast(' Please fill all fields');
+                showToast('⚠️ Please fill all fields');
                 return;
             }
 
@@ -4318,14 +4302,14 @@
                 await loadMEXCPortfolio();
                 
                 closeMEXCModal();
-                showToast(' MEXC API connected successfully!');
+                showToast('✅ MEXC API connected successfully!');
                 
                 // Show portfolio panel
                 mexcPanel.classList.add('active');
                 
             } catch (error) {
                 console.error('Save API error:', error);
-                showToast(' Failed to save API keys');
+                showToast('❌ Failed to save API keys');
             }
         }
 
@@ -4347,7 +4331,7 @@
                 const enteredHash = CryptoJS.SHA256(password).toString();
                 
                 if (savedHash !== enteredHash) {
-                    showToast(' Wrong password!');
+                    showToast('❌ Wrong password!');
                     return false;
                 }
 
@@ -4385,7 +4369,7 @@
                 }
             }
 
-            mexcSyncStatus.textContent = ' Syncing...';
+            mexcSyncStatus.textContent = '🔄 Syncing...';
             portfolioContainer.innerHTML = `
                 <div class="portfolio-loading">
                     <div class="loading-spinner"></div>
@@ -4415,12 +4399,12 @@
                 if (nonZeroBalances.length === 0) {
                     portfolioContainer.innerHTML = `
                         <div class="portfolio-empty">
-                            <div class="empty-icon"></div>
+                            <div class="empty-icon">📭</div>
                             <div class="empty-text">No spot holdings found</div>
                             <div class="empty-subtext">You don't have any non-stablecoin assets in your MEXC spot wallet</div>
                         </div>
                     `;
-                    mexcSyncStatus.textContent = ' Synced';
+                    mexcSyncStatus.textContent = '✅ Synced';
                     return;
                 }
 
@@ -4510,7 +4494,7 @@
                 if (validPortfolioHTML.length === 0) {
                     portfolioContainer.innerHTML = `
                         <div class="portfolio-empty">
-                            <div class="empty-icon"></div>
+                            <div class="empty-icon">📭</div>
                             <div class="empty-text">No valid portfolio data</div>
                             <div class="empty-subtext">Could not fetch price data for your holdings</div>
                         </div>
@@ -4538,20 +4522,20 @@
                     `;
                 }
 
-                mexcSyncStatus.textContent = ' Synced';
-                showToast(' Portfolio loaded successfully!');
+                mexcSyncStatus.textContent = '✅ Synced';
+                showToast('✅ Portfolio loaded successfully!');
 
             } catch (error) {
                 console.error('Load portfolio error:', error);
                 portfolioContainer.innerHTML = `
                     <div class="portfolio-empty">
-                        <div class="empty-icon"></div>
+                        <div class="empty-icon">⚠️</div>
                         <div class="empty-text">Failed to load portfolio</div>
                         <div class="empty-subtext">${error.message}</div>
                     </div>
                 `;
-                mexcSyncStatus.textContent = ' Sync failed';
-                showToast(' Failed to load portfolio');
+                mexcSyncStatus.textContent = '❌ Sync failed';
+                showToast('❌ Failed to load portfolio');
             }
         }
 
@@ -4634,7 +4618,7 @@
                 const allTrades = await callMEXCAPI('/api/v3/myTrades', { limit: 50 });
                 
                 if (!allTrades || allTrades.length === 0) {
-                    showToast(' No recent trades found');
+                    showToast('📭 No recent trades found');
                     return;
                 }
 
@@ -4684,7 +4668,7 @@
                 }
 
                 if (tradeSummaries.length === 0) {
-                    showToast(' No open positions found');
+                    showToast('📭 No open positions found');
                     return;
                 }
 
@@ -4693,7 +4677,7 @@
                 
             } catch (error) {
                 console.error('Fetch open trades error:', error);
-                showToast(' Failed to fetch trades');
+                showToast('❌ Failed to fetch trades');
             }
         }
 
@@ -4756,7 +4740,7 @@
             const checkboxes = document.querySelectorAll('#importTradesList input[type="checkbox"]:checked');
             
             if (checkboxes.length === 0) {
-                showToast(' Please select at least one trade to import');
+                showToast('⚠️ Please select at least one trade to import');
                 return;
             }
 
@@ -4790,7 +4774,7 @@
             updateFilterCounts();
             
             closeImportModal();
-            showToast(` Imported ${tradesToImport.length} trades from MEXC!`);
+            showToast(`✅ Imported ${tradesToImport.length} trades from MEXC!`);
         }
 
         // ============================================
@@ -4824,7 +4808,7 @@
             document.getElementById('riskPercent').value = '2';
             updatePositionSize();
             
-            showToast(` Calculator filled for ${asset}/USDT`);
+            showToast(`📝 Calculator filled for ${asset}/USDT`);
         }
 
         function importTrade(asset, currentPrice, quantity, avgPrice) {
@@ -4849,7 +4833,7 @@
             updateStats();
             updateFilterCounts();
             
-            showToast(` ${asset}/USDT imported to history!`);
+            showToast(`✅ ${asset}/USDT imported to history!`);
         }
 
         // ============================================
@@ -4903,7 +4887,7 @@
                 // Hide portfolio panel
                 mexcPanel.classList.remove('active');
                 
-                showToast(' MEXC disconnected successfully');
+                showToast('🔒 MEXC disconnected successfully');
             }
         }
 
