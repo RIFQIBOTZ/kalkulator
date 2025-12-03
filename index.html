@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://api.mexc.com https://cdnjs.cloudflare.com;">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TP/SL Profit Calculator by RIFQI</title>
@@ -4134,69 +4133,85 @@
         // ============================================
 
         async function callMEXCAPI(endpoint, params = {}, method = 'GET') {
-            if (!mexcAPI.key || !mexcAPI.secret) {
-                throw new Error('MEXC API not configured');
-            }
+    if (!mexcAPI.key || !mexcAPI.secret) {
+        throw new Error('MEXC API not configured');
+    }
 
-            const baseURL = 'https://api.mexc.com';
-            const timestamp = Date.now();
-            
-            // Prepare query string for GET requests
-            let queryString = '';
-            if (method === 'GET' && Object.keys(params).length > 0) {
-                queryString = '?' + new URLSearchParams(params).toString();
-            }
+    const baseURL = 'https://api.mexc.com';
+    const timestamp = Date.now();
+    const recvWindow = 5000;
+    
+    // Prepare signature parameters
+    const signatureParams = {
+        ...params,
+        timestamp,
+        recvWindow
+    };
+    
+    // Sort parameters alphabetically for signature
+    const signatureString = Object.keys(signatureParams)
+        .sort()
+        .map(key => `${key}=${signatureParams[key]}`)
+        .join('&');
+    
+    const signature = CryptoJS.HmacSHA256(signatureString, mexcAPI.secret).toString();
+    
+    // Build query string for GET requests
+    let queryString = '';
+    if (method === 'GET' && Object.keys(params).length > 0) {
+        queryString = '?' + new URLSearchParams(params).toString();
+    }
+    
+    // Construct full endpoint with signature
+    let fullEndpoint = endpoint + queryString;
+    if (queryString) {
+        fullEndpoint += `&timestamp=${timestamp}&signature=${signature}`;
+    } else {
+        fullEndpoint += `?timestamp=${timestamp}&signature=${signature}`;
+    }
+    
+    const headers = {
+        'X-MEXC-APIKEY': mexcAPI.key,
+        'Content-Type': 'application/json'
+    };
 
-            // Generate signature for MEXC
-            const signatureParams = {
-                ...params,
-                timestamp,
-                recvWindow: 5000
-            };
-            
-            const signatureString = Object.keys(signatureParams)
-                .sort()
-                .map(key => `${key}=${signatureParams[key]}`)
-                .join('&');
-                
-            const signature = CryptoJS.HmacSHA256(signatureString, mexcAPI.secret).toString();
+    const requestOptions = {
+        method,
+        headers,
+        mode: 'cors',
+        credentials: 'omit'
+    };
 
-            const headers = {
-                'X-MEXC-APIKEY': mexcAPI.key,
-                'Content-Type': 'application/json'
-            };
+    // For POST requests, send body
+    if (method === 'POST') {
+        requestOptions.body = JSON.stringify({
+            ...params,
+            timestamp,
+            recvWindow,
+            signature
+        });
+    }
 
-            const requestOptions = {
-                method,
-                headers,
-                signal: AbortSignal.timeout(10000) // 10 second timeout
-            };
-
-            if (method === 'POST') {
-                requestOptions.body = JSON.stringify({
-                    ...signatureParams,
-                    signature
-                });
-            } else {
-                // For GET requests, add signature to query string
-                endpoint += queryString + (queryString ? '&' : '?') + 
-                           `timestamp=${timestamp}&signature=${signature}`;
-            }
-
-            try {
-                const response = await fetch(`${baseURL}${endpoint}`, requestOptions);
-                
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    throw new Error(`MEXC API Error: ${response.status} - ${errorText}`);
-                }
-                
-                return await response.json();
-            } catch (error) {
-                console.error('MEXC API call failed:', error);
-                throw error;
-            }
+    try {
+        const response = await fetch(`${baseURL}${fullEndpoint}`, requestOptions);
+        
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`MEXC API Error ${response.status}: ${errorText}`);
         }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('MEXC API call failed:', error);
+        
+        // Provide more specific error messages
+        if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+            throw new Error('CORS/Network Error: Please check your API permissions or try disabling browser CORS restrictions. MEXC API requires CORS-enabled requests.');
+        }
+        
+        throw error;
+    }
+}
 
         async function testMEXCConnection() {
             const apiKey = document.getElementById('apiKey').value.trim();
