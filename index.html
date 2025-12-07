@@ -441,27 +441,82 @@
             color: #ff3366;
         }
 
+        /* Position Size Card Redesign */
         .position-size-info {
-            background: rgba(123, 47, 247, 0.1);
-            border: 1px solid rgba(123, 47, 247, 0.3);
-            border-radius: 10px;
-            padding: 15px;
+            background: linear-gradient(145deg, rgba(75, 0, 130, 0.15), rgba(0, 100, 200, 0.15));
+            border: 2px solid rgba(100, 149, 237, 0.4);
+            border-radius: 16px;
+            padding: 20px;
             margin-top: 20px;
             margin-bottom: 20px;
+            display: none;
         }
 
-        .position-size-info h3 {
+        /* Header */
+        .pos-size-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .pos-size-icon {
+            font-size: 1.2rem;
+        }
+
+        .pos-size-header h3 {
             font-size: 0.9rem;
-            color: #7b2ff7;
-            margin-bottom: 10px;
+            color: #6495ED;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Grid Layout */
+        .pos-size-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        /* Individual Cards */
+        .pos-size-card {
+            background: rgba(20, 25, 45, 0.8);
+            border: 1px solid rgba(100, 149, 237, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .pos-size-card:hover {
+            border-color: rgba(100, 149, 237, 0.6);
+            box-shadow: 0 4px 20px rgba(100, 149, 237, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .pos-card-label {
+            font-size: 0.7rem;
+            color: #8b92b8;
             text-transform: uppercase;
             letter-spacing: 1px;
+            margin-bottom: 8px;
         }
 
-        .position-size-result {
-            font-size: 1.1rem;
-            color: #00d4ff;
-            font-weight: 600;
+        .pos-card-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #6495ED, #4B0082);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .pos-card-subtitle {
+            font-size: 0.75rem;
+            color: #8b92b8;
         }
 
         .btn-group {
@@ -625,6 +680,125 @@
         .tp-result-value {
             color: #00ff88;
             font-weight: 600;
+        }
+
+        /* Balance Projection Section */
+        .balance-projection {
+            background: rgba(100, 149, 237, 0.08);
+            border: 1px solid rgba(100, 149, 237, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Header */
+        .balance-proj-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .balance-proj-icon {
+            font-size: 1.2rem;
+        }
+
+        .balance-proj-header h3 {
+            font-size: 0.9rem;
+            color: #6495ED;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Grid Layout */
+        .balance-proj-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        /* Individual Cards */
+        .balance-proj-card {
+            background: rgba(13, 16, 37, 0.6);
+            border: 1px solid rgba(100, 149, 237, 0.2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .balance-proj-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(100, 149, 237, 0.3);
+        }
+
+        /* Color Coding per Card */
+        .balance-proj-card.capital {
+            border-left: 3px solid #6495ED;
+        }
+
+        .balance-proj-card.if-tp {
+            border-left: 3px solid #00ff88;
+        }
+
+        .balance-proj-card.if-tp:hover {
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .balance-proj-card.if-sl {
+            border-left: 3px solid #ff3366;
+        }
+
+        .balance-proj-card.if-sl:hover {
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.2);
+        }
+
+        .balance-proj-card.if-be {
+            border-left: 3px solid #ffd700;
+        }
+
+        .balance-proj-card.if-be:hover {
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Text Styling */
+        .balance-proj-label {
+            font-size: 0.7rem;
+            color: #8b92b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .balance-proj-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .balance-proj-card.capital .balance-proj-value {
+            color: #6495ED;
+        }
+
+        .balance-proj-card.if-tp .balance-proj-value {
+            color: #00ff88;
+        }
+
+        .balance-proj-card.if-sl .balance-proj-value {
+            color: #ff3366;
+        }
+
+        .balance-proj-card.if-be .balance-proj-value {
+            color: #ffd700;
+        }
+
+        .balance-proj-subtitle {
+            font-size: 0.75rem;
+            color: #8b92b8;
         }
 
         .view-toggle {
@@ -1499,6 +1673,24 @@
                 padding: 15px;
             }
 
+            .pos-size-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .pos-card-value {
+                font-size: 1.5rem;
+            }
+
+            .balance-proj-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .balance-proj-value {
+                font-size: 1.3rem;
+            }
+
             .history-item {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1697,9 +1889,38 @@
                             </div>
                         </div>
 
-                        <div class="position-size-info" id="positionSizeInfo" style="display: none;">
-                            <h3>📊 Position Size Recommendation</h3>
-                            <div class="position-size-result" id="positionSizeResult"></div>
+                        <!-- NEW: Position Size Card Redesign -->
+                        <div class="position-size-info" id="positionSizeInfo">
+                            <div class="pos-size-header">
+                                <span class="pos-size-icon">📊</span>
+                                <h3>POSITION SIZE RECOMMENDATION</h3>
+                            </div>
+                            
+                            <div class="pos-size-grid">
+                                <div class="pos-size-card">
+                                    <div class="pos-card-label">Max Entry</div>
+                                    <div class="pos-card-value" id="posMaxEntry">5x</div>
+                                    <div class="pos-card-subtitle">trades</div>
+                                </div>
+                                
+                                <div class="pos-size-card">
+                                    <div class="pos-card-label">Position Value</div>
+                                    <div class="pos-card-value" id="posValue">$0.00</div>
+                                    <div class="pos-card-subtitle">per trade</div>
+                                </div>
+                                
+                                <div class="pos-size-card">
+                                    <div class="pos-card-label">Position Size</div>
+                                    <div class="pos-card-value" id="posSize">0.000000</div>
+                                    <div class="pos-card-subtitle">coins</div>
+                                </div>
+                                
+                                <div class="pos-size-card">
+                                    <div class="pos-card-label">Actual Risk</div>
+                                    <div class="pos-card-value" id="posRisk">0.00%</div>
+                                    <div class="pos-card-subtitle" id="posRiskIDR">Rp 0</div>
+                                </div>
+                            </div>
                         </div>
 
                         <button type="submit" class="btn-calculate">Hitung Sekarang</button>
@@ -1747,6 +1968,40 @@
                                 <div class="result-label">Trading Pair</div>
                                 <div class="result-value" id="pairDisplay" style="font-size: 1.2rem;">-</div>
                                 <div class="result-subtitle">Market</div>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Balance Projection -->
+                        <div class="balance-projection" id="balanceProjection">
+                            <div class="balance-proj-header">
+                                <span class="balance-proj-icon">💼</span>
+                                <h3>BALANCE PROJECTION</h3>
+                            </div>
+                            
+                            <div class="balance-proj-grid">
+                                <div class="balance-proj-card capital">
+                                    <div class="balance-proj-label">Capital Used</div>
+                                    <div class="balance-proj-value" id="capitalUsed">Rp 0</div>
+                                    <div class="balance-proj-subtitle" id="capitalPercent">0%</div>
+                                </div>
+                                
+                                <div class="balance-proj-card if-tp">
+                                    <div class="balance-proj-label">If TP Hit</div>
+                                    <div class="balance-proj-value" id="balanceIfTP">Rp 0</div>
+                                    <div class="balance-proj-subtitle" id="balanceTPChange">+0%</div>
+                                </div>
+                                
+                                <div class="balance-proj-card if-sl">
+                                    <div class="balance-proj-label">If SL Hit</div>
+                                    <div class="balance-proj-value" id="balanceIfSL">Rp 0</div>
+                                    <div class="balance-proj-subtitle" id="balanceSLChange">-0%</div>
+                                </div>
+                                
+                                <div class="balance-proj-card if-be">
+                                    <div class="balance-proj-label">If Break Even</div>
+                                    <div class="balance-proj-value" id="balanceIfBE">Rp 0</div>
+                                    <div class="balance-proj-subtitle">±0.00%</div>
+                                </div>
                             </div>
                         </div>
 
@@ -1981,6 +2236,7 @@
                     const index = parseInt(this.dataset.index);
                     tpLevels[index].price = this.value;
                     autoFormatInput({ target: this });
+                    triggerAutoCalculateIfValid();
                 });
             });
 
@@ -1993,6 +2249,7 @@
                     this.value = value;
                     tpLevels[index].percentage = value;
                     updatePercentageTotal();
+                    triggerAutoCalculateIfValid();
                 });
             });
 
@@ -2077,6 +2334,8 @@
                 document.getElementById('sl').setAttribute('required', 'required');
                 document.getElementById('slPartial').removeAttribute('required');
             }
+            
+            triggerAutoCalculateIfValid();
         });
 
         // Add TP Button
@@ -2159,6 +2418,31 @@
             }
 
             updatePositionSize();
+            triggerAutoCalculateIfValid();
+        }
+
+        // Helper function to check if form is valid
+        function isFormValid() {
+            const pair = document.getElementById('pair').value;
+            const entry = document.getElementById('entry').value;
+            
+            if (usePartialTP) {
+                const sl = document.getElementById('slPartial').value;
+                const allTPFilled = tpLevels.every(tp => tp.price && parseNumber(tp.price.replace(',', '.')) > 0);
+                const totalPercentage = tpLevels.reduce((sum, tp) => sum + tp.percentage, 0);
+                return pair && entry && sl && allTPFilled && totalPercentage === 100;
+            } else {
+                const tp = document.getElementById('tp').value;
+                const sl = document.getElementById('sl').value;
+                return pair && entry && tp && sl;
+            }
+        }
+
+        // Trigger auto calculate if form is valid
+        function triggerAutoCalculateIfValid() {
+            if (isFormValid()) {
+                calculate({ preventDefault: () => {} });
+            }
         }
 
         // Custom Entry Modal Function
@@ -2177,17 +2461,28 @@
                     customOption.textContent = `${num}x Entry (Custom)`;
                     
                     updatePositionSize();
+                    
+                    // Auto re-calculate if form is filled
+                    if (isFormValid()) {
+                        calculate({ preventDefault: () => {} });
+                    }
                 } else {
                     alert('Please enter a number between 1-100');
                     document.getElementById('maxEntry').value = '5'; // Reset to default
                     maxEntryMultiplier = 5;
                     updatePositionSize();
+                    if (isFormValid()) {
+                        calculate({ preventDefault: () => {} });
+                    }
                 }
             } else {
                 // User cancelled, reset to default
                 document.getElementById('maxEntry').value = '5';
                 maxEntryMultiplier = 5;
                 updatePositionSize();
+                if (isFormValid()) {
+                    calculate({ preventDefault: () => {} });
+                }
             }
         }
 
@@ -2215,14 +2510,13 @@
                 const actualRiskIDR = actualRiskUSD * currentKurs;
                 const actualRiskPercent = (actualRiskIDR / currentBalance) * 100;
                 
-                // Display results
+                // Update display
                 document.getElementById('positionSizeInfo').style.display = 'block';
-                document.getElementById('positionSizeResult').innerHTML = `
-                    Max Entry: <strong>${maxEntryMultiplier}x trades</strong><br>
-                    Position Value: <strong>$${maxPositionValue.toFixed(2)}</strong> USDT (per trade)<br>
-                    Position Size: <strong>${positionSize.toFixed(6)} coins</strong><br>
-                    Actual Risk: <strong>${formatRupiah(actualRiskIDR)}</strong> (${actualRiskPercent.toFixed(2)}%)
-                `;
+                document.getElementById('posMaxEntry').textContent = `${maxEntryMultiplier}x`;
+                document.getElementById('posValue').textContent = `$${maxPositionValue.toFixed(2)}`;
+                document.getElementById('posSize').textContent = positionSize.toFixed(6);
+                document.getElementById('posRisk').textContent = `${actualRiskPercent.toFixed(2)}%`;
+                document.getElementById('posRiskIDR').textContent = formatRupiah(actualRiskIDR);
             } else {
                 document.getElementById('positionSizeInfo').style.display = 'none';
             }
@@ -2237,6 +2531,11 @@
             } else {
                 maxEntryMultiplier = parseInt(value);
                 updatePositionSize();
+                
+                // Auto re-calculate if form is filled
+                if (isFormValid()) {
+                    calculate({ preventDefault: () => {} });
+                }
             }
         });
 
@@ -2245,12 +2544,21 @@
         document.getElementById('sl').addEventListener('input', function(e) {
             autoFormatInput(e);
             updatePositionSize();
+            triggerAutoCalculateIfValid();
         });
         document.getElementById('slPartial').addEventListener('input', function(e) {
             autoFormatInput(e);
             updatePositionSize();
+            triggerAutoCalculateIfValid();
         });
-        document.getElementById('riskPercent').addEventListener('change', updatePositionSize);
+        document.getElementById('riskPercent').addEventListener('change', function() {
+            updatePositionSize();
+            
+            // Auto re-calculate if form is filled
+            if (isFormValid()) {
+                calculate({ preventDefault: () => {} });
+            }
+        });
 
         function formatRupiah(amount) {
             return new Intl.NumberFormat('id-ID', {
@@ -2261,7 +2569,9 @@
         }
 
         function calculate(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) {
+                e.preventDefault();
+            }
 
             const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
             if (initialBalance === 0) {
@@ -2326,6 +2636,18 @@
             const tpPercent = ((tp - entry) / entry) * 100;
             const rrRatio = Math.abs(tpPercent / slPercent);
 
+            // NEW: Calculate balance projection
+            const capitalUsed = currentBalance;
+            const capitalPercent = 100;
+            
+            const balanceIfTP = currentBalance + profit;
+            const balanceTPPercent = ((balanceIfTP - currentBalance) / currentBalance) * 100;
+            
+            const balanceIfSL = sl > entry ? currentBalance + loss : currentBalance - loss;
+            const balanceSLPercent = ((balanceIfSL - currentBalance) / currentBalance) * 100;
+            
+            const balanceIfBE = currentBalance;
+
             lastCalculation = {
                 pair, 
                 modalIDR: currentBalance, // Simpan current balance sebagai modal
@@ -2334,7 +2656,16 @@
                 nilaiTPIDR, nilaiSLIDR,
                 timestamp: new Date().toISOString(),
                 usePartialTP: false,
-                slInProfit: sl > entry
+                slInProfit: sl > entry,
+                balanceProjection: {
+                    capitalUsed,
+                    capitalPercent,
+                    balanceIfTP,
+                    balanceTPPercent,
+                    balanceIfSL,
+                    balanceSLPercent,
+                    balanceIfBE
+                }
             };
 
             document.getElementById('tpPercent').textContent = `+${tpPercent.toFixed(2)}%`;
@@ -2358,6 +2689,9 @@
 
             document.getElementById('partialTPResults').classList.remove('show');
             results.classList.add('show');
+
+            // NEW: Display balance projection
+            displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
         function calculatePartialTP(pair, entry, sl) {
@@ -2407,6 +2741,18 @@
 
             const rrRatio = Math.abs(avgTPPercent / slPercent);
 
+            // NEW: Calculate balance projection
+            const capitalUsed = currentBalance;
+            const capitalPercent = 100;
+            
+            const balanceIfTP = currentBalance + totalProfit;
+            const balanceTPPercent = ((balanceIfTP - currentBalance) / currentBalance) * 100;
+            
+            const balanceIfSL = sl > entry ? currentBalance + loss : currentBalance - loss;
+            const balanceSLPercent = ((balanceIfSL - currentBalance) / currentBalance) * 100;
+            
+            const balanceIfBE = currentBalance;
+
             lastCalculation = {
                 pair, 
                 modalIDR: currentBalance, // Simpan current balance sebagai modal
@@ -2417,7 +2763,16 @@
                 timestamp: new Date().toISOString(),
                 usePartialTP: true,
                 tpLevels: tpResults,
-                slInProfit: sl > entry
+                slInProfit: sl > entry,
+                balanceProjection: {
+                    capitalUsed,
+                    capitalPercent,
+                    balanceIfTP,
+                    balanceTPPercent,
+                    balanceIfSL,
+                    balanceSLPercent,
+                    balanceIfBE
+                }
             };
 
             // Display partial TP results
@@ -2452,6 +2807,26 @@
             document.getElementById('pairDisplay').textContent = pair.toUpperCase();
 
             results.classList.add('show');
+
+            // NEW: Display balance projection
+            displayBalanceProjection(lastCalculation.balanceProjection);
+        }
+
+        // NEW function displayBalanceProjection():
+        function displayBalanceProjection(projection) {
+            document.getElementById('balanceProjection').style.display = 'block';
+            
+            document.getElementById('capitalUsed').textContent = formatRupiah(projection.capitalUsed);
+            document.getElementById('capitalPercent').textContent = `${projection.capitalPercent.toFixed(1)}%`;
+            
+            document.getElementById('balanceIfTP').textContent = formatRupiah(projection.balanceIfTP);
+            document.getElementById('balanceTPChange').textContent = `+${projection.balanceTPPercent.toFixed(2)}%`;
+            
+            document.getElementById('balanceIfSL').textContent = formatRupiah(projection.balanceIfSL);
+            const slSign = projection.balanceSLPercent >= 0 ? '+' : '';
+            document.getElementById('balanceSLChange').textContent = `${slSign}${projection.balanceSLPercent.toFixed(2)}%`;
+            
+            document.getElementById('balanceIfBE').textContent = formatRupiah(projection.balanceIfBE);
         }
 
         function calculateCurrentBalance() {
@@ -2542,6 +2917,16 @@
             }
 
             text += `\n⚖️ Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}`;
+            
+            // Add Balance Projection to copy
+            if (lastCalculation.balanceProjection) {
+                text += `\n\n💼 BALANCE PROJECTION:`;
+                text += `\n📊 Capital Used: ${formatRupiah(lastCalculation.balanceProjection.capitalUsed)} (${lastCalculation.balanceProjection.capitalPercent.toFixed(1)}%)`;
+                text += `\n✅ If TP Hit: ${formatRupiah(lastCalculation.balanceProjection.balanceIfTP)} (+${lastCalculation.balanceProjection.balanceTPPercent.toFixed(2)}%)`;
+                const slSign = lastCalculation.balanceProjection.balanceSLPercent >= 0 ? '+' : '';
+                text += `\n❌ If SL Hit: ${formatRupiah(lastCalculation.balanceProjection.balanceIfSL)} (${slSign}${lastCalculation.balanceProjection.balanceSLPercent.toFixed(2)}%)`;
+            }
+
             text += `\n\nGenerated by TP/SL Calculator by RIFQI`;
 
             navigator.clipboard.writeText(text.trim()).then(() => {
