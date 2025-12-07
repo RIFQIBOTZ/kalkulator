@@ -441,7 +441,7 @@
             color: #ff3366;
         }
 
-        /* Position Size Card Redesign */
+        /* Position Size Card Redesign - Perbaikan Layout */
         .position-size-info {
             background: linear-gradient(145deg, rgba(75, 0, 130, 0.15), rgba(0, 100, 200, 0.15));
             border: 2px solid rgba(100, 149, 237, 0.4);
@@ -452,7 +452,6 @@
             display: none;
         }
 
-        /* Header */
         .pos-size-header {
             display: flex;
             align-items: center;
@@ -473,14 +472,14 @@
             margin: 0;
         }
 
-        /* Grid Layout */
+        /* Grid Layout - 2 kolom × 2 baris */
         .pos-size-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
             gap: 12px;
         }
 
-        /* Individual Cards */
         .pos-size-card {
             background: rgba(20, 25, 45, 0.8);
             border: 1px solid rgba(100, 149, 237, 0.3);
@@ -488,6 +487,10 @@
             padding: 16px;
             text-align: center;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 90px;
         }
 
         .pos-size-card:hover {
@@ -505,7 +508,7 @@
         }
 
         .pos-card-value {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             background: linear-gradient(45deg, #6495ED, #4B0082);
             -webkit-background-clip: text;
@@ -682,7 +685,7 @@
             font-weight: 600;
         }
 
-        /* Balance Projection Section */
+        /* Balance Projection Section - Perbaikan Layout */
         .balance-projection {
             background: rgba(100, 149, 237, 0.08);
             border: 1px solid rgba(100, 149, 237, 0.3);
@@ -693,7 +696,6 @@
             display: none;
         }
 
-        /* Header */
         .balance-proj-header {
             display: flex;
             align-items: center;
@@ -714,14 +716,14 @@
             margin: 0;
         }
 
-        /* Grid Layout */
+        /* Grid Layout - 2 kolom × 2 baris */
         .balance-proj-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, auto);
             gap: 12px;
         }
 
-        /* Individual Cards */
         .balance-proj-card {
             background: rgba(13, 16, 37, 0.6);
             border: 1px solid rgba(100, 149, 237, 0.2);
@@ -729,6 +731,10 @@
             padding: 16px;
             text-align: center;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 90px;
         }
 
         .balance-proj-card:hover {
@@ -775,7 +781,7 @@
         }
 
         .balance-proj-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             margin-bottom: 4px;
         }
@@ -1675,20 +1681,32 @@
 
             .pos-size-grid {
                 grid-template-columns: 1fr;
+                grid-template-rows: auto;
                 gap: 10px;
             }
             
+            .pos-size-card {
+                min-height: 80px;
+                padding: 14px;
+            }
+            
             .pos-card-value {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
             .balance-proj-grid {
                 grid-template-columns: 1fr;
+                grid-template-rows: auto;
                 gap: 10px;
             }
             
+            .balance-proj-card {
+                min-height: 80px;
+                padding: 14px;
+            }
+            
             .balance-proj-value {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
 
             .history-item {
@@ -2185,6 +2203,7 @@
         let modalCurrency = 'idr';
         let modalBalanceIDR = 0;
         let maxEntryMultiplier = 5; // Default 5x Entry
+        let hasInitialCalculation = false; // Flag untuk menandai apakah sudah ada kalkulasi awal
 
         // Initialize TP Levels
         function initializeTPLevels() {
@@ -2229,14 +2248,13 @@
             attachTPEventListeners();
         }
 
-        // Attach Event Listeners to TP inputs
+        // Attach Event Listeners to TP inputs - HAPUS auto calculate
         function attachTPEventListeners() {
             document.querySelectorAll('.tp-price').forEach(input => {
                 input.addEventListener('input', function() {
                     const index = parseInt(this.dataset.index);
                     tpLevels[index].price = this.value;
                     autoFormatInput({ target: this });
-                    triggerAutoCalculateIfValid();
                 });
             });
 
@@ -2249,7 +2267,6 @@
                     this.value = value;
                     tpLevels[index].percentage = value;
                     updatePercentageTotal();
-                    triggerAutoCalculateIfValid();
                 });
             });
 
@@ -2334,8 +2351,6 @@
                 document.getElementById('sl').setAttribute('required', 'required');
                 document.getElementById('slPartial').removeAttribute('required');
             }
-            
-            triggerAutoCalculateIfValid();
         });
 
         // Add TP Button
@@ -2418,7 +2433,6 @@
             }
 
             updatePositionSize();
-            triggerAutoCalculateIfValid();
         }
 
         // Helper function to check if form is valid
@@ -2438,10 +2452,21 @@
             }
         }
 
-        // Trigger auto calculate if form is valid
-        function triggerAutoCalculateIfValid() {
-            if (isFormValid()) {
-                calculate({ preventDefault: () => {} });
+        // Function to recalculate after dropdown changes
+        function recalculateAfterDropdownChange() {
+            if (hasInitialCalculation && isFormValid() && lastCalculation) {
+                const pair = document.getElementById('pair').value;
+                const entry = parseNumber(document.getElementById('entry').value.replace(',', '.'));
+                
+                if (usePartialTP) {
+                    const sl = parseNumber(document.getElementById('slPartial').value.replace(',', '.'));
+                    calculatePartialTP(pair, entry, sl);
+                } else {
+                    const tp = parseNumber(document.getElementById('tp').value.replace(',', '.'));
+                    const sl = parseNumber(document.getElementById('sl').value.replace(',', '.'));
+                    calculateRegular(pair, entry, tp, sl);
+                }
+                showToast('🔄 Results updated!');
             }
         }
 
@@ -2461,28 +2486,19 @@
                     customOption.textContent = `${num}x Entry (Custom)`;
                     
                     updatePositionSize();
-                    
-                    // Auto re-calculate if form is filled
-                    if (isFormValid()) {
-                        calculate({ preventDefault: () => {} });
-                    }
+                    recalculateAfterDropdownChange();
                 } else {
                     alert('Please enter a number between 1-100');
-                    document.getElementById('maxEntry').value = '5'; // Reset to default
+                    document.getElementById('maxEntry').value = '5';
                     maxEntryMultiplier = 5;
                     updatePositionSize();
-                    if (isFormValid()) {
-                        calculate({ preventDefault: () => {} });
-                    }
+                    recalculateAfterDropdownChange();
                 }
             } else {
-                // User cancelled, reset to default
                 document.getElementById('maxEntry').value = '5';
                 maxEntryMultiplier = 5;
                 updatePositionSize();
-                if (isFormValid()) {
-                    calculate({ preventDefault: () => {} });
-                }
+                recalculateAfterDropdownChange();
             }
         }
 
@@ -2531,33 +2547,26 @@
             } else {
                 maxEntryMultiplier = parseInt(value);
                 updatePositionSize();
-                
-                // Auto re-calculate if form is filled
-                if (isFormValid()) {
-                    calculate({ preventDefault: () => {} });
-                }
+                recalculateAfterDropdownChange();
             }
         });
 
+        // Event Listeners untuk input fields - TIDAK auto calculate
         document.getElementById('entry').addEventListener('input', autoFormatInput);
         document.getElementById('tp').addEventListener('input', autoFormatInput);
         document.getElementById('sl').addEventListener('input', function(e) {
             autoFormatInput(e);
             updatePositionSize();
-            triggerAutoCalculateIfValid();
         });
         document.getElementById('slPartial').addEventListener('input', function(e) {
             autoFormatInput(e);
             updatePositionSize();
-            triggerAutoCalculateIfValid();
         });
+        
+        // Event Listener untuk Risk % - AUTO calculate
         document.getElementById('riskPercent').addEventListener('change', function() {
             updatePositionSize();
-            
-            // Auto re-calculate if form is filled
-            if (isFormValid()) {
-                calculate({ preventDefault: () => {} });
-            }
+            recalculateAfterDropdownChange();
         });
 
         function formatRupiah(amount) {
@@ -2605,6 +2614,8 @@
                 const sl = parseNumber(document.getElementById('sl').value.replace(',', '.'));
                 calculateRegular(pair, entry, tp, sl);
             }
+            
+            hasInitialCalculation = true; // Set flag bahwa sudah ada kalkulasi awal
         }
 
         function calculateRegular(pair, entry, tp, sl) {
@@ -2636,7 +2647,7 @@
             const tpPercent = ((tp - entry) / entry) * 100;
             const rrRatio = Math.abs(tpPercent / slPercent);
 
-            // NEW: Calculate balance projection
+            // Calculate balance projection
             const capitalUsed = currentBalance;
             const capitalPercent = 100;
             
@@ -2690,7 +2701,7 @@
             document.getElementById('partialTPResults').classList.remove('show');
             results.classList.add('show');
 
-            // NEW: Display balance projection
+            // Display balance projection
             displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
@@ -2741,7 +2752,7 @@
 
             const rrRatio = Math.abs(avgTPPercent / slPercent);
 
-            // NEW: Calculate balance projection
+            // Calculate balance projection
             const capitalUsed = currentBalance;
             const capitalPercent = 100;
             
@@ -2808,11 +2819,11 @@
 
             results.classList.add('show');
 
-            // NEW: Display balance projection
+            // Display balance projection
             displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
-        // NEW function displayBalanceProjection():
+        // function displayBalanceProjection():
         function displayBalanceProjection(projection) {
             document.getElementById('balanceProjection').style.display = 'block';
             
