@@ -2568,7 +2568,7 @@
             }).format(amount);
         }
 
-        // BUG #3 FIX: Modified calculate function with useCurrentBalance parameter
+        // BUG #7 FIX: Modified calculate function to use modalPerTrade instead of full currentBalance
         function calculate(e, useCurrentBalance = true) {
             if (e && e.preventDefault) {
                 e.preventDefault();
@@ -2610,12 +2610,15 @@
             hasInitialCalculation = true; // Set flag bahwa sudah ada kalkulasi awal
         }
 
-        // BUG #3 & #4 FIX: Modified calculateRegular with proper modal handling
+        // BUG #7 FIX: Modified calculateRegular to use modalPerTrade
         function calculateRegular(pair, entry, tp, sl, useCurrentBalance = true) {
             // Determine modal to use
-            const modalIDR = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR : calculateCurrentBalance());
+            const currentBalance = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR * maxEntryMultiplier : calculateCurrentBalance());
             
-            const modalUSDT = modalIDR / currentKurs;
+            // BUG #7 FIX: Calculate modal per trade based on max entry multiplier
+            const modalPerTrade = currentBalance / maxEntryMultiplier;
+            
+            const modalUSDT = modalPerTrade / currentKurs; // Pakai modalPerTrade!
             const jumlahCoin = modalUSDT / entry;
 
             const nilaiTPUSDT = jumlahCoin * tp;
@@ -2629,22 +2632,22 @@
             
             if (sl > entry) {
                 // SL in profit zone
-                profit = nilaiTPIDR - modalIDR;
-                loss = nilaiSLIDR - modalIDR; // This is actually a profit, but smaller than TP
+                profit = nilaiTPIDR - modalPerTrade; // Pakai modalPerTrade!
+                loss = nilaiSLIDR - modalPerTrade;   // Pakai modalPerTrade!
                 slPercent = ((sl - entry) / entry) * 100;
             } else {
                 // Normal SL below entry
-                profit = nilaiTPIDR - modalIDR;
-                loss = modalIDR - nilaiSLIDR;
+                profit = nilaiTPIDR - modalPerTrade; // Pakai modalPerTrade!
+                loss = modalPerTrade - nilaiSLIDR;   // Pakai modalPerTrade!
                 slPercent = ((sl - entry) / entry) * 100;
             }
 
             const tpPercent = ((tp - entry) / entry) * 100;
             const rrRatio = Math.abs(tpPercent / slPercent);
 
-            // BUG #4 FIX: Calculate balance projection dengan modal yang benar
+            // BUG #7 FIX: Calculate balance projection dengan modal per trade
             const currentBalanceNow = calculateCurrentBalance(); // Balance saat ini
-            const capitalUsed = modalIDR; // Modal actual untuk trade ini
+            const capitalUsed = modalPerTrade; // Modal yang dipakai untuk trade ini
             const capitalPercent = (capitalUsed / currentBalanceNow) * 100;
             
             const balanceIfTP = currentBalanceNow + profit;
@@ -2657,7 +2660,7 @@
 
             lastCalculation = {
                 pair, 
-                modalIDR: modalIDR, // Simpan modal yang actual dipakai
+                modalIDR: modalPerTrade, // Simpan modalPerTrade, bukan currentBalance!
                 entry, tp, sl,
                 profit, loss, tpPercent, slPercent, rrRatio,
                 nilaiTPIDR, nilaiSLIDR,
@@ -2701,12 +2704,15 @@
             displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
-        // BUG #3 & #4 FIX: Modified calculatePartialTP with proper modal handling
+        // BUG #7 FIX: Modified calculatePartialTP to use modalPerTrade
         function calculatePartialTP(pair, entry, sl, useCurrentBalance = true) {
             // Determine modal to use
-            const modalIDR = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR : calculateCurrentBalance());
+            const currentBalance = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR * maxEntryMultiplier : calculateCurrentBalance());
             
-            const modalUSDT = modalIDR / currentKurs;
+            // BUG #7 FIX: Calculate modal per trade based on max entry multiplier
+            const modalPerTrade = currentBalance / maxEntryMultiplier;
+            
+            const modalUSDT = modalPerTrade / currentKurs; // Pakai modalPerTrade!
             const jumlahCoin = modalUSDT / entry;
 
             // Calculate each TP level
@@ -2716,7 +2722,7 @@
                 const coinsAtTP = jumlahCoin * percentage;
                 const valueAtTP = coinsAtTP * tpPrice;
                 const valueAtTPIDR = valueAtTP * currentKurs;
-                const modalPortionIDR = modalIDR * percentage;
+                const modalPortionIDR = modalPerTrade * percentage; // ✅ BENAR - pakai modalPerTrade
                 const profitIDR = valueAtTPIDR - modalPortionIDR;
                 const profitPercent = ((tpPrice - entry) / entry) * 100;
 
@@ -2742,18 +2748,18 @@
             
             let loss, slPercent;
             if (sl > entry) {
-                loss = nilaiSLIDR - modalIDR;
+                loss = nilaiSLIDR - modalPerTrade; // Pakai modalPerTrade!
                 slPercent = ((sl - entry) / entry) * 100;
             } else {
-                loss = modalIDR - nilaiSLIDR;
+                loss = modalPerTrade - nilaiSLIDR; // Pakai modalPerTrade!
                 slPercent = ((sl - entry) / entry) * 100;
             }
 
             const rrRatio = Math.abs(avgTPPercent / slPercent);
 
-            // BUG #4 FIX: Calculate balance projection dengan modal yang benar
+            // BUG #7 FIX: Calculate balance projection dengan modal per trade
             const currentBalanceNow = calculateCurrentBalance(); // Balance saat ini
-            const capitalUsed = modalIDR; // Modal actual untuk trade ini
+            const capitalUsed = modalPerTrade; // Modal yang dipakai untuk trade ini
             const capitalPercent = (capitalUsed / currentBalanceNow) * 100;
             
             const balanceIfTP = currentBalanceNow + totalProfit;
@@ -2766,7 +2772,7 @@
 
             lastCalculation = {
                 pair, 
-                modalIDR: modalIDR, // Simpan modal yang actual dipakai
+                modalIDR: modalPerTrade, // ✅ BENAR - simpan modalPerTrade
                 entry, sl,
                 profit: totalProfit,
                 loss, slPercent, rrRatio,
@@ -2799,7 +2805,7 @@
 
             // Display summary
             document.getElementById('tpPercent').textContent = `+${avgTPPercent.toFixed(2)}%`;
-            document.getElementById('tpValue').textContent = `Total if all TP hit: ${formatRupiah(modalIDR + totalProfit)}`;
+            document.getElementById('tpValue').textContent = `Total if all TP hit: ${formatRupiah(modalPerTrade + totalProfit)}`;
             
             if (sl > entry) {
                 document.getElementById('slPercent').textContent = `+${slPercent.toFixed(2)}%`;
@@ -3225,7 +3231,7 @@
             currentEditTradeIndex = null;
         }
 
-        // BUG #3 FIX: Modified saveEditTrade with proper recalculation
+        // BUG #7 FIX: Modified saveEditTrade dengan proper recalculation menggunakan modalIDR yang tersimpan
         function saveEditTrade() {
             if (currentEditTradeIndex === null) return;
 
@@ -3256,8 +3262,8 @@
                     return;
                 }
 
-                // BUG #3 FIX: Recalculate dengan modal original dari history, bukan current balance
-                const modalIDR = item.modalIDR;
+                // BUG #7 FIX: Recalculate dengan modalIDR yang tersimpan (sudah berupa modalPerTrade)
+                const modalIDR = item.modalIDR; // Ini sudah modal per trade
                 const modalUSDT = modalIDR / currentKurs;
                 const jumlahCoin = modalUSDT / entry;
 
@@ -3266,7 +3272,7 @@
                     const coinsAtTP = jumlahCoin * percentage;
                     const valueAtTP = coinsAtTP * tp.price;
                     const valueAtTPIDR = valueAtTP * currentKurs;
-                    const modalPortionIDR = modalIDR * percentage;
+                    const modalPortionIDR = modalIDR * percentage; // Pakai modalIDR (modal per trade)
                     const profitIDR = valueAtTPIDR - modalPortionIDR;
                     const profitPercent = ((tp.price - entry) / entry) * 100;
 
@@ -3310,7 +3316,7 @@
             } else {
                 // Update regular TP trade
                 const tp = parseNumber(document.getElementById('editTP').value.replace(',', '.'));
-                const modalIDR = item.modalIDR;
+                const modalIDR = item.modalIDR; // Ini sudah modal per trade
 
                 const modalUSDT = modalIDR / currentKurs;
                 const jumlahCoin = modalUSDT / entry;
