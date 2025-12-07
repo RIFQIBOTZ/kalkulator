@@ -2206,6 +2206,13 @@
         let maxEntryMultiplier = 5; // Default 5x Entry
         let hasInitialCalculation = false; // Flag untuk menandai apakah sudah ada kalkulasi awal
 
+        // ========== PERBAIKAN BUG: Risk % Tidak Diterapkan ==========
+        // Fungsi baru untuk mendapatkan Risk % dari dropdown
+        function getRiskPercent() {
+            const riskSelect = document.getElementById('riskPercent');
+            return parseFloat(riskSelect.value) / 100; // Convert 2% → 0.02
+        }
+
         // Initialize TP Levels
         function initializeTPLevels() {
             tpLevels = [
@@ -2493,6 +2500,7 @@
             }
         }
 
+        // ========== PERBAIKAN UTAMA: updatePositionSize() dengan Risk % ==========
         function updatePositionSize() {
             const currentBalance = calculateCurrentBalance();
             const entry = parseNumber(document.getElementById('entry').value.replace(',', '.') || '0');
@@ -2504,23 +2512,34 @@
                 sl = parseNumber(document.getElementById('sl').value.replace(',', '.') || '0');
             }
 
-            if (currentBalance > 0 && entry > 0 && sl > 0 && currentKurs > 0) {
+            if (currentBalance > 0 && entry > 0 && sl > 0 && currentKurs > 0 && entry !== sl) {
                 const currentBalanceUSD = currentBalance / currentKurs;
                 
-                // NEW LOGIC: Position Value = Current Balance ÷ Max Entry
-                const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
-                const positionSize = maxPositionValue / entry;
+                // NEW LOGIC: Menggunakan Risk % untuk menghitung position size
+                const riskPercent = getRiskPercent(); // 0.02 untuk 2%
                 
-                // Calculate actual risk with this position size
+                // Hitung modal maksimum per trade
+                const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
+                
+                // Hitung risk amount berdasarkan Risk %
+                const riskAmountUSD = maxPositionValue * riskPercent;
+                
+                // Hitung position size berdasarkan risk amount dan jarak entry-SL
                 const priceDiff = Math.abs(entry - sl);
+                const positionSize = riskAmountUSD / priceDiff;
+                
+                // Hitung modal aktual yang digunakan
+                const actualPositionValue = positionSize * entry;
+                
+                // Calculate actual risk dengan position size yang baru
                 const actualRiskUSD = positionSize * priceDiff;
                 const actualRiskIDR = actualRiskUSD * currentKurs;
-                const actualRiskPercent = (actualRiskIDR / currentBalance) * 100;
+                const actualRiskPercent = (actualRiskUSD / maxPositionValue) * 100;
                 
                 // Update display
                 document.getElementById('positionSizeInfo').style.display = 'block';
                 document.getElementById('posMaxEntry').textContent = `${maxEntryMultiplier}x`;
-                document.getElementById('posValue').textContent = `$${maxPositionValue.toFixed(2)}`;
+                document.getElementById('posValue').textContent = `$${actualPositionValue.toFixed(2)}`;
                 document.getElementById('posSize').textContent = positionSize.toFixed(6);
                 document.getElementById('posRisk').textContent = `${actualRiskPercent.toFixed(2)}%`;
                 document.getElementById('posRiskIDR').textContent = formatRupiah(actualRiskIDR);
@@ -2554,7 +2573,7 @@
             updatePositionSize();
         });
         
-        // Event Listener untuk Risk % - AUTO calculate
+        // Event Listener untuk Risk % - AUTO calculate (PERBAIKAN BUG)
         document.getElementById('riskPercent').addEventListener('change', function() {
             updatePositionSize();
             recalculateAfterDropdownChange();
@@ -2568,7 +2587,7 @@
             }).format(amount);
         }
 
-        // BUG #7 FIX: Modified calculate function to use modalPerTrade instead of full currentBalance
+        // BUG #7 FIX: Modified calculate function to use proper position sizing dengan Risk %
         function calculate(e, useCurrentBalance = true) {
             if (e && e.preventDefault) {
                 e.preventDefault();
@@ -2610,21 +2629,27 @@
             hasInitialCalculation = true; // Set flag bahwa sudah ada kalkulasi awal
         }
 
-        // BUG #7 FIX: Modified calculateRegular to use modalPerTrade
+        // ========== PERBAIKAN UTAMA: calculateRegular() dengan Risk % ==========
         function calculateRegular(pair, entry, tp, sl, useCurrentBalance = true) {
             // Determine modal to use
             const currentBalance = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR * maxEntryMultiplier : calculateCurrentBalance());
             
-            // BUG #7 FIX: Calculate modal per trade based on max entry multiplier
-            const modalPerTrade = currentBalance / maxEntryMultiplier;
+            // Hitung position size berdasarkan Risk %
+            const riskPercent = getRiskPercent(); // 0.02 untuk 2%
+            const currentBalanceUSD = currentBalance / currentKurs;
+            const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
+            const riskAmountUSD = maxPositionValue * riskPercent;
+            const priceDiff = Math.abs(entry - sl);
+            const positionSize = riskAmountUSD / priceDiff;
             
-            const modalUSDT = modalPerTrade / currentKurs; // Pakai modalPerTrade!
-            const jumlahCoin = modalUSDT / entry;
-
-            const nilaiTPUSDT = jumlahCoin * tp;
+            // Hitung modal aktual yang digunakan
+            const modalUSDT = positionSize * entry;
+            const modalIDR = modalUSDT * currentKurs;
+            
+            const nilaiTPUSDT = positionSize * tp;
             const nilaiTPIDR = nilaiTPUSDT * currentKurs;
 
-            const nilaiSLUSDT = jumlahCoin * sl;
+            const nilaiSLUSDT = positionSize * sl;
             const nilaiSLIDR = nilaiSLUSDT * currentKurs;
 
             // Handle SL Plus (trailing stop in profit zone)
@@ -2632,22 +2657,22 @@
             
             if (sl > entry) {
                 // SL in profit zone
-                profit = nilaiTPIDR - modalPerTrade; // Pakai modalPerTrade!
-                loss = nilaiSLIDR - modalPerTrade;   // Pakai modalPerTrade!
+                profit = nilaiTPIDR - modalIDR;
+                loss = nilaiSLIDR - modalIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             } else {
                 // Normal SL below entry
-                profit = nilaiTPIDR - modalPerTrade; // Pakai modalPerTrade!
-                loss = modalPerTrade - nilaiSLIDR;   // Pakai modalPerTrade!
+                profit = nilaiTPIDR - modalIDR;
+                loss = modalIDR - nilaiSLIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             }
 
             const tpPercent = ((tp - entry) / entry) * 100;
             const rrRatio = Math.abs(tpPercent / slPercent);
 
-            // BUG #7 FIX: Calculate balance projection dengan modal per trade
-            const currentBalanceNow = calculateCurrentBalance(); // Balance saat ini
-            const capitalUsed = modalPerTrade; // Modal yang dipakai untuk trade ini
+            // Calculate balance projection
+            const currentBalanceNow = calculateCurrentBalance();
+            const capitalUsed = modalIDR;
             const capitalPercent = (capitalUsed / currentBalanceNow) * 100;
             
             const balanceIfTP = currentBalanceNow + profit;
@@ -2660,7 +2685,7 @@
 
             lastCalculation = {
                 pair, 
-                modalIDR: modalPerTrade, // Simpan modalPerTrade, bukan currentBalance!
+                modalIDR: modalIDR,
                 entry, tp, sl,
                 profit, loss, tpPercent, slPercent, rrRatio,
                 nilaiTPIDR, nilaiSLIDR,
@@ -2675,9 +2700,12 @@
                     balanceIfSL,
                     balanceSLPercent,
                     balanceIfBE
-                }
+                },
+                positionSize: positionSize,
+                riskPercent: riskPercent * 100 // Simpan risk % yang digunakan
             };
 
+            // Tampilkan hasil
             document.getElementById('tpPercent').textContent = `+${tpPercent.toFixed(2)}%`;
             document.getElementById('tpValue').textContent = `Total: ${formatRupiah(nilaiTPIDR)}`;
             
@@ -2704,25 +2732,31 @@
             displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
-        // BUG #7 FIX: Modified calculatePartialTP to use modalPerTrade
+        // ========== PERBAIKAN UTAMA: calculatePartialTP() dengan Risk % ==========
         function calculatePartialTP(pair, entry, sl, useCurrentBalance = true) {
             // Determine modal to use
             const currentBalance = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR * maxEntryMultiplier : calculateCurrentBalance());
             
-            // BUG #7 FIX: Calculate modal per trade based on max entry multiplier
-            const modalPerTrade = currentBalance / maxEntryMultiplier;
+            // Hitung position size berdasarkan Risk %
+            const riskPercent = getRiskPercent(); // 0.02 untuk 2%
+            const currentBalanceUSD = currentBalance / currentKurs;
+            const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
+            const riskAmountUSD = maxPositionValue * riskPercent;
+            const priceDiff = Math.abs(entry - sl);
+            const positionSize = riskAmountUSD / priceDiff;
             
-            const modalUSDT = modalPerTrade / currentKurs; // Pakai modalPerTrade!
-            const jumlahCoin = modalUSDT / entry;
+            // Hitung modal aktual yang digunakan
+            const modalUSDT = positionSize * entry;
+            const modalIDR = modalUSDT * currentKurs;
 
             // Calculate each TP level
             const tpResults = tpLevels.map(tp => {
                 const tpPrice = parseNumber(tp.price.replace(',', '.'));
                 const percentage = tp.percentage / 100;
-                const coinsAtTP = jumlahCoin * percentage;
+                const coinsAtTP = positionSize * percentage;
                 const valueAtTP = coinsAtTP * tpPrice;
                 const valueAtTPIDR = valueAtTP * currentKurs;
-                const modalPortionIDR = modalPerTrade * percentage; // ✅ BENAR - pakai modalPerTrade
+                const modalPortionIDR = modalIDR * percentage;
                 const profitIDR = valueAtTPIDR - modalPortionIDR;
                 const profitPercent = ((tpPrice - entry) / entry) * 100;
 
@@ -2743,23 +2777,23 @@
             const avgTPPercent = ((weightedTP - entry) / entry) * 100;
 
             // Calculate SL
-            const nilaiSLUSDT = jumlahCoin * sl;
+            const nilaiSLUSDT = positionSize * sl;
             const nilaiSLIDR = nilaiSLUSDT * currentKurs;
             
             let loss, slPercent;
             if (sl > entry) {
-                loss = nilaiSLIDR - modalPerTrade; // Pakai modalPerTrade!
+                loss = nilaiSLIDR - modalIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             } else {
-                loss = modalPerTrade - nilaiSLIDR; // Pakai modalPerTrade!
+                loss = modalIDR - nilaiSLIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             }
 
             const rrRatio = Math.abs(avgTPPercent / slPercent);
 
-            // BUG #7 FIX: Calculate balance projection dengan modal per trade
-            const currentBalanceNow = calculateCurrentBalance(); // Balance saat ini
-            const capitalUsed = modalPerTrade; // Modal yang dipakai untuk trade ini
+            // Calculate balance projection
+            const currentBalanceNow = calculateCurrentBalance();
+            const capitalUsed = modalIDR;
             const capitalPercent = (capitalUsed / currentBalanceNow) * 100;
             
             const balanceIfTP = currentBalanceNow + totalProfit;
@@ -2772,7 +2806,7 @@
 
             lastCalculation = {
                 pair, 
-                modalIDR: modalPerTrade, // ✅ BENAR - simpan modalPerTrade
+                modalIDR: modalIDR,
                 entry, sl,
                 profit: totalProfit,
                 loss, slPercent, rrRatio,
@@ -2789,7 +2823,9 @@
                     balanceIfSL,
                     balanceSLPercent,
                     balanceIfBE
-                }
+                },
+                positionSize: positionSize,
+                riskPercent: riskPercent * 100 // Simpan risk % yang digunakan
             };
 
             // Display partial TP results
@@ -2805,7 +2841,7 @@
 
             // Display summary
             document.getElementById('tpPercent').textContent = `+${avgTPPercent.toFixed(2)}%`;
-            document.getElementById('tpValue').textContent = `Total if all TP hit: ${formatRupiah(modalPerTrade + totalProfit)}`;
+            document.getElementById('tpValue').textContent = `Total if all TP hit: ${formatRupiah(modalIDR + totalProfit)}`;
             
             if (sl > entry) {
                 document.getElementById('slPercent').textContent = `+${slPercent.toFixed(2)}%`;
@@ -2829,7 +2865,6 @@
             displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
-        // function displayBalanceProjection():
         function displayBalanceProjection(projection) {
             document.getElementById('balanceProjection').style.display = 'block';
             
@@ -2934,6 +2969,7 @@
             }
 
             text += `\n⚖️ Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}`;
+            text += `\n🎯 Risk % Used: ${lastCalculation.riskPercent ? lastCalculation.riskPercent.toFixed(1) + '%' : 'N/A'}`;
             
             // Add Balance Projection to copy
             if (lastCalculation.balanceProjection) {
@@ -3079,8 +3115,14 @@
                 if (item.usePartialTP) {
                     const tpPrices = item.tpLevels.map(tp => `$${tp.price}`).join(', ');
                     detailsText = `Entry: $${item.entry} → TPs: ${tpPrices} | SL: $${item.sl}`;
+                    if (item.riskPercent) {
+                        detailsText += ` | Risk: ${item.riskPercent.toFixed(1)}%`;
+                    }
                 } else {
                     detailsText = `Entry: $${item.entry} → TP: $${item.tp} | SL: $${item.sl}`;
+                    if (item.riskPercent) {
+                        detailsText += ` | Risk: ${item.riskPercent.toFixed(1)}%`;
+                    }
                 }
 
                 const div = document.createElement('div');
@@ -3134,6 +3176,15 @@
                 
                 document.getElementById('tp').value = formatNumber(item.tp.toString());
                 document.getElementById('sl').value = formatNumber(item.sl.toString());
+            }
+
+            // Set Risk % jika ada data
+            if (item.riskPercent) {
+                const riskSelect = document.getElementById('riskPercent');
+                const closestValue = [1, 2, 3, 5].reduce((prev, curr) => {
+                    return Math.abs(curr - item.riskPercent) < Math.abs(prev - item.riskPercent) ? curr : prev;
+                });
+                riskSelect.value = closestValue;
             }
 
             updatePositionSize();
@@ -3231,7 +3282,7 @@
             currentEditTradeIndex = null;
         }
 
-        // BUG #7 FIX: Modified saveEditTrade dengan proper recalculation menggunakan modalIDR yang tersimpan
+        // ========== PERBAIKAN UTAMA: saveEditTrade() dengan Risk % ==========
         function saveEditTrade() {
             if (currentEditTradeIndex === null) return;
 
@@ -3262,17 +3313,23 @@
                     return;
                 }
 
-                // BUG #7 FIX: Recalculate dengan modalIDR yang tersimpan (sudah berupa modalPerTrade)
-                const modalIDR = item.modalIDR; // Ini sudah modal per trade
-                const modalUSDT = modalIDR / currentKurs;
-                const jumlahCoin = modalUSDT / entry;
+                // Recalculate dengan Risk % yang berlaku saat ini
+                const riskPercent = getRiskPercent();
+                const currentBalanceUSD = calculateCurrentBalance() / currentKurs;
+                const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
+                const riskAmountUSD = maxPositionValue * riskPercent;
+                const priceDiff = Math.abs(entry - sl);
+                const positionSize = riskAmountUSD / priceDiff;
+                
+                const modalUSDT = positionSize * entry;
+                const modalIDR = modalUSDT * currentKurs;
 
                 const recalculatedTPLevels = editedTPLevels.map(tp => {
                     const percentage = tp.percentage / 100;
-                    const coinsAtTP = jumlahCoin * percentage;
+                    const coinsAtTP = positionSize * percentage;
                     const valueAtTP = coinsAtTP * tp.price;
                     const valueAtTPIDR = valueAtTP * currentKurs;
-                    const modalPortionIDR = modalIDR * percentage; // Pakai modalIDR (modal per trade)
+                    const modalPortionIDR = modalIDR * percentage;
                     const profitIDR = valueAtTPIDR - modalPortionIDR;
                     const profitPercent = ((tp.price - entry) / entry) * 100;
 
@@ -3293,9 +3350,12 @@
                 history[currentEditTradeIndex].sl = sl;
                 history[currentEditTradeIndex].tpLevels = recalculatedTPLevels;
                 history[currentEditTradeIndex].profit = totalProfit;
+                history[currentEditTradeIndex].modalIDR = modalIDR;
+                history[currentEditTradeIndex].positionSize = positionSize;
+                history[currentEditTradeIndex].riskPercent = riskPercent * 100;
 
                 // Recalculate SL
-                const nilaiSLUSDT = jumlahCoin * sl;
+                const nilaiSLUSDT = positionSize * sl;
                 const nilaiSLIDR = nilaiSLUSDT * currentKurs;
                 
                 if (sl > entry) {
@@ -3316,15 +3376,22 @@
             } else {
                 // Update regular TP trade
                 const tp = parseNumber(document.getElementById('editTP').value.replace(',', '.'));
-                const modalIDR = item.modalIDR; // Ini sudah modal per trade
+                
+                // Recalculate dengan Risk % yang berlaku saat ini
+                const riskPercent = getRiskPercent();
+                const currentBalanceUSD = calculateCurrentBalance() / currentKurs;
+                const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
+                const riskAmountUSD = maxPositionValue * riskPercent;
+                const priceDiff = Math.abs(entry - sl);
+                const positionSize = riskAmountUSD / priceDiff;
+                
+                const modalUSDT = positionSize * entry;
+                const modalIDR = modalUSDT * currentKurs;
 
-                const modalUSDT = modalIDR / currentKurs;
-                const jumlahCoin = modalUSDT / entry;
-
-                const nilaiTPUSDT = jumlahCoin * tp;
+                const nilaiTPUSDT = positionSize * tp;
                 const nilaiTPIDR = nilaiTPUSDT * currentKurs;
 
-                const nilaiSLUSDT = jumlahCoin * sl;
+                const nilaiSLUSDT = positionSize * sl;
                 const nilaiSLIDR = nilaiSLUSDT * currentKurs;
 
                 let profit, loss;
@@ -3353,6 +3420,9 @@
                 history[currentEditTradeIndex].rrRatio = rrRatio;
                 history[currentEditTradeIndex].nilaiTPIDR = nilaiTPIDR;
                 history[currentEditTradeIndex].nilaiSLIDR = nilaiSLIDR;
+                history[currentEditTradeIndex].modalIDR = modalIDR;
+                history[currentEditTradeIndex].positionSize = positionSize;
+                history[currentEditTradeIndex].riskPercent = riskPercent * 100;
             }
 
             localStorage.setItem('tpslHistory', JSON.stringify(history));
