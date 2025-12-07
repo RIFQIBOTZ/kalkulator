@@ -1616,6 +1616,19 @@
                                 <label for="pair">Trading Pair</label>
                                 <input type="text" id="pair" placeholder="BTCUSDT, EURUSD" required>
                             </div>
+                            
+                            <!-- NEW: Max Entry Dropdown -->
+                            <div class="form-group">
+                                <label for="maxEntry">Max Entry</label>
+                                <select id="maxEntry">
+                                    <option value="1">1x - All In</option>
+                                    <option value="3">3x Entry</option>
+                                    <option value="5" selected>5x Entry</option>
+                                    <option value="10">10x Entry</option>
+                                    <option value="custom">Custom...</option>
+                                </select>
+                            </div>
+                            
                             <div class="form-group">
                                 <label for="riskPercent">Risk (%)</label>
                                 <select id="riskPercent">
@@ -1625,6 +1638,7 @@
                                     <option value="5">5% - Very Aggressive</option>
                                 </select>
                             </div>
+                            
                             <div class="form-group">
                                 <label for="entry">Entry Price (USD)</label>
                                 <input type="tel" inputmode="decimal" id="entry" placeholder="4.000" required>
@@ -1915,6 +1929,7 @@
         let currentCurrency = localStorage.getItem('currencyPreference') || 'idr';
         let modalCurrency = 'idr';
         let modalBalanceIDR = 0;
+        let maxEntryMultiplier = 5; // Default 5x Entry
 
         // Initialize TP Levels
         function initializeTPLevels() {
@@ -2146,6 +2161,36 @@
             updatePositionSize();
         }
 
+        // Custom Entry Modal Function
+        function showCustomEntryModal() {
+            const customValue = prompt('Enter max entry multiplier (1-100):');
+            
+            if (customValue && !isNaN(customValue)) {
+                const num = parseInt(customValue);
+                
+                if (num >= 1 && num <= 100) {
+                    maxEntryMultiplier = num;
+                    
+                    // Update dropdown text to show custom value
+                    const select = document.getElementById('maxEntry');
+                    const customOption = select.querySelector('[value="custom"]');
+                    customOption.textContent = `${num}x Entry (Custom)`;
+                    
+                    updatePositionSize();
+                } else {
+                    alert('Please enter a number between 1-100');
+                    document.getElementById('maxEntry').value = '5'; // Reset to default
+                    maxEntryMultiplier = 5;
+                    updatePositionSize();
+                }
+            } else {
+                // User cancelled, reset to default
+                document.getElementById('maxEntry').value = '5';
+                maxEntryMultiplier = 5;
+                updatePositionSize();
+            }
+        }
+
         function updatePositionSize() {
             const currentBalance = calculateCurrentBalance();
             const entry = parseNumber(document.getElementById('entry').value.replace(',', '.') || '0');
@@ -2156,31 +2201,55 @@
             } else {
                 sl = parseNumber(document.getElementById('sl').value.replace(',', '.') || '0');
             }
-            
-            const riskPercent = parseFloat(document.getElementById('riskPercent').value);
 
             if (currentBalance > 0 && entry > 0 && sl > 0 && currentKurs > 0) {
-                const riskAmount = currentBalance * (riskPercent / 100);
-                const riskAmountUSD = riskAmount / currentKurs;
+                const currentBalanceUSD = currentBalance / currentKurs;
+                
+                // NEW LOGIC: Position Value = Current Balance ÷ Max Entry
+                const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
+                const positionSize = maxPositionValue / entry;
+                
+                // Calculate actual risk with this position size
                 const priceDiff = Math.abs(entry - sl);
-                const positionSize = riskAmountUSD / priceDiff;
-                const positionValue = positionSize * entry;
-
+                const actualRiskUSD = positionSize * priceDiff;
+                const actualRiskIDR = actualRiskUSD * currentKurs;
+                const actualRiskPercent = (actualRiskIDR / currentBalance) * 100;
+                
+                // Display results
                 document.getElementById('positionSizeInfo').style.display = 'block';
                 document.getElementById('positionSizeResult').innerHTML = `
-                    Risk Amount: <strong>${formatRupiah(riskAmount)}</strong> (${riskPercent}%)<br>
-                    Max Position: <strong>${positionSize.toFixed(6)} coins</strong><br>
-                    Position Value: <strong>$${positionValue.toFixed(2)}</strong> USDT
+                    Max Entry: <strong>${maxEntryMultiplier}x trades</strong><br>
+                    Position Value: <strong>$${maxPositionValue.toFixed(2)}</strong> USDT (per trade)<br>
+                    Position Size: <strong>${positionSize.toFixed(6)} coins</strong><br>
+                    Actual Risk: <strong>${formatRupiah(actualRiskIDR)}</strong> (${actualRiskPercent.toFixed(2)}%)
                 `;
             } else {
                 document.getElementById('positionSizeInfo').style.display = 'none';
             }
         }
 
+        // Event Listener for Max Entry Dropdown
+        document.getElementById('maxEntry').addEventListener('change', function() {
+            const value = this.value;
+            
+            if (value === 'custom') {
+                showCustomEntryModal();
+            } else {
+                maxEntryMultiplier = parseInt(value);
+                updatePositionSize();
+            }
+        });
+
         document.getElementById('entry').addEventListener('input', autoFormatInput);
         document.getElementById('tp').addEventListener('input', autoFormatInput);
-        document.getElementById('sl').addEventListener('input', autoFormatInput);
-        document.getElementById('slPartial').addEventListener('input', autoFormatInput);
+        document.getElementById('sl').addEventListener('input', function(e) {
+            autoFormatInput(e);
+            updatePositionSize();
+        });
+        document.getElementById('slPartial').addEventListener('input', function(e) {
+            autoFormatInput(e);
+            updatePositionSize();
+        });
         document.getElementById('riskPercent').addEventListener('change', updatePositionSize);
 
         function formatRupiah(amount) {
