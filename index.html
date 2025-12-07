@@ -1679,8 +1679,9 @@
                 padding: 15px;
             }
 
+            /* BUG #2 FIX: Tetap 2 kolom di mobile */
             .pos-size-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: auto;
                 gap: 10px;
             }
@@ -1694,8 +1695,9 @@
                 font-size: 1.3rem;
             }
 
+            /* BUG #2 FIX: Tetap 2 kolom di mobile */
             .balance-proj-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
                 grid-template-rows: auto;
                 gap: 10px;
             }
@@ -2201,7 +2203,6 @@
         let currentEditTradeIndex = null;
         let currentCurrency = localStorage.getItem('currencyPreference') || 'idr';
         let modalCurrency = 'idr';
-        let modalBalanceIDR = 0;
         let maxEntryMultiplier = 5; // Default 5x Entry
         let hasInitialCalculation = false; // Flag untuk menandai apakah sudah ada kalkulasi awal
 
@@ -2452,21 +2453,11 @@
             }
         }
 
-        // Function to recalculate after dropdown changes
+        // BUG #1 FIX: Function to recalculate after dropdown changes
         function recalculateAfterDropdownChange() {
-            if (hasInitialCalculation && isFormValid() && lastCalculation) {
-                const pair = document.getElementById('pair').value;
-                const entry = parseNumber(document.getElementById('entry').value.replace(',', '.'));
-                
-                if (usePartialTP) {
-                    const sl = parseNumber(document.getElementById('slPartial').value.replace(',', '.'));
-                    calculatePartialTP(pair, entry, sl);
-                } else {
-                    const tp = parseNumber(document.getElementById('tp').value.replace(',', '.'));
-                    const sl = parseNumber(document.getElementById('sl').value.replace(',', '.'));
-                    calculateRegular(pair, entry, tp, sl);
-                }
-                showToast('🔄 Results updated!');
+            if (hasInitialCalculation && isFormValid()) {
+                // Trigger FULL calculation, bukan cuma position size
+                calculate({ preventDefault: () => {} });
             }
         }
 
@@ -2577,7 +2568,8 @@
             }).format(amount);
         }
 
-        function calculate(e) {
+        // BUG #3 FIX: Modified calculate function with useCurrentBalance parameter
+        function calculate(e, useCurrentBalance = true) {
             if (e && e.preventDefault) {
                 e.preventDefault();
             }
@@ -2608,19 +2600,22 @@
                 }
 
                 const sl = parseNumber(document.getElementById('slPartial').value.replace(',', '.'));
-                calculatePartialTP(pair, entry, sl);
+                calculatePartialTP(pair, entry, sl, useCurrentBalance);
             } else {
                 const tp = parseNumber(document.getElementById('tp').value.replace(',', '.'));
                 const sl = parseNumber(document.getElementById('sl').value.replace(',', '.'));
-                calculateRegular(pair, entry, tp, sl);
+                calculateRegular(pair, entry, tp, sl, useCurrentBalance);
             }
             
             hasInitialCalculation = true; // Set flag bahwa sudah ada kalkulasi awal
         }
 
-        function calculateRegular(pair, entry, tp, sl) {
-            const currentBalance = calculateCurrentBalance();
-            const modalUSDT = currentBalance / currentKurs;
+        // BUG #3 & #4 FIX: Modified calculateRegular with proper modal handling
+        function calculateRegular(pair, entry, tp, sl, useCurrentBalance = true) {
+            // Determine modal to use
+            const modalIDR = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR : calculateCurrentBalance());
+            
+            const modalUSDT = modalIDR / currentKurs;
             const jumlahCoin = modalUSDT / entry;
 
             const nilaiTPUSDT = jumlahCoin * tp;
@@ -2634,34 +2629,35 @@
             
             if (sl > entry) {
                 // SL in profit zone
-                profit = nilaiTPIDR - currentBalance;
-                loss = nilaiSLIDR - currentBalance; // This is actually a profit, but smaller than TP
+                profit = nilaiTPIDR - modalIDR;
+                loss = nilaiSLIDR - modalIDR; // This is actually a profit, but smaller than TP
                 slPercent = ((sl - entry) / entry) * 100;
             } else {
                 // Normal SL below entry
-                profit = nilaiTPIDR - currentBalance;
-                loss = currentBalance - nilaiSLIDR;
+                profit = nilaiTPIDR - modalIDR;
+                loss = modalIDR - nilaiSLIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             }
 
             const tpPercent = ((tp - entry) / entry) * 100;
             const rrRatio = Math.abs(tpPercent / slPercent);
 
-            // Calculate balance projection
-            const capitalUsed = currentBalance;
-            const capitalPercent = 100;
+            // BUG #4 FIX: Calculate balance projection dengan modal yang benar
+            const currentBalanceNow = calculateCurrentBalance(); // Balance saat ini
+            const capitalUsed = modalIDR; // Modal actual untuk trade ini
+            const capitalPercent = (capitalUsed / currentBalanceNow) * 100;
             
-            const balanceIfTP = currentBalance + profit;
-            const balanceTPPercent = ((balanceIfTP - currentBalance) / currentBalance) * 100;
+            const balanceIfTP = currentBalanceNow + profit;
+            const balanceTPPercent = ((balanceIfTP - currentBalanceNow) / currentBalanceNow) * 100;
             
-            const balanceIfSL = sl > entry ? currentBalance + loss : currentBalance - loss;
-            const balanceSLPercent = ((balanceIfSL - currentBalance) / currentBalance) * 100;
+            const balanceIfSL = sl > entry ? currentBalanceNow + loss : currentBalanceNow - loss;
+            const balanceSLPercent = ((balanceIfSL - currentBalanceNow) / currentBalanceNow) * 100;
             
-            const balanceIfBE = currentBalance;
+            const balanceIfBE = currentBalanceNow;
 
             lastCalculation = {
                 pair, 
-                modalIDR: currentBalance, // Simpan current balance sebagai modal
+                modalIDR: modalIDR, // Simpan modal yang actual dipakai
                 entry, tp, sl,
                 profit, loss, tpPercent, slPercent, rrRatio,
                 nilaiTPIDR, nilaiSLIDR,
@@ -2705,9 +2701,12 @@
             displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
-        function calculatePartialTP(pair, entry, sl) {
-            const currentBalance = calculateCurrentBalance();
-            const modalUSDT = currentBalance / currentKurs;
+        // BUG #3 & #4 FIX: Modified calculatePartialTP with proper modal handling
+        function calculatePartialTP(pair, entry, sl, useCurrentBalance = true) {
+            // Determine modal to use
+            const modalIDR = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR : calculateCurrentBalance());
+            
+            const modalUSDT = modalIDR / currentKurs;
             const jumlahCoin = modalUSDT / entry;
 
             // Calculate each TP level
@@ -2717,7 +2716,7 @@
                 const coinsAtTP = jumlahCoin * percentage;
                 const valueAtTP = coinsAtTP * tpPrice;
                 const valueAtTPIDR = valueAtTP * currentKurs;
-                const modalPortionIDR = currentBalance * percentage;
+                const modalPortionIDR = modalIDR * percentage;
                 const profitIDR = valueAtTPIDR - modalPortionIDR;
                 const profitPercent = ((tpPrice - entry) / entry) * 100;
 
@@ -2743,30 +2742,31 @@
             
             let loss, slPercent;
             if (sl > entry) {
-                loss = nilaiSLIDR - currentBalance;
+                loss = nilaiSLIDR - modalIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             } else {
-                loss = currentBalance - nilaiSLIDR;
+                loss = modalIDR - nilaiSLIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             }
 
             const rrRatio = Math.abs(avgTPPercent / slPercent);
 
-            // Calculate balance projection
-            const capitalUsed = currentBalance;
-            const capitalPercent = 100;
+            // BUG #4 FIX: Calculate balance projection dengan modal yang benar
+            const currentBalanceNow = calculateCurrentBalance(); // Balance saat ini
+            const capitalUsed = modalIDR; // Modal actual untuk trade ini
+            const capitalPercent = (capitalUsed / currentBalanceNow) * 100;
             
-            const balanceIfTP = currentBalance + totalProfit;
-            const balanceTPPercent = ((balanceIfTP - currentBalance) / currentBalance) * 100;
+            const balanceIfTP = currentBalanceNow + totalProfit;
+            const balanceTPPercent = ((balanceIfTP - currentBalanceNow) / currentBalanceNow) * 100;
             
-            const balanceIfSL = sl > entry ? currentBalance + loss : currentBalance - loss;
-            const balanceSLPercent = ((balanceIfSL - currentBalance) / currentBalance) * 100;
+            const balanceIfSL = sl > entry ? currentBalanceNow + loss : currentBalanceNow - loss;
+            const balanceSLPercent = ((balanceIfSL - currentBalanceNow) / currentBalanceNow) * 100;
             
-            const balanceIfBE = currentBalance;
+            const balanceIfBE = currentBalanceNow;
 
             lastCalculation = {
                 pair, 
-                modalIDR: currentBalance, // Simpan current balance sebagai modal
+                modalIDR: modalIDR, // Simpan modal yang actual dipakai
                 entry, sl,
                 profit: totalProfit,
                 loss, slPercent, rrRatio,
@@ -2799,7 +2799,7 @@
 
             // Display summary
             document.getElementById('tpPercent').textContent = `+${avgTPPercent.toFixed(2)}%`;
-            document.getElementById('tpValue').textContent = `Total if all TP hit: ${formatRupiah(currentBalance + totalProfit)}`;
+            document.getElementById('tpValue').textContent = `Total if all TP hit: ${formatRupiah(modalIDR + totalProfit)}`;
             
             if (sl > entry) {
                 document.getElementById('slPercent').textContent = `+${slPercent.toFixed(2)}%`;
@@ -3225,6 +3225,7 @@
             currentEditTradeIndex = null;
         }
 
+        // BUG #3 FIX: Modified saveEditTrade with proper recalculation
         function saveEditTrade() {
             if (currentEditTradeIndex === null) return;
 
@@ -3255,7 +3256,7 @@
                     return;
                 }
 
-                // Recalculate profits using current balance at time of trade
+                // BUG #3 FIX: Recalculate dengan modal original dari history, bukan current balance
                 const modalIDR = item.modalIDR;
                 const modalUSDT = modalIDR / currentKurs;
                 const jumlahCoin = modalUSDT / entry;
@@ -3629,10 +3630,10 @@
             document.getElementById('initialBalanceValue').textContent = formatRupiah(parseFloat(initialBalance));
         }
 
+        // BUG #5 FIX: Modified openBalanceModal to edit initial balance
         function openBalanceModal() {
-            const currentBalance = calculateCurrentBalance();
-            modalBalanceIDR = currentBalance;
-            modalCurrency = 'idr';
+            const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
+            modalCurrency = 'idr'; // Always start with IDR
             
             // Update modal pill
             document.querySelectorAll('#modalCurrencyPill .currency-option').forEach(opt => {
@@ -3642,8 +3643,8 @@
                 }
             });
             
-            // Set input value in IDR
-            document.getElementById('balanceInput').value = formatNumber(Math.floor(currentBalance).toString());
+            // Set input value - EDIT INITIAL BALANCE
+            document.getElementById('balanceInput').value = formatNumber(Math.floor(initialBalance).toString());
             document.getElementById('balanceModal').classList.add('show');
         }
 
@@ -3885,47 +3886,54 @@
             }, 3000);
         }
 
-        // Currency Toggle Event Listeners
-        document.querySelectorAll('#currencyPill .currency-option').forEach(option => {
-            option.addEventListener('click', function() {
-                currentCurrency = this.dataset.currency;
-                localStorage.setItem('currencyPreference', currentCurrency);
-                updateCurrentBalanceDisplay();
-            });
+        // BUG #6 FIX: Single event delegation untuk currency toggle
+        // Currency Toggle Event Listeners dengan event delegation
+        document.getElementById('currencyPill').addEventListener('click', function(e) {
+            if (e.target.classList.contains('currency-option')) {
+                const currency = e.target.dataset.currency;
+                if (currency !== currentCurrency) {
+                    currentCurrency = currency;
+                    localStorage.setItem('currencyPreference', currency);
+                    
+                    this.querySelectorAll('.currency-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    e.target.classList.add('active');
+                    
+                    updateCurrentBalanceDisplay();
+                }
+            }
         });
 
-        // Modal Currency Toggle Event Listeners
-        document.querySelectorAll('#modalCurrencyPill .currency-option').forEach(option => {
-            option.addEventListener('click', function() {
-                const newCurrency = this.dataset.currency;
+        // Modal Currency Toggle Event Listeners dengan event delegation
+        document.getElementById('modalCurrencyPill').addEventListener('click', function(e) {
+            if (e.target.classList.contains('currency-option')) {
+                const newCurrency = e.target.dataset.currency;
                 if (newCurrency === modalCurrency) return;
                 
                 const input = document.getElementById('balanceInput');
-                let value = input.value.replace(/\./g, '');
-                if (value === '') value = '0';
+                let value = input.value.replace(/\./g, '').replace(',', '.');
+                if (value === '' || isNaN(value)) value = '0';
                 value = parseFloat(value);
                 
                 if (modalCurrency === 'idr' && newCurrency === 'usd') {
-                    // Convert IDR to USD
                     value = value / currentKurs;
                 } else if (modalCurrency === 'usd' && newCurrency === 'idr') {
-                    // Convert USD to IDR
                     value = value * currentKurs;
                 }
                 
                 modalCurrency = newCurrency;
-                document.querySelectorAll('#modalCurrencyPill .currency-option').forEach(opt => {
+                this.querySelectorAll('.currency-option').forEach(opt => {
                     opt.classList.remove('active');
                 });
-                this.classList.add('active');
+                e.target.classList.add('active');
                 
-                // Display value with format
                 if (modalCurrency === 'idr') {
                     input.value = formatNumber(Math.floor(value).toString());
                 } else {
                     input.value = value.toFixed(2);
                 }
-            });
+            }
         });
 
         document.getElementById('balanceInput').addEventListener('input', function(e) {
