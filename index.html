@@ -1999,8 +1999,8 @@
                                 <label for="maxEntry">Max Entry</label>
                                 <select id="maxEntry">
                                     <option value="1">1x - All In</option>
-                                    <option value="3">3x Entry</option>
-                                    <option value="5" selected>5x Entry</option>
+                                        <option value="3" selected>3x Entry</option>
+                                       <option value="5">5x Entry</option>
                                     <option value="10">10x Entry</option>
                                     <option value="custom">Custom...</option>
                                 </select>
@@ -2009,8 +2009,8 @@
                             <div class="form-group">
                                 <label for="riskPercent">Risk (%)</label>
                                 <select id="riskPercent">
-                                    <option value="1">1% - Conservative</option>
-                                    <option value="2" selected>2% - Moderate</option>
+                                     <option value="1" selected>1% - Conservative</option>
+                                      <option value="2">2% - Moderate</option>
                                     <option value="3">3% - Aggressive</option>
                                     <option value="5">5% - Very Aggressive</option>
                                 </select>
@@ -2421,7 +2421,7 @@
         let currentEditTradeIndex = null;
         let currentCurrency = localStorage.getItem('currencyPreference') || 'idr';
         let modalCurrency = 'idr';
-        let maxEntryMultiplier = 5;
+        let maxEntryMultiplier = 3;
         let hasInitialCalculation = false;
 
         // 🆕 UPDATED VARIABLES FOR MANUAL POSITION (USDT instead of coins)
