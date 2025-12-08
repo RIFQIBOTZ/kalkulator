@@ -685,15 +685,17 @@
             font-weight: 600;
         }
 
-        /* Balance Projection Section - Perbaikan Layout */
+        /* Balance Projection Section - PERBAIKAN BUG #2 */
         .balance-projection {
-            background: rgba(100, 149, 237, 0.08);
-            border: 1px solid rgba(100, 149, 237, 0.3);
+            background: rgba(13, 16, 37, 0.6);
+            border: 1px solid rgba(100, 149, 237, 0.2);
+            border-left: 4px solid #6495ED;
             border-radius: 15px;
-            padding: 20px;
-            margin-top: 20px;
+            padding: 16px;
+            margin-top: 10px;
             margin-bottom: 15px;
             display: none;
+            box-shadow: 0 0 20px rgba(100, 149, 237, 0.1);
         }
 
         .balance-proj-header {
@@ -1991,7 +1993,7 @@
                             </div>
                         </div>
 
-                        <!-- NEW: Balance Projection -->
+                        <!-- NEW: Balance Projection - PERBAIKAN BUG #2 -->
                         <div class="balance-projection" id="balanceProjection">
                             <div class="balance-proj-header">
                                 <span class="balance-proj-icon">💼</span>
@@ -2460,13 +2462,8 @@
             }
         }
 
-        // BUG #1 FIX: Function to recalculate after dropdown changes
-        function recalculateAfterDropdownChange() {
-            if (hasInitialCalculation && isFormValid()) {
-                // Trigger FULL calculation, bukan cuma position size
-                calculate({ preventDefault: () => {} });
-            }
-        }
+        // BUG #1 FIX: Hapus function recalculateAfterDropdownChange karena tidak digunakan lagi
+        // Function ini dihapus karena recalculate hanya terjadi saat tombol "Hitung Sekarang" diklik
 
         // Custom Entry Modal Function
         function showCustomEntryModal() {
@@ -2484,19 +2481,19 @@
                     customOption.textContent = `${num}x Entry (Custom)`;
                     
                     updatePositionSize();
-                    recalculateAfterDropdownChange();
+                    // PERBAIKAN BUG #1: Hapus recalculateAfterDropdownChange()
                 } else {
                     alert('Please enter a number between 1-100');
                     document.getElementById('maxEntry').value = '5';
                     maxEntryMultiplier = 5;
                     updatePositionSize();
-                    recalculateAfterDropdownChange();
+                    // PERBAIKAN BUG #1: Hapus recalculateAfterDropdownChange()
                 }
             } else {
                 document.getElementById('maxEntry').value = '5';
                 maxEntryMultiplier = 5;
                 updatePositionSize();
-                recalculateAfterDropdownChange();
+                // PERBAIKAN BUG #1: Hapus recalculateAfterDropdownChange()
             }
         }
 
@@ -2548,7 +2545,7 @@
             }
         }
 
-        // Event Listener for Max Entry Dropdown
+        // Event Listener for Max Entry Dropdown - PERBAIKAN BUG #1
         document.getElementById('maxEntry').addEventListener('change', function() {
             const value = this.value;
             
@@ -2557,7 +2554,7 @@
             } else {
                 maxEntryMultiplier = parseInt(value);
                 updatePositionSize();
-                recalculateAfterDropdownChange();
+                // PERBAIKAN BUG #1: Hapus recalculateAfterDropdownChange()
             }
         });
 
@@ -2573,10 +2570,10 @@
             updatePositionSize();
         });
         
-        // Event Listener untuk Risk % - AUTO calculate (PERBAIKAN BUG)
+        // Event Listener untuk Risk % - PERBAIKAN BUG #1
         document.getElementById('riskPercent').addEventListener('change', function() {
             updatePositionSize();
-            recalculateAfterDropdownChange();
+            // PERBAIKAN BUG #1: Hapus recalculateAfterDropdownChange()
         });
 
         function formatRupiah(amount) {
