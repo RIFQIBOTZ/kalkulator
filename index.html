@@ -1239,6 +1239,12 @@
             color: #00d4ff;
         }
 
+        .filter-btn.partial.active {
+            background: rgba(255, 165, 0, 0.2);
+            border-color: #ffa500;
+            color: #ffa500;
+        }
+
         .filter-btn.hit-tp.active {
             background: rgba(0, 255, 136, 0.2);
             border-color: #00ff88;
@@ -1255,12 +1261,6 @@
             background: rgba(255, 215, 0, 0.2);
             border-color: #ffd700;
             color: #ffd700;
-        }
-
-        .filter-btn.partial.active {
-            background: rgba(255, 165, 0, 0.2);
-            border-color: #ffa500;
-            color: #ffa500;
         }
 
         .filter-btn.warning.active {
@@ -2124,18 +2124,18 @@
                                     </div>
                                     
                                     <div class="form-group">
-                                        <label for="manualPositionSize">Manual Position Size (coins)</label>
-                                        <input type="tel" inputmode="decimal" id="manualPositionSize" placeholder="0.000000">
+                                        <label for="manualPositionUSDT">Manual Position Size (USDT)</label>
+                                        <input type="tel" inputmode="decimal" id="manualPositionUSDT" placeholder="500">
                                     </div>
                                     
                                     <div class="manual-comparison" id="manualComparison">
                                         <div class="comparison-item">
                                             <span class="comparison-label">💡 Recommended:</span>
-                                            <span class="comparison-value" id="recommendedSize">0.000000 coins</span>
+                                            <span class="comparison-value" id="recommendedUSDT">$0.00 USDT</span>
                                         </div>
                                         <div class="comparison-item">
                                             <span class="comparison-label">📈 Your input:</span>
-                                            <span class="comparison-value" id="userInputSize">-</span>
+                                            <span class="comparison-value" id="userInputUSDT">-</span>
                                         </div>
                                         <div class="comparison-item">
                                             <span class="comparison-label">🎯 Actual Risk:</span>
@@ -2327,7 +2327,7 @@
                         <button class="filter-btn hit-tp" data-filter="hit-tp">✅ Hit TP (0)</button>
                         <button class="filter-btn hit-sl" data-filter="hit-sl">❌ Hit SL (0)</button>
                         <button class="filter-btn break-even" data-filter="break-even">🔄 Break Even (0)</button>
-                        <button class="filter-btn warning" data-filter="warning">⚠️ Warning (0)</button> <!-- 🆕 NEW -->
+                        <button class="filter-btn warning" data-filter="warning">⚠️ Warning (0)</button>
                     </div>
                     
                     <div class="history-list" id="historyList">
@@ -2421,20 +2421,21 @@
         let currentEditTradeIndex = null;
         let currentCurrency = localStorage.getItem('currencyPreference') || 'idr';
         let modalCurrency = 'idr';
-        let maxEntryMultiplier = 5; // Default 5x Entry
-        let hasInitialCalculation = false; // Flag untuk menandai apakah sudah ada kalkulasi awal
+        let maxEntryMultiplier = 5;
+        let hasInitialCalculation = false;
 
-        // 🆕 NEW VARIABLES FOR MANUAL POSITION
+        // 🆕 UPDATED VARIABLES FOR MANUAL POSITION (USDT instead of coins)
         let useManualPosition = false;
-        let manualPositionSize = 0;
-        let recommendedPositionSize = 0; // Untuk menyimpan rekomendasi saat ini
-        let pendingCalculation = null; // Untuk menyimpan parameter perhitungan yang tertunda
+        let manualPositionUSDT = 0;
+        let manualPositionSize = 0; // Calculated from USDT and entry price
+        let recommendedPositionSize = 0;
+        let recommendedPositionUSDT = 0; // NEW: Store recommended in USDT
+        let pendingCalculation = null;
 
         // ========== PERBAIKAN BUG: Risk % Tidak Diterapkan ==========
-        // Fungsi baru untuk mendapatkan Risk % dari dropdown
         function getRiskPercent() {
             const riskSelect = document.getElementById('riskPercent');
-            return parseFloat(riskSelect.value) / 100; // Convert 2% → 0.02
+            return parseFloat(riskSelect.value) / 100;
         }
 
         // Initialize TP Levels
@@ -2480,7 +2481,7 @@
             attachTPEventListeners();
         }
 
-        // Attach Event Listeners to TP inputs - HAPUS auto calculate
+        // Attach Event Listeners to TP inputs
         function attachTPEventListeners() {
             document.querySelectorAll('.tp-price').forEach(input => {
                 input.addEventListener('input', function() {
@@ -2556,7 +2557,6 @@
                 totalElement.className = 'percentage-total invalid';
             }
 
-            // Update Add TP button state
             const btnAddTP = document.getElementById('btnAddTP');
             btnAddTP.disabled = tpLevels.length >= 5;
         }
@@ -2585,7 +2585,7 @@
             }
         });
 
-        // 🆕 Toggle Manual Position
+        // 🆕 UPDATED: Toggle Manual Position (USDT)
         document.getElementById('manualPositionToggle').addEventListener('click', function() {
             useManualPosition = !useManualPosition;
             this.classList.toggle('active');
@@ -2594,43 +2594,61 @@
             if (useManualPosition) {
                 manualSection.style.display = 'block';
                 manualSection.classList.add('active');
-                // Update recommended size dari display saat ini
-                recommendedPositionSize = parseFloat(document.getElementById('posSize').textContent) || 0;
-                document.getElementById('recommendedSize').textContent = recommendedPositionSize.toFixed(6) + ' coins';
+                // Update recommended USDT dari display saat ini
+                const recommendedSize = parseFloat(document.getElementById('posSize').textContent) || 0;
+                const entry = parseNumber(document.getElementById('entry').value.replace(',', '.') || '0');
+                if (entry > 0) {
+                    recommendedPositionUSDT = recommendedSize * entry;
+                    document.getElementById('recommendedUSDT').textContent = `$${recommendedPositionUSDT.toFixed(2)} USDT`;
+                }
             } else {
                 manualSection.style.display = 'none';
                 manualSection.classList.remove('active');
+                manualPositionUSDT = 0;
                 manualPositionSize = 0;
-                document.getElementById('manualPositionSize').value = '';
-                document.getElementById('userInputSize').textContent = '-';
+                document.getElementById('manualPositionUSDT').value = '';
+                document.getElementById('userInputUSDT').textContent = '-';
                 document.getElementById('actualRiskManual').textContent = '-';
             }
         });
 
-        // 🆕 Manual position size input
-        document.getElementById('manualPositionSize').addEventListener('input', function(e) {
+        // 🆕 UPDATED: Manual position USDT input (instead of coins)
+        document.getElementById('manualPositionUSDT').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\./g, '');
             if (value === '') {
+                manualPositionUSDT = 0;
                 manualPositionSize = 0;
-                document.getElementById('userInputSize').textContent = '-';
+                document.getElementById('userInputUSDT').textContent = '-';
                 document.getElementById('actualRiskManual').textContent = '-';
                 return;
             }
             
             value = parseFloat(value.replace(',', '.'));
-            manualPositionSize = value;
+            manualPositionUSDT = value;
+            
+            // Convert USDT to coins based on entry price
+            const entry = parseNumber(document.getElementById('entry').value.replace(',', '.') || '0');
+            if (entry > 0) {
+                manualPositionSize = manualPositionUSDT / entry;
+            } else {
+                manualPositionSize = 0;
+            }
             
             // Update comparison
-            const recommended = parseFloat(document.getElementById('posSize').textContent) || 0;
-            if (recommended > 0) {
-                const difference = ((value / recommended) - 1) * 100;
+            const recommendedSize = parseFloat(document.getElementById('posSize').textContent) || 0;
+            const entryPrice = parseNumber(document.getElementById('entry').value.replace(',', '.') || '0');
+            if (recommendedSize > 0 && entryPrice > 0) {
+                recommendedPositionUSDT = recommendedSize * entryPrice;
+                const difference = ((manualPositionUSDT / recommendedPositionUSDT) - 1) * 100;
                 const riskPercent = getRiskPercent() * 100;
-                const actualRisk = (value / recommended) * riskPercent;
+                const actualRisk = (manualPositionUSDT / recommendedPositionUSDT) * riskPercent;
                 
-                document.getElementById('userInputSize').textContent = 
-                    `${value.toFixed(6)} coins (${difference > 0 ? '+' : ''}${difference.toFixed(1)}%)`;
+                document.getElementById('userInputUSDT').textContent = 
+                    `$${manualPositionUSDT.toFixed(2)} USDT (${difference > 0 ? '+' : ''}${difference.toFixed(1)}%)`;
                 document.getElementById('actualRiskManual').textContent = 
                     `${actualRisk.toFixed(2)}% of position value`;
+                
+                document.getElementById('recommendedUSDT').textContent = `$${recommendedPositionUSDT.toFixed(2)} USDT`;
             }
         });
 
@@ -2743,7 +2761,6 @@
                 if (num >= 1 && num <= 100) {
                     maxEntryMultiplier = num;
                     
-                    // Update dropdown text to show custom value
                     const select = document.getElementById('maxEntry');
                     const customOption = select.querySelector('[value="custom"]');
                     customOption.textContent = `${num}x Entry (Custom)`;
@@ -2777,23 +2794,17 @@
             if (currentBalance > 0 && entry > 0 && sl > 0 && currentKurs > 0 && entry !== sl) {
                 const currentBalanceUSD = currentBalance / currentKurs;
                 
-                // NEW LOGIC: Menggunakan Risk % untuk menghitung position size
-                const riskPercent = getRiskPercent(); // 0.02 untuk 2%
+                const riskPercent = getRiskPercent();
                 
-                // Hitung modal maksimum per trade
                 const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
                 
-                // Hitung risk amount berdasarkan Risk %
                 const riskAmountUSD = maxPositionValue * riskPercent;
                 
-                // Hitung position size berdasarkan risk amount dan jarak entry-SL
                 const priceDiff = Math.abs(entry - sl);
                 const positionSize = riskAmountUSD / priceDiff;
                 
-                // Hitung modal aktual yang digunakan
                 const actualPositionValue = positionSize * entry;
                 
-                // Calculate actual risk dengan position size yang baru
                 const actualRiskUSD = positionSize * priceDiff;
                 const actualRiskIDR = actualRiskUSD * currentKurs;
                 const actualRiskPercent = (actualRiskUSD / maxPositionValue) * 100;
@@ -2806,19 +2817,19 @@
                 document.getElementById('posRisk').textContent = `${actualRiskPercent.toFixed(2)}%`;
                 document.getElementById('posRiskIDR').textContent = formatRupiah(actualRiskIDR);
                 
-                // 🆕 Update recommended position size untuk manual override
+                // 🆕 UPDATED: Update recommended position size and USDT untuk manual override
                 recommendedPositionSize = positionSize;
+                recommendedPositionUSDT = actualPositionValue;
                 if (useManualPosition) {
-                    document.getElementById('recommendedSize').textContent = positionSize.toFixed(6) + ' coins';
+                    document.getElementById('recommendedUSDT').textContent = `$${actualPositionValue.toFixed(2)} USDT`;
                     
-                    // Update comparison jika manual position sudah diisi
-                    if (manualPositionSize > 0) {
-                        const difference = ((manualPositionSize / positionSize) - 1) * 100;
+                    if (manualPositionUSDT > 0) {
+                        const difference = ((manualPositionUSDT / actualPositionValue) - 1) * 100;
                         const riskPercentVal = getRiskPercent() * 100;
-                        const actualRisk = (manualPositionSize / positionSize) * riskPercentVal;
+                        const actualRisk = (manualPositionUSDT / actualPositionValue) * riskPercentVal;
                         
-                        document.getElementById('userInputSize').textContent = 
-                            `${manualPositionSize.toFixed(6)} coins (${difference > 0 ? '+' : ''}${difference.toFixed(1)}%)`;
+                        document.getElementById('userInputUSDT').textContent = 
+                            `$${manualPositionUSDT.toFixed(2)} USDT (${difference > 0 ? '+' : ''}${difference.toFixed(1)}%)`;
                         document.getElementById('actualRiskManual').textContent = 
                             `${actualRisk.toFixed(2)}% of position value`;
                     }
@@ -2840,7 +2851,7 @@
             }
         });
 
-        // Event Listeners untuk input fields - TIDAK auto calculate
+        // Event Listeners untuk input fields
         document.getElementById('entry').addEventListener('input', autoFormatInput);
         document.getElementById('tp').addEventListener('input', autoFormatInput);
         document.getElementById('sl').addEventListener('input', function(e) {
@@ -2865,7 +2876,7 @@
             }).format(amount);
         }
 
-        // 🆕 Fungsi untuk menampilkan modal konfirmasi manual position
+        // 🆕 UPDATED: Fungsi untuk menampilkan modal konfirmasi manual position (USDT)
         function showManualConfirmation() {
             const entry = parseNumber(document.getElementById('entry').value.replace(',', '.'));
             const sl = usePartialTP ? 
@@ -2873,18 +2884,20 @@
                 parseNumber(document.getElementById('sl').value.replace(',', '.'));
             
             const priceDiff = Math.abs(entry - sl);
-            const recommendedSize = recommendedPositionSize;
-            const userSize = manualPositionSize;
+            const recommendedUSDT = recommendedPositionUSDT;
+            const userUSDT = manualPositionUSDT;
             
-            const difference = ((userSize / recommendedSize) - 1) * 100;
+            const difference = ((userUSDT / recommendedUSDT) - 1) * 100;
             const recommendedRisk = getRiskPercent() * 100;
-            const actualRisk = (userSize / recommendedSize) * recommendedRisk;
+            const actualRisk = (userUSDT / recommendedUSDT) * recommendedRisk;
             
             // Hitung risk dalam IDR
-            const riskAmountUSD = userSize * priceDiff;
+            const coins = userUSDT / entry;
+            const riskAmountUSD = coins * priceDiff;
             const riskAmountIDR = riskAmountUSD * currentKurs;
             
-            const recommendedRiskUSD = recommendedSize * priceDiff;
+            const recommendedCoins = recommendedUSDT / entry;
+            const recommendedRiskUSD = recommendedCoins * priceDiff;
             const recommendedRiskIDR = recommendedRiskUSD * currentKurs;
             
             const content = `
@@ -2894,16 +2907,16 @@
                     <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span style="color: #8b92b8;">🔧 Your Input:</span>
-                            <span style="color: #ffa500; font-weight: 600;">${userSize.toFixed(6)} coins</span>
+                            <span style="color: #ffa500; font-weight: 600;">$${userUSDT.toFixed(2)} USDT</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                             <span style="color: #8b92b8;">✅ Recommended:</span>
-                            <span style="color: #00ff88; font-weight: 600;">${recommendedSize.toFixed(6)} coins</span>
+                            <span style="color: #00ff88; font-weight: 600;">$${recommendedUSDT.toFixed(2)} USDT</span>
                         </div>
                         <div style="display: flex; justify-content: space-between;">
                             <span style="color: #8b92b8;">📊 Difference:</span>
                             <span style="color: ${difference > 0 ? '#ff3366' : '#00ff88'}; font-weight: 600;">
-                                ${difference > 0 ? '+' : ''}${difference.toFixed(1)}% (${(userSize/recommendedSize).toFixed(2)}x)
+                                ${difference > 0 ? '+' : ''}${difference.toFixed(1)}% (${(userUSDT/recommendedUSDT).toFixed(2)}x)
                             </span>
                         </div>
                     </div>
@@ -2939,21 +2952,17 @@
                 return;
             }
 
-            // 🆕 TAMBAHKAN: Check if using manual position
-            if (useManualPosition && manualPositionSize > 0) {
-                // Tampilkan modal konfirmasi
+            // 🆕 UPDATED: Check if using manual position
+            if (useManualPosition && manualPositionUSDT > 0) {
                 showManualConfirmation();
-                // Simpan parameter untuk melanjutkan perhitungan nanti
                 pendingCalculation = {
                     useCurrentBalance: useCurrentBalance,
                     pair: document.getElementById('pair').value,
                     entry: parseNumber(document.getElementById('entry').value.replace(',', '.')),
-                    // parameter lainnya sesuai dengan jenis perhitungan (partial atau regular)
                 };
-                return; // Stop here, wait for user confirmation
+                return;
             }
 
-            // Lanjutkan dengan kalkulasi normal
             proceedWithCalculation(useCurrentBalance);
         }
 
@@ -2963,14 +2972,12 @@
             const entry = parseNumber(document.getElementById('entry').value.replace(',', '.'));
 
             if (usePartialTP) {
-                // Validate percentages
                 const totalPercentage = tpLevels.reduce((sum, tp) => sum + tp.percentage, 0);
                 if (totalPercentage !== 100) {
                     showToast('⚠️ Total percentage must be 100%!');
                     return;
                 }
 
-                // Validate all TP prices filled
                 const allFilled = tpLevels.every(tp => tp.price && parseNumber(tp.price.replace(',', '.')) > 0);
                 if (!allFilled) {
                     showToast('⚠️ Please fill all TP prices!');
@@ -2985,26 +2992,29 @@
                 calculateRegular(pair, entry, tp, sl, useCurrentBalance);
             }
             
-            hasInitialCalculation = true; // Set flag bahwa sudah ada kalkulasi awal
+            hasInitialCalculation = true;
         }
 
-        // ========== PERBAIKAN UTAMA: calculateRegular() dengan Risk % dan Manual Position ==========
+        // ========== PERBAIKAN UTAMA: calculateRegular() dengan Risk % dan Manual Position (USDT) ==========
         function calculateRegular(pair, entry, tp, sl, useCurrentBalance = true) {
             // Determine modal to use
             const currentBalance = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR * maxEntryMultiplier : calculateCurrentBalance());
             
             // Hitung position size berdasarkan Risk %
-            const riskPercent = getRiskPercent(); // 0.02 untuk 2%
+            const riskPercent = getRiskPercent();
             const currentBalanceUSD = currentBalance / currentKurs;
             const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
             const riskAmountUSD = maxPositionValue * riskPercent;
             const priceDiff = Math.abs(entry - sl);
             let calculatedPositionSize = riskAmountUSD / priceDiff;
+            let calculatedPositionUSDT = calculatedPositionSize * entry;
             
-            // 🆕 Check if using manual position
+            // 🆕 UPDATED: Check if using manual position (USDT)
             let positionSize = calculatedPositionSize;
-            if (useManualPosition && manualPositionSize > 0) {
-                positionSize = manualPositionSize;
+            let positionUSDT = calculatedPositionUSDT;
+            if (useManualPosition && manualPositionUSDT > 0) {
+                positionUSDT = manualPositionUSDT;
+                positionSize = positionUSDT / entry;
             }
             
             // Hitung modal aktual yang digunakan
@@ -3021,12 +3031,10 @@
             let profit, loss, slPercent;
             
             if (sl > entry) {
-                // SL in profit zone
                 profit = nilaiTPIDR - modalIDR;
                 loss = nilaiSLIDR - modalIDR;
                 slPercent = ((sl - entry) / entry) * 100;
             } else {
-                // Normal SL below entry
                 profit = nilaiTPIDR - modalIDR;
                 loss = modalIDR - nilaiSLIDR;
                 slPercent = ((sl - entry) / entry) * 100;
@@ -3067,11 +3075,13 @@
                     balanceIfBE
                 },
                 positionSize: positionSize,
-                riskPercent: riskPercent * 100, // Simpan risk % yang digunakan
-                // 🆕 NEW: Manual position data
-                isManualPosition: useManualPosition && manualPositionSize > 0,
-                manualPositionSize: useManualPosition && manualPositionSize > 0 ? manualPositionSize : null,
-                recommendedPositionSize: useManualPosition && manualPositionSize > 0 ? calculatedPositionSize : null
+                riskPercent: riskPercent * 100,
+                // 🆕 UPDATED: Manual position data in USDT
+                isManualPosition: useManualPosition && manualPositionUSDT > 0,
+                manualPositionUSDT: useManualPosition && manualPositionUSDT > 0 ? manualPositionUSDT : null,
+                manualPositionSize: useManualPosition && manualPositionUSDT > 0 ? positionSize : null,
+                recommendedPositionUSDT: useManualPosition && manualPositionUSDT > 0 ? calculatedPositionUSDT : null,
+                recommendedPositionSize: useManualPosition && manualPositionUSDT > 0 ? calculatedPositionSize : null
             };
 
             // Tampilkan hasil
@@ -3101,23 +3111,26 @@
             displayBalanceProjection(lastCalculation.balanceProjection);
         }
 
-        // ========== PERBAIKAN UTAMA: calculatePartialTP() dengan Risk % dan Manual Position ==========
+        // ========== PERBAIKAN UTAMA: calculatePartialTP() dengan Risk % dan Manual Position (USDT) ==========
         function calculatePartialTP(pair, entry, sl, useCurrentBalance = true) {
             // Determine modal to use
             const currentBalance = useCurrentBalance ? calculateCurrentBalance() : (lastCalculation ? lastCalculation.modalIDR * maxEntryMultiplier : calculateCurrentBalance());
             
             // Hitung position size berdasarkan Risk %
-            const riskPercent = getRiskPercent(); // 0.02 untuk 2%
+            const riskPercent = getRiskPercent();
             const currentBalanceUSD = currentBalance / currentKurs;
             const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
             const riskAmountUSD = maxPositionValue * riskPercent;
             const priceDiff = Math.abs(entry - sl);
             let calculatedPositionSize = riskAmountUSD / priceDiff;
+            let calculatedPositionUSDT = calculatedPositionSize * entry;
             
-            // 🆕 Check if using manual position
+            // 🆕 UPDATED: Check if using manual position (USDT)
             let positionSize = calculatedPositionSize;
-            if (useManualPosition && manualPositionSize > 0) {
-                positionSize = manualPositionSize;
+            let positionUSDT = calculatedPositionUSDT;
+            if (useManualPosition && manualPositionUSDT > 0) {
+                positionUSDT = manualPositionUSDT;
+                positionSize = positionUSDT / entry;
             }
             
             // Hitung modal aktual yang digunakan
@@ -3200,11 +3213,13 @@
                     balanceIfBE
                 },
                 positionSize: positionSize,
-                riskPercent: riskPercent * 100, // Simpan risk % yang digunakan
-                // 🆕 NEW: Manual position data
-                isManualPosition: useManualPosition && manualPositionSize > 0,
-                manualPositionSize: useManualPosition && manualPositionSize > 0 ? manualPositionSize : null,
-                recommendedPositionSize: useManualPosition && manualPositionSize > 0 ? calculatedPositionSize : null
+                riskPercent: riskPercent * 100,
+                // 🆕 UPDATED: Manual position data in USDT
+                isManualPosition: useManualPosition && manualPositionUSDT > 0,
+                manualPositionUSDT: useManualPosition && manualPositionUSDT > 0 ? manualPositionUSDT : null,
+                manualPositionSize: useManualPosition && manualPositionUSDT > 0 ? positionSize : null,
+                recommendedPositionUSDT: useManualPosition && manualPositionUSDT > 0 ? calculatedPositionUSDT : null,
+                recommendedPositionSize: useManualPosition && manualPositionUSDT > 0 ? calculatedPositionSize : null
             };
 
             // Display partial TP results
@@ -3299,7 +3314,6 @@
             const balanceAmount = document.getElementById('balanceAmount');
             const balanceConversion = document.getElementById('balanceConversion');
             
-            // Update pill active state
             document.querySelectorAll('#currencyPill .currency-option').forEach(opt => {
                 opt.classList.remove('active');
                 if (opt.dataset.currency === currentCurrency) {
@@ -3350,14 +3364,14 @@
             text += `\n⚖️ Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}`;
             text += `\n🎯 Risk % Used: ${lastCalculation.riskPercent ? lastCalculation.riskPercent.toFixed(1) + '%' : 'N/A'}`;
             
-            // 🆕 ADD MANUAL POSITION INFO
+            // 🆕 UPDATED: MANUAL POSITION INFO IN USDT
             if (lastCalculation.isManualPosition) {
                 text += `\n\n⚠️ MANUAL POSITION OVERRIDE:`;
-                text += `\n🔧 Position Used: ${lastCalculation.manualPositionSize.toFixed(6)} coins`;
-                text += `\n💡 Recommended: ${lastCalculation.recommendedPositionSize.toFixed(6)} coins`;
-                const diff = ((lastCalculation.manualPositionSize / lastCalculation.recommendedPositionSize) - 1) * 100;
-                text += `\n📊 Difference: ${diff > 0 ? '+' : ''}${diff.toFixed(1)}% (${(lastCalculation.manualPositionSize / lastCalculation.recommendedPositionSize).toFixed(2)}x)`;
-                const actualRisk = (lastCalculation.manualPositionSize / lastCalculation.recommendedPositionSize) * lastCalculation.riskPercent;
+                text += `\n🔧 Position Used: $${lastCalculation.manualPositionUSDT.toFixed(2)} USDT`;
+                text += `\n💡 Recommended: $${lastCalculation.recommendedPositionUSDT.toFixed(2)} USDT`;
+                const diff = ((lastCalculation.manualPositionUSDT / lastCalculation.recommendedPositionUSDT) - 1) * 100;
+                text += `\n📊 Difference: ${diff > 0 ? '+' : ''}${diff.toFixed(1)}% (${(lastCalculation.manualPositionUSDT / lastCalculation.recommendedPositionUSDT).toFixed(2)}x)`;
+                const actualRisk = (lastCalculation.manualPositionUSDT / lastCalculation.recommendedPositionUSDT) * lastCalculation.riskPercent;
                 text += `\n⚠️ Actual Risk: ${actualRisk.toFixed(2)}% (expected ${lastCalculation.riskPercent.toFixed(2)}%)`;
             }
             
@@ -3394,9 +3408,8 @@
             updateStats();
             updateCurrentBalanceDisplay();
             updatePositionSize();
-            updateFilterCounts(); // Update filter counts including warning
+            updateFilterCounts();
             
-            // 🆕 DIFFERENT TOAST MESSAGE
             if (lastCalculation.isManualPosition) {
                 showToast('⚠️ Saved with MANUAL position! This trade is marked in history.');
             } else {
@@ -3413,7 +3426,7 @@
             const hitTpCount = history.filter(t => t.status === 'hit-tp').length;
             const hitSlCount = history.filter(t => t.status === 'hit-sl').length;
             const breakEvenCount = history.filter(t => t.status === 'break-even').length;
-            const warningCount = history.filter(t => t.isManualPosition === true).length; // 🆕 NEW
+            const warningCount = history.filter(t => t.isManualPosition === true).length;
             
             document.querySelector('.filter-btn.all').textContent = `All (${allCount})`;
             document.querySelector('.filter-btn.running').textContent = `⏳ Running (${runningCount})`;
@@ -3421,7 +3434,7 @@
             document.querySelector('.filter-btn.hit-tp').textContent = `✅ Hit TP (${hitTpCount})`;
             document.querySelector('.filter-btn.hit-sl').textContent = `❌ Hit SL (${hitSlCount})`;
             document.querySelector('.filter-btn.break-even').textContent = `🔄 Break Even (${breakEvenCount})`;
-            document.querySelector('.filter-btn.warning').textContent = `⚠️ Warning (${warningCount})`; // 🆕 NEW
+            document.querySelector('.filter-btn.warning').textContent = `⚠️ Warning (${warningCount})`;
         }
 
         function applyFilter(filter) {
@@ -3441,7 +3454,7 @@
 
             let filteredHistory = history;
             if (currentFilter === 'warning') {
-                filteredHistory = history.filter(t => t.isManualPosition === true); // 🆕 NEW
+                filteredHistory = history.filter(t => t.isManualPosition === true);
             } else if (currentFilter !== 'all') {
                 filteredHistory = history.filter(t => t.status === currentFilter);
             }
@@ -3462,7 +3475,6 @@
             historyList.innerHTML = '';
 
             filteredHistory.forEach((item, index) => {
-                // Find actual index in full history
                 const actualIndex = history.indexOf(item);
                 
                 const date = new Date(item.timestamp);
@@ -3494,7 +3506,6 @@
                 let displayClass = 'positive';
                 
                 if (status === 'partial') {
-                    // Calculate partial profit
                     if (item.usePartialTP && item.tpLevels) {
                         const hitTPs = item.tpLevels.filter(tp => tp.status === 'hit');
                         displayAmount = hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
@@ -3534,11 +3545,11 @@
                     }
                 }
 
-                // Tambahkan detail manual jika ada
+                // 🆕 UPDATED: Tambahkan detail manual dalam USDT
                 if (isManual) {
                     detailsText += `<br><span style="color: #ffa500; font-size: 0.75rem;">
-                        📊 Position: ${item.manualPositionSize.toFixed(6)} coins (Manual Override)
-                        <br>💡 Recommended was: ${item.recommendedPositionSize.toFixed(6)} coins
+                        📊 Position: $${item.manualPositionUSDT.toFixed(2)} USDT (Manual Override)
+                        <br>💡 Recommended was: $${item.recommendedPositionUSDT.toFixed(2)} USDT
                     </span>`;
                 }
 
@@ -3609,11 +3620,12 @@
 
             // 🆕 Reset manual toggle
             useManualPosition = false;
+            manualPositionUSDT = 0;
             manualPositionSize = 0;
             document.getElementById('manualPositionToggle').classList.remove('active');
             document.getElementById('manualInputSection').style.display = 'none';
             document.getElementById('manualInputSection').classList.remove('active');
-            document.getElementById('manualPositionSize').value = '';
+            document.getElementById('manualPositionUSDT').value = '';
 
             updatePositionSize();
 
@@ -3629,7 +3641,6 @@
             const editFormContainer = document.getElementById('editFormContainer');
             
             if (item.usePartialTP) {
-                // Partial TP Edit Form
                 const tpInputs = item.tpLevels.map((tp, idx) => `
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                         <div class="form-group">
@@ -3668,7 +3679,6 @@
                     </div>
                 `;
             } else {
-                // Regular TP Edit Form
                 editFormContainer.innerHTML = `
                     <div class="form-grid">
                         <div class="form-group">
@@ -3695,7 +3705,6 @@
                 `;
             }
 
-            // Attach auto-format listeners
             editFormContainer.querySelectorAll('input[type="tel"]').forEach(input => {
                 if (input.id !== 'editPair') {
                     input.addEventListener('input', autoFormatInput);
@@ -3722,7 +3731,6 @@
             const sl = parseNumber(document.getElementById('editSL').value.replace(',', '.'));
 
             if (item.usePartialTP) {
-                // Update partial TP trade
                 const editedTPLevels = item.tpLevels.map((tp, idx) => {
                     const priceInput = document.querySelector(`.edit-tp-price[data-index="${idx}"]`);
                     const percentageInput = document.querySelector(`.edit-tp-percentage[data-index="${idx}"]`);
@@ -3734,23 +3742,21 @@
                     };
                 });
 
-                // Validate percentages
                 const totalPercentage = editedTPLevels.reduce((sum, tp) => sum + tp.percentage, 0);
                 if (totalPercentage !== 100) {
                     showToast('⚠️ Total percentage must be 100%!');
                     return;
                 }
 
-                // Recalculate dengan Risk % yang berlaku saat ini
                 const riskPercent = getRiskPercent();
                 const currentBalanceUSD = calculateCurrentBalance() / currentKurs;
                 const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
                 const riskAmountUSD = maxPositionValue * riskPercent;
                 const priceDiff = Math.abs(entry - sl);
                 const positionSize = riskAmountUSD / priceDiff;
+                const positionUSDT = positionSize * entry;
                 
-                const modalUSDT = positionSize * entry;
-                const modalIDR = modalUSDT * currentKurs;
+                const modalIDR = positionUSDT * currentKurs;
 
                 const recalculatedTPLevels = editedTPLevels.map(tp => {
                     const percentage = tp.percentage / 100;
@@ -3802,19 +3808,17 @@
                 history[currentEditTradeIndex].rrRatio = Math.abs(avgTPPercent / slPercent);
 
             } else {
-                // Update regular TP trade
                 const tp = parseNumber(document.getElementById('editTP').value.replace(',', '.'));
                 
-                // Recalculate dengan Risk % yang berlaku saat ini
                 const riskPercent = getRiskPercent();
                 const currentBalanceUSD = calculateCurrentBalance() / currentKurs;
                 const maxPositionValue = currentBalanceUSD / maxEntryMultiplier;
                 const riskAmountUSD = maxPositionValue * riskPercent;
                 const priceDiff = Math.abs(entry - sl);
                 const positionSize = riskAmountUSD / priceDiff;
+                const positionUSDT = positionSize * entry;
                 
-                const modalUSDT = positionSize * entry;
-                const modalIDR = modalUSDT * currentKurs;
+                const modalIDR = positionUSDT * currentKurs;
 
                 const nilaiTPUSDT = positionSize * tp;
                 const nilaiTPIDR = nilaiTPUSDT * currentKurs;
@@ -3853,9 +3857,11 @@
                 history[currentEditTradeIndex].riskPercent = riskPercent * 100;
             }
 
-            // 🆕 Preserve manual position data
+            // 🆕 UPDATED: Preserve manual position data in USDT
             history[currentEditTradeIndex].isManualPosition = item.isManualPosition || false;
+            history[currentEditTradeIndex].manualPositionUSDT = item.manualPositionUSDT || null;
             history[currentEditTradeIndex].manualPositionSize = item.manualPositionSize || null;
+            history[currentEditTradeIndex].recommendedPositionUSDT = item.recommendedPositionUSDT || null;
             history[currentEditTradeIndex].recommendedPositionSize = item.recommendedPositionSize || null;
 
             localStorage.setItem('tpslHistory', JSON.stringify(history));
@@ -3929,7 +3935,6 @@
             const statusModalContent = document.getElementById('statusModalContent');
 
             if (item.usePartialTP) {
-                // Partial TP status update
                 const tpCheckboxes = item.tpLevels.map((tp, idx) => `
                     <div class="tp-checkbox-item" id="tpCheckItem${idx}">
                         <input type="checkbox" id="tpCheck${idx}" ${tp.status === 'hit' ? 'checked' : ''}>
@@ -3958,20 +3963,16 @@
                     </div>
                 `;
 
-                // Add hybrid system logic
                 const slCheck = document.getElementById('slCheck');
                 const breakEvenCheck = document.getElementById('breakEvenCheck');
                 const tpChecks = item.tpLevels.map((_, idx) => document.getElementById(`tpCheck${idx}`));
 
-                // Function to update checkbox states
                 function updateCheckboxStates() {
                     const slChecked = slCheck.checked;
                     const breakEvenChecked = breakEvenCheck.checked;
                     const anyTPChecked = tpChecks.some(check => check.checked);
 
-                    // Disable conflicting options
                     if (slChecked) {
-                        // If SL is checked, disable TP and Break Even
                         tpChecks.forEach(check => {
                             check.disabled = true;
                             document.getElementById(`tpCheckItem${tpChecks.indexOf(check)}`).classList.add('disabled');
@@ -3979,7 +3980,6 @@
                         breakEvenCheck.disabled = true;
                         document.getElementById('breakEvenCheckItem').classList.add('disabled');
                     } else if (breakEvenChecked) {
-                        // If Break Even is checked, disable TP and SL
                         tpChecks.forEach(check => {
                             check.disabled = true;
                             document.getElementById(`tpCheckItem${tpChecks.indexOf(check)}`).classList.add('disabled');
@@ -3987,13 +3987,11 @@
                         slCheck.disabled = true;
                         document.getElementById('slCheckItem').classList.add('disabled');
                     } else if (anyTPChecked) {
-                        // If any TP is checked, disable SL and Break Even
                         slCheck.disabled = true;
                         document.getElementById('slCheckItem').classList.add('disabled');
                         breakEvenCheck.disabled = true;
                         document.getElementById('breakEvenCheckItem').classList.add('disabled');
                     } else {
-                        // If nothing is checked, enable all
                         tpChecks.forEach(check => {
                             check.disabled = false;
                             document.getElementById(`tpCheckItem${tpChecks.indexOf(check)}`).classList.remove('disabled');
@@ -4005,10 +4003,8 @@
                     }
                 }
 
-                // Add event listeners for hybrid system
                 slCheck.addEventListener('change', function() {
                     if (this.checked) {
-                        // Uncheck all TP and Break Even
                         tpChecks.forEach(check => check.checked = false);
                         breakEvenCheck.checked = false;
                     }
@@ -4017,7 +4013,6 @@
 
                 breakEvenCheck.addEventListener('change', function() {
                     if (this.checked) {
-                        // Uncheck all TP and SL
                         tpChecks.forEach(check => check.checked = false);
                         slCheck.checked = false;
                     }
@@ -4027,7 +4022,6 @@
                 tpChecks.forEach(check => {
                     check.addEventListener('change', function() {
                         if (this.checked) {
-                            // Uncheck SL and Break Even
                             slCheck.checked = false;
                             breakEvenCheck.checked = false;
                         }
@@ -4035,11 +4029,9 @@
                     });
                 });
 
-                // Initialize checkbox states
                 updateCheckboxStates();
 
             } else {
-                // Regular status update
                 statusModalContent.innerHTML = `
                     <div class="status-options">
                         <div class="status-option running ${currentStatus === 'running' ? 'selected' : ''}" data-status="running">
@@ -4082,7 +4074,6 @@
             const item = history[currentEditIndex];
 
             if (item.usePartialTP) {
-                // Update partial TP statuses
                 const slChecked = document.getElementById('slCheck').checked;
                 const breakEvenChecked = document.getElementById('breakEvenCheck').checked;
                 
@@ -4111,7 +4102,6 @@
                 history[currentEditIndex].tpLevels = item.tpLevels;
 
             } else {
-                // Regular status update
                 history[currentEditIndex].status = selectedStatus;
             }
 
@@ -4140,12 +4130,10 @@
             document.getElementById('initialBalanceValue').textContent = formatRupiah(parseFloat(initialBalance));
         }
 
-        // BUG #5 FIX: Modified openBalanceModal to edit initial balance
         function openBalanceModal() {
             const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
-            modalCurrency = 'idr'; // Always start with IDR
+            modalCurrency = 'idr';
             
-            // Update modal pill
             document.querySelectorAll('#modalCurrencyPill .currency-option').forEach(opt => {
                 opt.classList.remove('active');
                 if (opt.dataset.currency === modalCurrency) {
@@ -4153,7 +4141,6 @@
                 }
             });
             
-            // Set input value - EDIT INITIAL BALANCE
             document.getElementById('balanceInput').value = formatNumber(Math.floor(initialBalance).toString());
             document.getElementById('balanceModal').classList.add('show');
         }
@@ -4178,7 +4165,6 @@
                 return;
             }
             
-            // Convert to IDR if input is in USD
             if (modalCurrency === 'usd') {
                 balanceNum = balanceNum * currentKurs;
             }
@@ -4396,8 +4382,7 @@
             }, 3000);
         }
 
-        // BUG #6 FIX: Single event delegation untuk currency toggle
-        // Currency Toggle Event Listeners dengan event delegation
+        // Currency Toggle Event Listeners
         document.getElementById('currencyPill').addEventListener('click', function(e) {
             if (e.target.classList.contains('currency-option')) {
                 const currency = e.target.dataset.currency;
@@ -4415,7 +4400,6 @@
             }
         });
 
-        // Modal Currency Toggle Event Listeners dengan event delegation
         document.getElementById('modalCurrencyPill').addEventListener('click', function(e) {
             if (e.target.classList.contains('currency-option')) {
                 const newCurrency = e.target.dataset.currency;
@@ -4456,7 +4440,6 @@
         // 🆕 Event listener untuk manual confirmation modal
         document.getElementById('btnConfirmManual').addEventListener('click', function() {
             document.getElementById('manualConfirmModal').classList.remove('show');
-            // Continue with calculation
             if (pendingCalculation) {
                 proceedWithCalculation(pendingCalculation.useCurrentBalance);
                 pendingCalculation = null;
