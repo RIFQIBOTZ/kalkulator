@@ -8,927 +8,928 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Desktop Navigation (for desktop only) -->
-    <div class="desktop-nav" id="desktopNav">
-        <div class="nav-item-desktop active" data-nav="ringkasan">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Ringkasan</span>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar-nav" id="sidebarNav">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">TP/SL CALC</h2>
+            <p class="sidebar-subtitle">by RIFQI</p>
         </div>
-        <div class="nav-item-desktop" data-nav="kalkulator">
-            <span class="nav-icon">🧮</span>
-            <span class="nav-label">Kalkulator</span>
+        
+        <div class="sidebar-menu">
+            <div class="sidebar-item active" data-nav="ringkasan">
+                <span class="sidebar-icon">🏠</span>
+                <span class="sidebar-label">Ringkasan</span>
+            </div>
+            <div class="sidebar-item" data-nav="kalkulator">
+                <span class="sidebar-icon">🧮</span>
+                <span class="sidebar-label">Kalkulator</span>
+            </div>
+            <div class="sidebar-item" data-nav="riwayat">
+                <span class="sidebar-icon">📜</span>
+                <span class="sidebar-label">Riwayat</span>
+            </div>
+            <div class="sidebar-item" data-nav="risiko">
+                <span class="sidebar-icon">⚠️</span>
+                <span class="sidebar-label">Risiko</span>
+            </div>
         </div>
-        <div class="nav-item-desktop" data-nav="riwayat">
-            <span class="nav-icon">📜</span>
-            <span class="nav-label">Riwayat</span>
-        </div>
-        <div class="nav-item-desktop" data-nav="risiko">
-            <span class="nav-icon">⚠️</span>
-            <span class="nav-label">Risiko</span>
+        
+        <div class="sidebar-footer">
+            <p class="sidebar-version">v2.0</p>
         </div>
     </div>
 
-    <div class="scroll-container">
-        <div class="container">
-            <!-- Halaman 1: Ringkasan (Dashboard) -->
-            <div class="page-content active" id="pageRingkasan" data-page="ringkasan">
-                <div class="header">
-                    <h1>📊 Dashboard Ringkasan</h1>
-                    <p>Monitor performa trading & manajemen risiko Anda</p>
+    <!-- Hamburger Toggle Button -->
+    <button class="hamburger-btn" id="hamburgerBtn">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-content" id="mainContent">
+        <div class="scroll-container">
+            <div class="container">
+                <!-- Halaman 1: Ringkasan (Dashboard) -->
+                <div class="page-content active" id="pageRingkasan" data-page="ringkasan">
+                    <div class="header">
+                        <h1>📊 Dashboard Ringkasan</h1>
+                        <p>Monitor performa trading & manajemen risiko Anda</p>
+                    </div>
+
+                    <!-- Card 1: Balance & Performance -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">💰</span>
+                            <span>BALANCE & PERFORMANCE</span>
+                        </div>
+                        
+                        <!-- Big Balance Display -->
+                        <div class="balance-big" id="bigBalanceDisplay">Rp 0</div>
+                        <div class="balance-subtitle">Saldo Saat Ini</div>
+                        
+                        <!-- Stats Grid 2x2 -->
+                        <div class="stats-mini-grid">
+                            <div class="stat-mini-box">
+                                <span class="stat-mini-label">Modal Awal</span>
+                                <span class="stat-mini-value" id="modalAwalValue">Rp 0</span>
+                            </div>
+                            <div class="stat-mini-box">
+                                <span class="stat-mini-label">Net Profit</span>
+                                <span class="stat-mini-value positive" id="netProfitValue">+Rp 0</span>
+                            </div>
+                            <div class="stat-mini-box">
+                                <span class="stat-mini-label">ROI</span>
+                                <span class="stat-mini-value positive" id="roiValueMini">+0%</span>
+                            </div>
+                            <div class="stat-mini-box">
+                                <span class="stat-mini-label">Win Rate</span>
+                                <span class="stat-mini-value" id="winRateValueMini">0%</span>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-edit-balance" id="btnEditBalanceDashboard">✏️ Edit Modal</button>
+                    </div>
+
+                    <!-- Card 2: Risk Management Hari Ini -->
+                    <div class="dashboard-card risk-card">
+                        <div class="card-header">
+                            <span class="card-icon">⚠️</span>
+                            <span>MANAJEMEN RISIKO HARI INI</span>
+                        </div>
+                        
+                        <!-- Loss Harian -->
+                        <div class="risk-item">
+                            <div class="risk-label-row">
+                                <span class="risk-label">Loss Harian</span>
+                                <span class="risk-percentage" id="dailyPercentage">0.0% / 2%</span>
+                            </div>
+                            <div class="risk-progress-bar">
+                                <div class="risk-progress-fill" id="dailyProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="risk-amount" id="dailyAmount">Rp 0 / Rp 0</div>
+                        </div>
+                        
+                        <!-- Loss Mingguan -->
+                        <div class="risk-item">
+                            <div class="risk-label-row">
+                                <span class="risk-label">Loss Mingguan</span>
+                                <span class="risk-percentage" id="weeklyPercentage">0.0% / 5%</span>
+                            </div>
+                            <div class="risk-progress-bar">
+                                <div class="risk-progress-fill" id="weeklyProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="risk-amount" id="weeklyAmount">Rp 0 / Rp 0</div>
+                        </div>
+                        
+                        <!-- Drawdown -->
+                        <div class="risk-item">
+                            <div class="risk-label-row">
+                                <span class="risk-label">Drawdown</span>
+                                <span class="risk-percentage" id="drawdownPercentage">0.0% / 8%</span>
+                            </div>
+                            <div class="risk-progress-bar drawdown">
+                                <div class="risk-progress-fill" id="drawdownProgress" style="width: 0%"></div>
+                            </div>
+                            <div class="risk-status" id="drawdownStatus">✅ Aman</div>
+                        </div>
+                        
+                        <!-- Reset Countdown -->
+                        <div class="reset-countdown">
+                            <span class="countdown-icon">⏰</span>
+                            <span class="countdown-text" id="resetCountdown">Reset otomatis: 8 jam 23 menit lagi</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Quick Stats -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">📊</span>
+                            <span>STATISTIK CEPAT</span>
+                        </div>
+                        
+                        <div class="quick-stats-grid">
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-value" id="quickTotalTrades">0</div>
+                                <div class="quick-stat-label">Total Trade</div>
+                            </div>
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-value positive" id="quickWinTrades">0</div>
+                                <div class="quick-stat-label">Win</div>
+                            </div>
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-value negative" id="quickLossTrades">0</div>
+                                <div class="quick-stat-label">Loss</div>
+                            </div>
+                            <div class="quick-stat-item">
+                                <div class="quick-stat-value" id="quickRunningTrades">0</div>
+                                <div class="quick-stat-label">Running</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Rekap by Category -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">📊</span>
+                            <span>REKAP BY SUMBER SINYAL</span>
+                        </div>
+                        
+                        <div class="recap-container" id="recapBySumber">
+                            <div class="recap-category">
+                                <div class="recap-category-title">🧠 Analisa Sendiri</div>
+                                <div class="recap-stats-mini">
+                                    <span class="recap-stat">✅ TP: <strong id="recap-sendiri-tp">0</strong></span>
+                                    <span class="recap-stat">❌ SL: <strong id="recap-sendiri-sl">0</strong></span>
+                                    <span class="recap-stat">🎯 Partial: <strong id="recap-sendiri-partial">0</strong></span>
+                                    <span class="recap-stat">🔄 BEP: <strong id="recap-sendiri-bep">0</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <span class="card-icon">📈</span>
+                            <span>REKAP BY METODE</span>
+                        </div>
+                        
+                        <div class="recap-container" id="recapByMetode">
+                            <p style="text-align: center; color: #8b92b8;">Belum ada data</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Buttons -->
+                    <div class="quick-actions">
+                        <button class="btn-quick-action primary" id="btnQuickCalculator">
+                            <span class="btn-icon">🧮</span>
+                            <span class="btn-text">Hitung Trade Baru</span>
+                        </button>
+                        <button class="btn-quick-action secondary" id="btnQuickHistory">
+                            <span class="btn-icon">📜</span>
+                            <span class="btn-text">Lihat Riwayat</span>
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Card 1: Balance & Performance -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <span class="card-icon">💰</span>
-                        <span>BALANCE & PERFORMANCE</span>
+                <!-- Halaman 2: Kalkulator (existing) -->
+                <div class="page-content" id="pageKalkulator" data-page="kalkulator">
+                    <!-- EXISTING CALCULATOR CONTENT -->
+                    <!-- Current Balance Display -->
+                    <div class="current-balance-display" id="currentBalanceDisplay">
+                        <div class="balance-header">
+                            <span class="balance-label">MODAL</span>
+                            <div class="currency-pill" id="currencyPill">
+                                <span class="currency-option active" data-currency="idr">IDR</span>
+                                <span class="currency-option" data-currency="usd">USD</span>
+                            </div>
+                        </div>
+                        <div class="balance-amount" id="balanceAmount">Rp 0</div>
+                        <div class="balance-conversion" id="balanceConversion">≈ $0.00 USD</div>
+                        <button type="button" class="btn-edit-balance" id="btnEditBalance">✏️ Edit Modal</button>
                     </div>
-                    
-                    <!-- Big Balance Display -->
-                    <div class="balance-big" id="bigBalanceDisplay">Rp 0</div>
-                    <div class="balance-subtitle">Saldo Saat Ini</div>
-                    
-                    <!-- Stats Grid 2x2 -->
-                    <div class="stats-mini-grid">
-                        <div class="stat-mini-box">
-                            <span class="stat-mini-label">Modal Awal</span>
-                            <span class="stat-mini-value" id="modalAwalValue">Rp 0</span>
-                        </div>
-                        <div class="stat-mini-box">
-                            <span class="stat-mini-label">Net Profit</span>
-                            <span class="stat-mini-value positive" id="netProfitValue">+Rp 0</span>
-                        </div>
-                        <div class="stat-mini-box">
-                            <span class="stat-mini-label">ROI</span>
-                            <span class="stat-mini-value positive" id="roiValueMini">+0%</span>
-                        </div>
-                        <div class="stat-mini-box">
-                            <span class="stat-mini-label">Win Rate</span>
-                            <span class="stat-mini-value" id="winRateValueMini">0%</span>
-                        </div>
-                    </div>
-                    
-                    <button class="btn-edit-balance" id="btnEditBalanceDashboard">✏️ Edit Modal</button>
-                </div>
 
-                <!-- Card 2: Risk Management Hari Ini -->
-                <div class="dashboard-card risk-card">
-                    <div class="card-header">
-                        <span class="card-icon">⚠️</span>
-                        <span>MANAJEMEN RISIKO HARI INI</span>
-                    </div>
-                    
-                    <!-- Loss Harian -->
-                    <div class="risk-item">
-                        <div class="risk-label-row">
-                            <span class="risk-label">Loss Harian</span>
-                            <span class="risk-percentage" id="dailyPercentage">0.0% / 2%</span>
+                    <div class="calculator-card">
+                        <div class="kurs-info">
+                            <span class="kurs-label">Kurs USD/IDR</span>
+                            <span class="kurs-value" id="kursRate">Loading...</span>
                         </div>
-                        <div class="risk-progress-bar">
-                            <div class="risk-progress-fill" id="dailyProgress" style="width: 0%"></div>
-                        </div>
-                        <div class="risk-amount" id="dailyAmount">Rp 0 / Rp 0</div>
-                    </div>
-                    
-                    <!-- Loss Mingguan -->
-                    <div class="risk-item">
-                        <div class="risk-label-row">
-                            <span class="risk-label">Loss Mingguan</span>
-                            <span class="risk-percentage" id="weeklyPercentage">0.0% / 5%</span>
-                        </div>
-                        <div class="risk-progress-bar">
-                            <div class="risk-progress-fill" id="weeklyProgress" style="width: 0%"></div>
-                        </div>
-                        <div class="risk-amount" id="weeklyAmount">Rp 0 / Rp 0</div>
-                    </div>
-                    
-                    <!-- Drawdown -->
-                    <div class="risk-item">
-                        <div class="risk-label-row">
-                            <span class="risk-label">Drawdown</span>
-                            <span class="risk-percentage" id="drawdownPercentage">0.0% / 8%</span>
-                        </div>
-                        <div class="risk-progress-bar drawdown">
-                            <div class="risk-progress-fill" id="drawdownProgress" style="width: 0%"></div>
-                        </div>
-                        <div class="risk-status" id="drawdownStatus">✅ Aman</div>
-                    </div>
-                    
-                    <!-- Reset Countdown -->
-                    <div class="reset-countdown">
-                        <span class="countdown-icon">⏰</span>
-                        <span class="countdown-text" id="resetCountdown">Reset otomatis: 8 jam 23 menit lagi</span>
-                    </div>
-                </div>
 
-                <!-- Card 3: Quick Stats -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <span class="card-icon">📊</span>
-                        <span>STATISTIK CEPAT</span>
-                    </div>
-                    
-                    <div class="quick-stats-grid">
-                        <div class="quick-stat-item">
-                            <div class="quick-stat-value" id="quickTotalTrades">0</div>
-                            <div class="quick-stat-label">Total Trade</div>
-                        </div>
-                        <div class="quick-stat-item">
-                            <div class="quick-stat-value positive" id="quickWinTrades">0</div>
-                            <div class="quick-stat-label">Win</div>
-                        </div>
-                        <div class="quick-stat-item">
-                            <div class="quick-stat-value negative" id="quickLossTrades">0</div>
-                            <div class="quick-stat-label">Loss</div>
-                        </div>
-                        <div class="quick-stat-item">
-                            <div class="quick-stat-value" id="quickRunningTrades">0</div>
-                            <div class="quick-stat-label">Running</div>
-                        </div>
-                    </div>
-                </div>
+                        <form id="calcForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="pair">Trading Pair</label>
+                                    <input type="text" id="pair" placeholder="BTCUSDT, EURUSD" required>
+                                </div>
+                                
+                                <!-- NEW: Max Entry Dropdown -->
+                                <div class="form-group">
+                                    <label for="maxEntry">Max Entry</label>
+                                    <select id="maxEntry">
+                                        <option value="1">1x - All In</option>
+                                        <option value="3" selected>3x Entry</option>
+                                        <option value="5">5x Entry</option>
+                                        <option value="10">10x Entry</option>
+                                        <option value="custom">Custom...</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="sessions">Sessions</label>
+                                    <select id="sessions">
+                                        <option value="asia">Asia</option>
+                                        <option value="london">London</option>
+                                        <option value="newyork">New York</option>
+                                    </select>
+                                </div>
 
-                <!-- Card 4: Rekap by Category -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <span class="card-icon">📊</span>
-                        <span>REKAP BY SUMBER SINYAL</span>
-                    </div>
-                    
-                    <div class="recap-container" id="recapBySumber">
-                        <div class="recap-category">
-                            <div class="recap-category-title">🧠 Analisa Sendiri</div>
-                            <div class="recap-stats-mini">
-                                <span class="recap-stat">✅ TP: <strong id="recap-sendiri-tp">0</strong></span>
-                                <span class="recap-stat">❌ SL: <strong id="recap-sendiri-sl">0</strong></span>
-                                <span class="recap-stat">🎯 Partial: <strong id="recap-sendiri-partial">0</strong></span>
-                                <span class="recap-stat">🔄 BEP: <strong id="recap-sendiri-bep">0</strong></span>
+                                <div class="form-group">
+                                    <label for="metode">Metode</label>
+                                    <select id="metode">
+                                        <option value="">-- Pilih Metode --</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="sumberSignal">Sumber Sinyal</label>
+                                    <select id="sumberSignal">
+                                        <option value="analisa-sendiri">Analisa Sendiri</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="riskPercent">Risk (%)</label>
+                                    <select id="riskPercent">
+                                        <option value="1" selected>1% - Conservative</option>
+                                        <option value="2">2% - Moderate</option>
+                                        <option value="3">3% - Aggressive</option>
+                                        <option value="5">5% - Very Aggressive</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="entry">Entry Price (USD)</label>
+                                    <input type="tel" inputmode="decimal" id="entry" placeholder="4.000" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="chartBefore">Chart Before (URL)</label>
+                                    <input type="url" id="chartBefore" placeholder="https://tradingview.com/...">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="chartAfter">Chart After (URL)</label>
+                                    <input type="url" id="chartAfter" placeholder="https://tradingview.com/...">
+                                </div>
+
+                                <div class="form-group" style="grid-column: 1 / -1;">
+                                    <label for="catatan">Catatan</label>
+                                    <textarea id="catatan" rows="3" placeholder="Tulis catatan trading..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Partial TP Toggle -->
+                            <div class="toggle-container">
+                                <div class="toggle-switch" id="partialTPToggle">
+                                    <div class="toggle-slider"></div>
+                                </div>
+                                <span class="toggle-label">Use Partial Take Profit (Optional)</span>
+                            </div>
+
+                            <!-- Regular TP/SL -->
+                            <div class="form-grid" id="regularTPSection">
+                                <div class="form-group">
+                                    <label for="tp">Take Profit (USD)</label>
+                                    <input type="tel" inputmode="decimal" id="tp" placeholder="4.200">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sl">Stop Loss (USD)</label>
+                                    <input type="tel" inputmode="decimal" id="sl" placeholder="3.800" required>
+                                </div>
+                            </div>
+
+                            <!-- Partial TP Section -->
+                            <div class="partial-tp-section" id="partialTPSection">
+                                <div class="partial-tp-header">
+                                    <h3>📊 Take Profit Levels</h3>
+                                </div>
+                                
+                                <!-- Table Style TP Levels -->
+                                <table class="tp-table">
+                                    <thead class="tp-table-header">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Price (USD)</th>
+                                            <th>Close (%)</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tpLevelsContainer">
+                                        <!-- TP levels will be added dynamically -->
+                                    </tbody>
+                                </table>
+                                
+                                <button type="button" class="btn-add-tp" id="btnAddTP">+ Add TP Level</button>
+                                <div class="percentage-total" id="percentageTotal">Total: 0%</div>
+
+                                <div class="form-grid" style="margin-top: 20px;">
+                                    <div class="form-group">
+                                        <label for="slPartial">Stop Loss (USD)</label>
+                                        <input type="tel" inputmode="decimal" id="slPartial" placeholder="3.800">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- NEW: Position Size Card Redesign -->
+                            <div class="position-size-info" id="positionSizeInfo">
+                                <div class="pos-size-header">
+                                    <span class="pos-size-icon">📊</span>
+                                    <h3>POSITION SIZE RECOMMENDATION</h3>
+                                </div>
+                                
+                                <div class="pos-size-grid">
+                                    <div class="pos-size-card">
+                                        <div class="pos-card-label">Max Entry</div>
+                                        <div class="pos-card-value" id="posMaxEntry">5x</div>
+                                        <div class="pos-card-subtitle">trades</div>
+                                    </div>
+                                    
+                                    <div class="pos-size-card">
+                                        <div class="pos-card-label">Position Value</div>
+                                        <div class="pos-card-value" id="posValue">$0.00</div>
+                                        <div class="pos-card-subtitle">per trade</div>
+                                    </div>
+                                    
+                                    <div class="pos-size-card">
+                                        <div class="pos-card-label">Position Size</div>
+                                        <div class="pos-card-value" id="posSize">0.000000</div>
+                                        <div class="pos-card-subtitle">coins</div>
+                                    </div>
+                                    
+                                    <div class="pos-size-card">
+                                        <div class="pos-card-label">Actual Risk</div>
+                                        <div class="pos-card-value" id="posRisk">0.00%</div>
+                                        <div class="pos-card-subtitle" id="posRiskIDR">Rp 0</div>
+                                    </div>
+                                </div>
+
+                                <!-- 🆕 SECTION BARU: Manual Override -->
+                                <div class="manual-override-section">
+                                    <div class="manual-toggle-container">
+                                        <div class="toggle-switch" id="manualPositionToggle">
+                                            <div class="toggle-slider"></div>
+                                        </div>
+                                        <span class="toggle-label">Use Manual Position Size (Override Risk Management)</span>
+                                    </div>
+                                    
+                                    <!-- Input yang muncul saat toggle aktif -->
+                                    <div class="manual-input-section" id="manualInputSection" style="display: none;">
+                                        <div class="manual-warning-box">
+                                            <span class="warning-icon">⚠️</span>
+                                            <span class="warning-text">WARNING: This bypasses your risk management!</span>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <label for="manualPositionUSDT">Manual Position Size (USDT)</label>
+                                            <input type="tel" inputmode="decimal" id="manualPositionUSDT" placeholder="500">
+                                        </div>
+                                        
+                                        <div class="manual-comparison" id="manualComparison">
+                                            <div class="comparison-item">
+                                                <span class="comparison-label">💡 Recommended:</span>
+                                                <span class="comparison-value" id="recommendedUSDT">$0.00 USDT</span>
+                                            </div>
+                                            <div class="comparison-item">
+                                                <span class="comparison-label">📈 Your input:</span>
+                                                <span class="comparison-value" id="userInputUSDT">-</span>
+                                            </div>
+                                            <div class="comparison-item">
+                                                <span class="comparison-label">🎯 Actual Risk:</span>
+                                                <span class="comparison-value" id="actualRiskManual">-</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-calculate">Hitung Sekarang</button>
+                        </form>
+
+                        <div class="results" id="results">
+                            <!-- Partial TP Results -->
+                            <div class="partial-tp-results" id="partialTPResults">
+                                <h4>🎯 Partial Take Profit Breakdown</h4>
+                                <div id="partialTPResultsContent"></div>
+                            </div>
+
+                            <div class="results-grid">
+                                <div class="result-box profit">
+                                    <div class="result-label">Take Profit Target</div>
+                                    <div class="result-value" id="tpPercent">+0%</div>
+                                    <div class="result-subtitle" id="tpValue">Total: Rp 0</div>
+                                </div>
+
+                                <div class="result-box loss">
+                                    <div class="result-label">Stop Loss Target</div>
+                                    <div class="result-value" id="slPercent">-0%</div>
+                                    <div class="result-subtitle" id="slValue">Total: Rp 0</div>
+                                </div>
+
+                                <div class="result-box profit">
+                                    <div class="result-label">Keuntungan Bersih</div>
+                                    <div class="result-value" id="profitAmount">Rp 0</div>
+                                    <div class="result-subtitle">Profit murni (tanpa modal)</div>
+                                </div>
+
+                                <div class="result-box loss">
+                                    <div class="result-label">Kerugian Bersih</div>
+                                    <div class="result-value" id="lossAmount">Rp 0</div>
+                                    <div class="result-subtitle">Loss dari modal</div>
+                                </div>
+
+                                <div class="result-box ratio">
+                                    <div class="result-label">Risk : Reward</div>
+                                    <div class="result-value" id="rrRatio">1 : 0</div>
+                                    <div class="result-subtitle">Rasio RR</div>
+                                </div>
+
+                                <div class="result-box ratio">
+                                    <div class="result-label">Trading Pair</div>
+                                    <div class="result-value" id="pairDisplay" style="font-size: 1.2rem;">-</div>
+                                    <div class="result-subtitle">Market</div>
+                                </div>
+                            </div>
+
+                            <!-- NEW: Balance Projection - PERBAIKAN BUG #2 -->
+                            <div class="balance-projection" id="balanceProjection">
+                                <div class="balance-proj-header">
+                                    <span class="balance-proj-icon">💼</span>
+                                    <h3>BALANCE PROJECTION</h3>
+                                </div>
+                                
+                                <div class="balance-proj-grid">
+                                    <div class="balance-proj-card capital">
+                                        <div class="balance-proj-label">Capital Used</div>
+                                        <div class="balance-proj-value" id="capitalUsed">Rp 0</div>
+                                        <div class="balance-proj-subtitle" id="capitalPercent">0%</div>
+                                    </div>
+                                    
+                                    <div class="balance-proj-card if-tp">
+                                        <div class="balance-proj-label">If TP Hit</div>
+                                        <div class="balance-proj-value" id="balanceIfTP">Rp 0</div>
+                                        <div class="balance-proj-subtitle" id="balanceTPChange">+0%</div>
+                                    </div>
+                                    
+                                    <div class="balance-proj-card if-sl">
+                                        <div class="balance-proj-label">If SL Hit</div>
+                                        <div class="balance-proj-value" id="balanceIfSL">Rp 0</div>
+                                        <div class="balance-proj-subtitle" id="balanceSLChange">-0%</div>
+                                    </div>
+                                    
+                                    <div class="balance-proj-card if-be">
+                                        <div class="balance-proj-label">If Break Even</div>
+                                        <div class="balance-proj-value" id="balanceIfBE">Rp 0</div>
+                                        <div class="result-subtitle">±0.00%</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn-copy" id="btnCopy">📋 Copy Results</button>
+                                <button type="button" class="btn-save" id="btnSave">💾 Save to History</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <span class="card-icon">📈</span>
-                        <span>REKAP BY METODE</span>
+                <!-- Halaman 3: Riwayat (existing) -->
+                <div class="page-content" id="pageRiwayat" data-page="riwayat">
+                    <div class="header">
+                        <h1>📜 Trading History</h1>
+                        <p>Track your trading performance & statistics</p>
                     </div>
-                    
-                    <div class="recap-container" id="recapByMetode">
-                        <p style="text-align: center; color: #8b92b8;">Belum ada data</p>
-                    </div>
-                </div>
 
-                <!-- Quick Actions Buttons -->
-                <div class="quick-actions">
-                    <button class="btn-quick-action primary" id="btnQuickCalculator">
-                        <span class="btn-icon">🧮</span>
-                        <span class="btn-text">Hitung Trade Baru</span>
-                    </button>
-                    <button class="btn-quick-action secondary" id="btnQuickHistory">
-                        <span class="btn-icon">📜</span>
-                        <span class="btn-text">Lihat Riwayat</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Halaman 2: Kalkulator (existing) -->
-            <div class="page-content" id="pageKalkulator" data-page="kalkulator">
-                <!-- EXISTING CALCULATOR CONTENT -->
-                <!-- Current Balance Display -->
-                <div class="current-balance-display" id="currentBalanceDisplay">
-                    <div class="balance-header">
-                        <span class="balance-label">MODAL</span>
-                        <div class="currency-pill" id="currencyPill">
-                            <span class="currency-option active" data-currency="idr">IDR</span>
-                            <span class="currency-option" data-currency="usd">USD</span>
+                    <!-- Performance Summary Card -->
+                    <div class="calculator-card">
+                        <div class="card-header">
+                            <span>💰</span>
+                            <span>Performance Summary</span>
                         </div>
-                    </div>
-                    <div class="balance-amount" id="balanceAmount">Rp 0</div>
-                    <div class="balance-conversion" id="balanceConversion">≈ $0.00 USD</div>
-                    <button type="button" class="btn-edit-balance" id="btnEditBalance">✏️ Edit Modal</button>
-                </div>
-
-                <div class="calculator-card">
-                    <div class="kurs-info">
-                        <span class="kurs-label">Kurs USD/IDR</span>
-                        <span class="kurs-value" id="kursRate">Loading...</span>
-                    </div>
-
-                    <form id="calcForm">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="pair">Trading Pair</label>
-                                <input type="text" id="pair" placeholder="BTCUSDT, EURUSD" required>
+                        <div class="stats-grid" id="performanceStats">
+                            <div class="stat-card initial-balance" id="initialBalanceCard">
+                                <div class="stat-label">Saldo Awal</div>
+                                <div class="stat-value" id="initialBalanceValue">Rp 0</div>
+                                <div class="stat-subtitle">Click to edit</div>
                             </div>
                             
-                            <!-- NEW: Max Entry Dropdown -->
-                            <div class="form-group">
-                                <label for="maxEntry">Max Entry</label>
-                                <select id="maxEntry">
-                                    <option value="1">1x - All In</option>
-                                    <option value="3" selected>3x Entry</option>
-                                    <option value="5">5x Entry</option>
-                                    <option value="10">10x Entry</option>
-                                    <option value="custom">Custom...</option>
-                                </select>
+                            <div class="stat-card current-balance">
+                                <div class="stat-label">Total Saldo</div>
+                                <div class="stat-value" id="currentBalanceValue">Rp 0</div>
+                                <div class="stat-subtitle">Current balance</div>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="sessions">Sessions</label>
-                                <select id="sessions">
-                                    <option value="asia">Asia</option>
-                                    <option value="london">London</option>
-                                    <option value="newyork">New York</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="metode">Metode</label>
-                                <select id="metode">
-                                    <option value="">-- Pilih Metode --</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="sumberSignal">Sumber Sinyal</label>
-                                <select id="sumberSignal">
-                                    <option value="analisa-sendiri">Analisa Sendiri</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="riskPercent">Risk (%)</label>
-                                <select id="riskPercent">
-                                    <option value="1" selected>1% - Conservative</option>
-                                    <option value="2">2% - Moderate</option>
-                                    <option value="3">3% - Aggressive</option>
-                                    <option value="5">5% - Very Aggressive</option>
-                                </select>
+                            <div class="stat-card net-profit">
+                                <div class="stat-label">Net Profit/Loss</div>
+                                <div class="stat-value" id="netProfitLossValue">Rp 0</div>
+                                <div class="stat-subtitle">Overall performance</div>
                             </div>
                             
-                            <div class="form-group">
-                                <label for="entry">Entry Price (USD)</label>
-                                <input type="tel" inputmode="decimal" id="entry" placeholder="4.000" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="chartBefore">Chart Before (URL)</label>
-                                <input type="url" id="chartBefore" placeholder="https://tradingview.com/...">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="chartAfter">Chart After (URL)</label>
-                                <input type="url" id="chartAfter" placeholder="https://tradingview.com/...">
-                            </div>
-
-                            <div class="form-group" style="grid-column: 1 / -1;">
-                                <label for="catatan">Catatan</label>
-                                <textarea id="catatan" rows="3" placeholder="Tulis catatan trading..."></textarea>
+                            <div class="stat-card roi">
+                                <div class="stat-label">ROI</div>
+                                <div class="stat-value" id="roiValue">0%</div>
+                                <div class="stat-subtitle">Return on investment</div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Partial TP Toggle -->
-                        <div class="toggle-container">
-                            <div class="toggle-switch" id="partialTPToggle">
-                                <div class="toggle-slider"></div>
-                            </div>
-                            <span class="toggle-label">Use Partial Take Profit (Optional)</span>
+                    <!-- Trading Statistics Card -->
+                    <div class="calculator-card">
+                        <div class="card-header">
+                            <span>📊</span>
+                            <span>Trading Statistics</span>
                         </div>
-
-                        <!-- Regular TP/SL -->
-                        <div class="form-grid" id="regularTPSection">
-                            <div class="form-group">
-                                <label for="tp">Take Profit (USD)</label>
-                                <input type="tel" inputmode="decimal" id="tp" placeholder="4.200">
-                            </div>
-                            <div class="form-group">
-                                <label for="sl">Stop Loss (USD)</label>
-                                <input type="tel" inputmode="decimal" id="sl" placeholder="3.800" required>
-                            </div>
-                        </div>
-
-                        <!-- Partial TP Section -->
-                        <div class="partial-tp-section" id="partialTPSection">
-                            <div class="partial-tp-header">
-                                <h3>📊 Take Profit Levels</h3>
+                        <div class="stats-grid" id="tradingStats">
+                            <div class="stat-card profit">
+                                <div class="stat-label">Total Profit</div>
+                                <div class="stat-value" id="statProfit">Rp 0</div>
+                                <div class="stat-subtitle">Realized gains</div>
                             </div>
                             
-                            <!-- Table Style TP Levels -->
-                            <table class="tp-table">
-                                <thead class="tp-table-header">
+                            <div class="stat-card loss">
+                                <div class="stat-label">Total Loss</div>
+                                <div class="stat-value" id="statLoss">Rp 0</div>
+                                <div class="stat-subtitle">Realized losses</div>
+                            </div>
+                            
+                            <div class="stat-card total">
+                                <div class="stat-label">Total Trades</div>
+                                <div class="stat-value" id="statTotal">0</div>
+                                <div class="stat-subtitle">All time</div>
+                            </div>
+                            
+                            <div class="stat-card winrate">
+                                <div class="stat-label">Win Rate</div>
+                                <div class="stat-value" id="statWinRate">0%</div>
+                                <div class="stat-subtitle">Success ratio</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calculator-card history-section">
+                        <div class="history-header">
+                            <h2>All Trades</h2>
+                            <div class="history-actions-group">
+                                <button class="btn-database" id="btnExportDB">💾 Export DB</button>
+                                <button class="btn-load-db" id="btnImportDB">📂 Import DB</button>
+                                <button class="btn-clear-history" id="btnClearHistory">🗑️ Clear All</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Filter Buttons -->
+                        <div class="history-filters" id="historyFilters">
+                            <button class="filter-btn all active" data-filter="all">All (0)</button>
+                            <button class="filter-btn running" data-filter="running">⏳ Running (0)</button>
+                            <button class="filter-btn partial" data-filter="partial">🎯 Partial (0)</button>
+                            <button class="filter-btn hit-tp" data-filter="hit-tp">✅ Hit TP (0)</button>
+                            <button class="filter-btn hit-sl" data-filter="hit-sl">❌ Hit SL (0)</button>
+                            <button class="filter-btn break-even" data-filter="break-even">🔄 Break Even (0)</button>
+                            <button class="filter-btn warning" data-filter="warning">⚠️ Warning (0)</button>
+                            <button class="filter-btn sessions-asia" data-filter="sessions-asia">🌏 Asia (0)</button>
+                            <button class="filter-btn sessions-london" data-filter="sessions-london">🇬🇧 London (0)</button>
+                            <button class="filter-btn sessions-newyork" data-filter="sessions-newyork">🇺🇸 NY (0)</button>
+                        </div>
+                        
+                        <div class="history-table-container">
+                            <table class="history-table" id="historyTable">
+                                <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Price (USD)</th>
-                                        <th>Close (%)</th>
-                                        <th>Action</th>
+                                        <th>No</th>
+                                        <th>Date</th>
+                                        <th>Pair</th>
+                                        <th>Sessions</th>
+                                        <th>Entry</th>
+                                        <th>TP</th>
+                                        <th>SL</th>
+                                        <th>Status</th>
+                                        <th>P/L</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tpLevelsContainer">
-                                    <!-- TP levels will be added dynamically -->
+                                <tbody id="historyTableBody">
+                                    <tr>
+                                        <td colspan="10" style="text-align: center; color: #8b92b8; padding: 40px 0;">
+                                            No trading history yet. Start calculating!
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
-                            
-                            <button type="button" class="btn-add-tp" id="btnAddTP">+ Add TP Level</button>
-                            <div class="percentage-total" id="percentageTotal">Total: 0%</div>
+                        </div>
+                    </div>
+                </div>
 
-                            <div class="form-grid" style="margin-top: 20px;">
-                                <div class="form-group">
-                                    <label for="slPartial">Stop Loss (USD)</label>
-                                    <input type="tel" inputmode="decimal" id="slPartial" placeholder="3.800">
+                <!-- Halaman 4: Risiko (NEW) -->
+                <div class="page-content" id="pageRisiko" data-page="risiko">
+                    <div class="header">
+                        <h1>⚠️ Manajemen Risiko</h1>
+                        <p>Pantau limit loss harian, mingguan, dan drawdown</p>
+                    </div>
+
+                    <!-- Risk Tabs -->
+                    <div class="risk-tabs">
+                        <button class="risk-tab active" data-tab="today">Hari Ini</button>
+                        <button class="risk-tab" data-tab="weekly">Minggu Ini</button>
+                        <button class="risk-tab" data-tab="drawdown">Drawdown</button>
+                        <button class="risk-tab" data-tab="settings">Pengaturan</button>
+                    </div>
+
+                    <!-- Tab Content: Today -->
+                    <div class="risk-tab-content active" data-content="today">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <span class="card-icon">📅</span>
+                                <span>TRADING HARI INI</span>
+                            </div>
+                            
+                            <div class="today-date" id="todayDate">Kamis, 26 Desember 2025</div>
+                            
+                            <!-- Summary Stats -->
+                            <div class="today-summary">
+                                <div class="summary-row">
+                                    <span class="summary-label">Limit Loss Harian:</span>
+                                    <span class="summary-value" id="dailyLimitValue">2%</span>
                                 </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Maksimal Loss:</span>
+                                    <span class="summary-value" id="dailyMaxLoss">Rp 0</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Loss Trades List -->
+                            <div class="loss-trades-section">
+                                <h4 class="section-title">Loss Terealisasi:</h4>
+                                <div class="loss-trades-list" id="lossTradesToday">
+                                    <div class="empty-state">
+                                        <span class="empty-icon">✅</span>
+                                        <p>Tidak ada loss hari ini</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Total Progress -->
+                            <div class="total-progress-section">
+                                <h4 class="section-title">Total Loss Hari Ini:</h4>
+                                <div class="total-amount-row">
+                                    <span class="total-amount" id="dailyTotalAmount">Rp 0</span>
+                                    <span class="total-limit" id="dailyTotalLimit">/ Rp 0</span>
+                                </div>
+                                <div class="risk-progress-bar large">
+                                    <div class="risk-progress-fill" id="dailyTotalProgress" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-percentage" id="dailyTotalPercentage">0% / 2%</div>
+                            </div>
+                            
+                            <!-- Warning Box (conditional) -->
+                            <div class="warning-box" style="display: none;" id="dailyWarningBox">
+                                <div class="warning-box-header">
+                                    <span class="warning-box-icon">⚠️</span>
+                                    <span class="warning-box-title">PERINGATAN</span>
+                                </div>
+                                <p class="warning-box-text">Anda sudah mendekati limit harian! Pertimbangkan untuk berhenti trading.</p>
+                            </div>
+                            
+                            <!-- Reset Button -->
+                            <button class="btn-reset-testing" id="btnResetToday">🔄 Reset Manual (Testing)</button>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Weekly -->
+                    <div class="risk-tab-content" data-content="weekly">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <span class="card-icon">📅</span>
+                                <span>TRADING MINGGU INI</span>
+                            </div>
+                            
+                            <div class="today-summary">
+                                <div class="summary-row">
+                                    <span class="summary-label">Limit Loss Mingguan:</span>
+                                    <span class="summary-value" id="weeklyLimitValue">5%</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Maksimal Loss:</span>
+                                    <span class="summary-value" id="weeklyMaxLoss">Rp 0</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Loss Trades List -->
+                            <div class="loss-trades-section">
+                                <h4 class="section-title">Loss Terealisasi:</h4>
+                                <div class="loss-trades-list" id="lossTradesWeekly">
+                                    <div class="empty-state">
+                                        <span class="empty-icon">✅</span>
+                                        <p>Tidak ada loss minggu ini</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Total Progress -->
+                            <div class="total-progress-section">
+                                <h4 class="section-title">Total Loss Minggu Ini:</h4>
+                                <div class="total-amount-row">
+                                    <span class="total-amount" id="weeklyTotalAmount">Rp 0</span>
+                                    <span class="total-limit" id="weeklyTotalLimit">/ Rp 0</span>
+                                </div>
+                                <div class="risk-progress-bar large">
+                                    <div class="risk-progress-fill" id="weeklyTotalProgress" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-percentage" id="weeklyTotalPercentage">0% / 5%</div>
+                            </div>
+                            
+                            <!-- Warning Box (conditional) -->
+                            <div class="warning-box" style="display: none;" id="weeklyWarningBox">
+                                <div class="warning-box-header">
+                                    <span class="warning-box-icon">⚠️</span>
+                                    <span class="warning-box-title">PERINGATAN</span>
+                                </div>
+                                <p class="warning-box-text">Anda sudah mendekati limit mingguan! Hati-hati dengan trade berikutnya.</p>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- NEW: Position Size Card Redesign -->
-                        <div class="position-size-info" id="positionSizeInfo">
-                            <div class="pos-size-header">
-                                <span class="pos-size-icon">📊</span>
-                                <h3>POSITION SIZE RECOMMENDATION</h3>
+                    <!-- Tab Content: Drawdown -->
+                    <div class="risk-tab-content" data-content="drawdown">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <span class="card-icon">📉</span>
+                                <span>DRAWDOWN ANALISIS</span>
                             </div>
                             
-                            <div class="pos-size-grid">
-                                <div class="pos-size-card">
-                                    <div class="pos-card-label">Max Entry</div>
-                                    <div class="pos-card-value" id="posMaxEntry">5x</div>
-                                    <div class="pos-card-subtitle">trades</div>
+                            <div class="today-summary">
+                                <div class="summary-row">
+                                    <span class="summary-label">Limit Drawdown:</span>
+                                    <span class="summary-value">8%</span>
                                 </div>
-                                
-                                <div class="pos-size-card">
-                                    <div class="pos-card-label">Position Value</div>
-                                    <div class="pos-card-value" id="posValue">$0.00</div>
-                                    <div class="pos-card-subtitle">per trade</div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Peak Balance:</span>
+                                    <span class="summary-value" id="ddPeakBalance">Rp 0</span>
                                 </div>
-                                
-                                <div class="pos-size-card">
-                                    <div class="pos-card-label">Position Size</div>
-                                    <div class="pos-card-value" id="posSize">0.000000</div>
-                                    <div class="pos-card-subtitle">coins</div>
-                                </div>
-                                
-                                <div class="pos-size-card">
-                                    <div class="pos-card-label">Actual Risk</div>
-                                    <div class="pos-card-value" id="posRisk">0.00%</div>
-                                    <div class="pos-card-subtitle" id="posRiskIDR">Rp 0</div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Current Balance:</span>
+                                    <span class="summary-value" id="ddCurrentBalance">Rp 0</span>
                                 </div>
                             </div>
-
-                            <!-- 🆕 SECTION BARU: Manual Override -->
-                            <div class="manual-override-section">
-                                <div class="manual-toggle-container">
-                                    <div class="toggle-switch" id="manualPositionToggle">
-                                        <div class="toggle-slider"></div>
-                                    </div>
-                                    <span class="toggle-label">Use Manual Position Size (Override Risk Management)</span>
+                            
+                            <!-- Drawdown Progress -->
+                            <div class="total-progress-section">
+                                <h4 class="section-title">Drawdown Saat Ini:</h4>
+                                <div class="total-amount-row">
+                                    <span class="total-amount" id="ddPercent">0%</span>
+                                    <span class="total-limit">/ 8%</span>
                                 </div>
+                                <div class="risk-progress-bar large">
+                                    <div class="risk-progress-fill" id="ddProgressBar" style="width: 0%"></div>
+                                </div>
+                                <div class="progress-percentage" id="ddProgressPercentage">0% / 8%</div>
+                            </div>
+                            
+                            <!-- Status -->
+                            <div class="warning-box" id="ddStatusBox" style="background: rgba(0, 255, 136, 0.15); border-color: #00ff88;">
+                                <div class="warning-box-header">
+                                    <span class="warning-box-icon">✅</span>
+                                    <span class="warning-box-title" id="ddStatusTitle">AMAN</span>
+                                </div>
+                                <p class="warning-box-text" id="ddStatusText">Drawdown Anda masih dalam batas aman.</p>
+                            </div>
+                            
+                            <!-- Reset Button -->
+                            <button class="btn-reset-testing" id="btnResetDrawdown">🔄 Reset Peak Balance (Testing)</button>
+                        </div>
+                    </div>
+
+                    <!-- Tab Content: Settings -->
+                    <div class="risk-tab-content" data-content="settings">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <span class="card-icon">⚙️</span>
+                                <span>PENGATURAN RISIKO</span>
+                            </div>
+                            
+                            <div class="today-summary">
+                                <div class="summary-row">
+                                    <span class="summary-label">Framework NAC:</span>
+                                    <span class="summary-value" style="color: #00ff88;">Aktif</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Daily Loss Limit:</span>
+                                    <span class="summary-value">2% (Fixed)</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Weekly Loss Limit:</span>
+                                    <span class="summary-value">5% (Fixed)</span>
+                                </div>
+                                <div class="summary-row">
+                                    <span class="summary-label">Max Drawdown:</span>
+                                    <span class="summary-value">8% (Fixed)</span>
+                                </div>
+                            </div>
+                            
+                            <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                                <h4 style="color: #00d4ff; margin-bottom: 10px;">📋 Framework NAC</h4>
+                                <p style="color: #8b92b8; font-size: 0.85rem; line-height: 1.6;">
+                                    <strong>Daily Loss Limit (2%):</strong> Jika tercapai, STOP trading hari ini.<br>
+                                    <strong>Weekly Loss Limit (5%):</strong> Jika tercapai, STOP trading minggu ini.<br>
+                                    <strong>Max Drawdown (8%):</strong> Jika tercapai, EVALUASI dan stop semua aktivitas.<br>
+                                    <br>
+                                    <em>Limit ini tidak dapat diubah untuk menjaga disiplin trading.</em>
+                                </p>
+                            </div>
+                            
+                            <!-- Auto Reset Settings -->
+                            <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+                                <h4 style="color: #ffa500; margin-bottom: 10px;">⏰ Reset Otomatis</h4>
+                                <p style="color: #8b92b8; font-size: 0.85rem; line-height: 1.6;">
+                                    <strong>Daily Loss:</strong> Reset setiap hari pukul 00:00 WIB<br>
+                                    <strong>Weekly Loss:</strong> Reset setiap Senin pukul 00:00 WIB<br>
+                                    <strong>Drawdown Peak:</strong> Update otomatis saat balance baru lebih tinggi<br>
+                                    <br>
+                                    <span id="nextResetInfo">Next reset: -</span>
+                                </p>
+                            </div>
+                            
+                            <!-- Manual Reset -->
+                            <div class="warning-box">
+                                <div class="warning-box-header">
+                                    <span class="warning-box-icon">⚠️</span>
+                                    <span class="warning-box-title">RESET MANUAL</span>
+                                </div>
+                                <p class="warning-box-text">
+                                    Reset manual hanya untuk testing. Semua data loss harian/mingguan akan direset.
+                                </p>
+                                <button class="btn-reset-testing" id="btnResetAll" style="margin-top: 10px;">🔄 Reset Semua Counter</button>
+                            </div>
+
+                            <!-- Dropdown Management -->
+                            <div style="margin-top: 30px;">
+                                <h4 style="color: #00d4ff; margin-bottom: 15px;">🎯 MANAGE DROPDOWN OPTIONS</h4>
                                 
-                                <!-- Input yang muncul saat toggle aktif -->
-                                <div class="manual-input-section" id="manualInputSection" style="display: none;">
-                                    <div class="manual-warning-box">
-                                        <span class="warning-icon">⚠️</span>
-                                        <span class="warning-text">WARNING: This bypasses your risk management!</span>
+                                <!-- Manage Metode -->
+                                <div class="dropdown-manager">
+                                    <div class="dropdown-manager-header">
+                                        <span class="dropdown-manager-title">Metode Trading</span>
+                                        <button class="btn-add-option" id="btnAddMetode">+ Add</button>
                                     </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="manualPositionUSDT">Manual Position Size (USDT)</label>
-                                        <input type="tel" inputmode="decimal" id="manualPositionUSDT" placeholder="500">
-                                    </div>
-                                    
-                                    <div class="manual-comparison" id="manualComparison">
-                                        <div class="comparison-item">
-                                            <span class="comparison-label">💡 Recommended:</span>
-                                            <span class="comparison-value" id="recommendedUSDT">$0.00 USDT</span>
+                                    <div class="dropdown-list" id="metodeList">
+                                        <div class="dropdown-item">
+                                            <span>Breakout</span>
+                                            <button class="btn-delete-option" data-type="metode" data-value="breakout">🗑️</button>
                                         </div>
-                                        <div class="comparison-item">
-                                            <span class="comparison-label">📈 Your input:</span>
-                                            <span class="comparison-value" id="userInputUSDT">-</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Manage Sumber Sinyal -->
+                                <div class="dropdown-manager">
+                                    <div class="dropdown-manager-header">
+                                        <span class="dropdown-manager-title">Sumber Sinyal</span>
+                                        <button class="btn-add-option" id="btnAddSumber">+ Add</button>
+                                    </div>
+                                    <div class="dropdown-list" id="sumberList">
+                                        <div class="dropdown-item">
+                                            <span>Analisa Sendiri</span>
+                                            <button class="btn-delete-option disabled" data-type="sumber" data-value="analisa-sendiri">🔒</button>
                                         </div>
-                                        <div class="comparison-item">
-                                            <span class="comparison-label">🎯 Actual Risk:</span>
-                                            <span class="comparison-value" id="actualRiskManual">-</span>
-                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-calculate">Hitung Sekarang</button>
-                    </form>
-
-                    <div class="results" id="results">
-                        <!-- Partial TP Results -->
-                        <div class="partial-tp-results" id="partialTPResults">
-                            <h4>🎯 Partial Take Profit Breakdown</h4>
-                            <div id="partialTPResultsContent"></div>
-                        </div>
-
-                        <div class="results-grid">
-                            <div class="result-box profit">
-                                <div class="result-label">Take Profit Target</div>
-                                <div class="result-value" id="tpPercent">+0%</div>
-                                <div class="result-subtitle" id="tpValue">Total: Rp 0</div>
-                            </div>
-
-                            <div class="result-box loss">
-                                <div class="result-label">Stop Loss Target</div>
-                                <div class="result-value" id="slPercent">-0%</div>
-                                <div class="result-subtitle" id="slValue">Total: Rp 0</div>
-                            </div>
-
-                            <div class="result-box profit">
-                                <div class="result-label">Keuntungan Bersih</div>
-                                <div class="result-value" id="profitAmount">Rp 0</div>
-                                <div class="result-subtitle">Profit murni (tanpa modal)</div>
-                            </div>
-
-                            <div class="result-box loss">
-                                <div class="result-label">Kerugian Bersih</div>
-                                <div class="result-value" id="lossAmount">Rp 0</div>
-                                <div class="result-subtitle">Loss dari modal</div>
-                            </div>
-
-                            <div class="result-box ratio">
-                                <div class="result-label">Risk : Reward</div>
-                                <div class="result-value" id="rrRatio">1 : 0</div>
-                                <div class="result-subtitle">Rasio RR</div>
-                            </div>
-
-                            <div class="result-box ratio">
-                                <div class="result-label">Trading Pair</div>
-                                <div class="result-value" id="pairDisplay" style="font-size: 1.2rem;">-</div>
-                                <div class="result-subtitle">Market</div>
-                            </div>
-                        </div>
-
-                        <!-- NEW: Balance Projection - PERBAIKAN BUG #2 -->
-                        <div class="balance-projection" id="balanceProjection">
-                            <div class="balance-proj-header">
-                                <span class="balance-proj-icon">💼</span>
-                                <h3>BALANCE PROJECTION</h3>
-                            </div>
-                            
-                            <div class="balance-proj-grid">
-                                <div class="balance-proj-card capital">
-                                    <div class="balance-proj-label">Capital Used</div>
-                                    <div class="balance-proj-value" id="capitalUsed">Rp 0</div>
-                                    <div class="balance-proj-subtitle" id="capitalPercent">0%</div>
-                                </div>
                                 
-                                <div class="balance-proj-card if-tp">
-                                    <div class="balance-proj-label">If TP Hit</div>
-                                    <div class="balance-proj-value" id="balanceIfTP">Rp 0</div>
-                                    <div class="balance-proj-subtitle" id="balanceTPChange">+0%</div>
-                                </div>
-                                
-                                <div class="balance-proj-card if-sl">
-                                    <div class="balance-proj-label">If SL Hit</div>
-                                    <div class="balance-proj-value" id="balanceIfSL">Rp 0</div>
-                                    <div class="balance-proj-subtitle" id="balanceSLChange">-0%</div>
-                                </div>
-                                
-                                <div class="balance-proj-card if-be">
-                                    <div class="balance-proj-label">If Break Even</div>
-                                    <div class="balance-proj-value" id="balanceIfBE">Rp 0</div>
-                                    <div class="result-subtitle">±0.00%</div>
-                                </div>
+                                <p style="color: #8b92b8; font-size: 0.8rem; margin-top: 15px;">
+                                    💡 "Analisa Sendiri" tidak bisa dihapus (default option)
+                                </p>
                             </div>
-                        </div>
-
-                        <div class="btn-group">
-                            <button type="button" class="btn-copy" id="btnCopy">📋 Copy Results</button>
-                            <button type="button" class="btn-save" id="btnSave">💾 Save to History</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Halaman 3: Riwayat (existing) -->
-            <div class="page-content" id="pageRiwayat" data-page="riwayat">
-                <div class="header">
-                    <h1>📜 Trading History</h1>
-                    <p>Track your trading performance & statistics</p>
-                </div>
-
-                <!-- Performance Summary Card -->
-                <div class="calculator-card">
-                    <div class="card-header">
-                        <span>💰</span>
-                        <span>Performance Summary</span>
-                    </div>
-                    <div class="stats-grid" id="performanceStats">
-                        <div class="stat-card initial-balance" id="initialBalanceCard">
-                            <div class="stat-label">Saldo Awal</div>
-                            <div class="stat-value" id="initialBalanceValue">Rp 0</div>
-                            <div class="stat-subtitle">Click to edit</div>
-                        </div>
-                        
-                        <div class="stat-card current-balance">
-                            <div class="stat-label">Total Saldo</div>
-                            <div class="stat-value" id="currentBalanceValue">Rp 0</div>
-                            <div class="stat-subtitle">Current balance</div>
-                        </div>
-                        
-                        <div class="stat-card net-profit">
-                            <div class="stat-label">Net Profit/Loss</div>
-                            <div class="stat-value" id="netProfitLossValue">Rp 0</div>
-                            <div class="stat-subtitle">Overall performance</div>
-                        </div>
-                        
-                        <div class="stat-card roi">
-                            <div class="stat-label">ROI</div>
-                            <div class="stat-value" id="roiValue">0%</div>
-                            <div class="stat-subtitle">Return on investment</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Trading Statistics Card -->
-                <div class="calculator-card">
-                    <div class="card-header">
-                        <span>📊</span>
-                        <span>Trading Statistics</span>
-                    </div>
-                    <div class="stats-grid" id="tradingStats">
-                        <div class="stat-card profit">
-                            <div class="stat-label">Total Profit</div>
-                            <div class="stat-value" id="statProfit">Rp 0</div>
-                            <div class="stat-subtitle">Realized gains</div>
-                        </div>
-                        
-                        <div class="stat-card loss">
-                            <div class="stat-label">Total Loss</div>
-                            <div class="stat-value" id="statLoss">Rp 0</div>
-                            <div class="stat-subtitle">Realized losses</div>
-                        </div>
-                        
-                        <div class="stat-card total">
-                            <div class="stat-label">Total Trades</div>
-                            <div class="stat-value" id="statTotal">0</div>
-                            <div class="stat-subtitle">All time</div>
-                        </div>
-                        
-                        <div class="stat-card winrate">
-                            <div class="stat-label">Win Rate</div>
-                            <div class="stat-value" id="statWinRate">0%</div>
-                            <div class="stat-subtitle">Success ratio</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="calculator-card history-section">
-                    <div class="history-header">
-                        <h2>All Trades</h2>
-                        <div class="history-actions-group">
-                            <button class="btn-database" id="btnExportDB">💾 Export DB</button>
-                            <button class="btn-load-db" id="btnImportDB">📂 Import DB</button>
-                            <button class="btn-clear-history" id="btnClearHistory">🗑️ Clear All</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Filter Buttons -->
-                    <div class="history-filters" id="historyFilters">
-                        <button class="filter-btn all active" data-filter="all">All (0)</button>
-                        <button class="filter-btn running" data-filter="running">⏳ Running (0)</button>
-                        <button class="filter-btn partial" data-filter="partial">🎯 Partial (0)</button>
-                        <button class="filter-btn hit-tp" data-filter="hit-tp">✅ Hit TP (0)</button>
-                        <button class="filter-btn hit-sl" data-filter="hit-sl">❌ Hit SL (0)</button>
-                        <button class="filter-btn break-even" data-filter="break-even">🔄 Break Even (0)</button>
-                        <button class="filter-btn warning" data-filter="warning">⚠️ Warning (0)</button>
-                        <button class="filter-btn sessions-asia" data-filter="sessions-asia">🌏 Asia (0)</button>
-                        <button class="filter-btn sessions-london" data-filter="sessions-london">🇬🇧 London (0)</button>
-                        <button class="filter-btn sessions-newyork" data-filter="sessions-newyork">🇺🇸 NY (0)</button>
-                    </div>
-                    
-                    <div class="history-table-container">
-                        <table class="history-table" id="historyTable">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Date</th>
-                                    <th>Pair</th>
-                                    <th>Sessions</th>
-                                    <th>Entry</th>
-                                    <th>TP</th>
-                                    <th>SL</th>
-                                    <th>Status</th>
-                                    <th>P/L</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="historyTableBody">
-                                <tr>
-                                    <td colspan="10" style="text-align: center; color: #8b92b8; padding: 40px 0;">
-                                        No trading history yet. Start calculating!
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Halaman 4: Risiko (NEW) -->
-            <div class="page-content" id="pageRisiko" data-page="risiko">
-                <div class="header">
-                    <h1>⚠️ Manajemen Risiko</h1>
-                    <p>Pantau limit loss harian, mingguan, dan drawdown</p>
-                </div>
-
-                <!-- Risk Tabs -->
-                <div class="risk-tabs">
-                    <button class="risk-tab active" data-tab="today">Hari Ini</button>
-                    <button class="risk-tab" data-tab="weekly">Minggu Ini</button>
-                    <button class="risk-tab" data-tab="drawdown">Drawdown</button>
-                    <button class="risk-tab" data-tab="settings">Pengaturan</button>
-                </div>
-
-                <!-- Tab Content: Today -->
-                <div class="risk-tab-content active" data-content="today">
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <span class="card-icon">📅</span>
-                            <span>TRADING HARI INI</span>
-                        </div>
-                        
-                        <div class="today-date" id="todayDate">Kamis, 26 Desember 2025</div>
-                        
-                        <!-- Summary Stats -->
-                        <div class="today-summary">
-                            <div class="summary-row">
-                                <span class="summary-label">Limit Loss Harian:</span>
-                                <span class="summary-value" id="dailyLimitValue">2%</span>
-                            </div>
-                            <div class="summary-row">
-                                <span class="summary-label">Maksimal Loss:</span>
-                                <span class="summary-value" id="dailyMaxLoss">Rp 0</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Loss Trades List -->
-                        <div class="loss-trades-section">
-                            <h4 class="section-title">Loss Terealisasi:</h4>
-                            <div class="loss-trades-list" id="lossTradesToday">
-                                <div class="empty-state">
-                                    <span class="empty-icon">✅</span>
-                                    <p>Tidak ada loss hari ini</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Total Progress -->
-                        <div class="total-progress-section">
-                            <h4 class="section-title">Total Loss Hari Ini:</h4>
-                            <div class="total-amount-row">
-                                <span class="total-amount" id="dailyTotalAmount">Rp 0</span>
-                                <span class="total-limit" id="dailyTotalLimit">/ Rp 0</span>
-                            </div>
-                            <div class="risk-progress-bar large">
-                                <div class="risk-progress-fill" id="dailyTotalProgress" style="width: 0%"></div>
-                            </div>
-                            <div class="progress-percentage" id="dailyTotalPercentage">0% / 2%</div>
-                        </div>
-                        
-                        <!-- Warning Box (conditional) -->
-                        <div class="warning-box" style="display: none;" id="dailyWarningBox">
-                            <div class="warning-box-header">
-                                <span class="warning-box-icon">⚠️</span>
-                                <span class="warning-box-title">PERINGATAN</span>
-                            </div>
-                            <p class="warning-box-text">Anda sudah mendekati limit harian! Pertimbangkan untuk berhenti trading.</p>
-                        </div>
-                        
-                        <!-- Reset Button -->
-                        <button class="btn-reset-testing" id="btnResetToday">🔄 Reset Manual (Testing)</button>
-                    </div>
-                </div>
-
-                <!-- Tab Content: Weekly -->
-                <div class="risk-tab-content" data-content="weekly">
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <span class="card-icon">📅</span>
-                            <span>TRADING MINGGU INI</span>
-                        </div>
-                        
-                        <div class="today-summary">
-                            <div class="summary-row">
-                                <span class="summary-label">Limit Loss Mingguan:</span>
-                                <span class="summary-value" id="weeklyLimitValue">5%</span>
-                            </div>
-                            <div class="summary-row">
-                                <span class="summary-label">Maksimal Loss:</span>
-                                <span class="summary-value" id="weeklyMaxLoss">Rp 0</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Loss Trades List -->
-                        <div class="loss-trades-section">
-                            <h4 class="section-title">Loss Terealisasi:</h4>
-                            <div class="loss-trades-list" id="lossTradesWeekly">
-                                <div class="empty-state">
-                                    <span class="empty-icon">✅</span>
-                                    <p>Tidak ada loss minggu ini</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Total Progress -->
-                        <div class="total-progress-section">
-                            <h4 class="section-title">Total Loss Minggu Ini:</h4>
-                            <div class="total-amount-row">
-                                <span class="total-amount" id="weeklyTotalAmount">Rp 0</span>
-                                <span class="total-limit" id="weeklyTotalLimit">/ Rp 0</span>
-                            </div>
-                            <div class="risk-progress-bar large">
-                                <div class="risk-progress-fill" id="weeklyTotalProgress" style="width: 0%"></div>
-                            </div>
-                            <div class="progress-percentage" id="weeklyTotalPercentage">0% / 5%</div>
-                        </div>
-                        
-                        <!-- Warning Box (conditional) -->
-                        <div class="warning-box" style="display: none;" id="weeklyWarningBox">
-                            <div class="warning-box-header">
-                                <span class="warning-box-icon">⚠️</span>
-                                <span class="warning-box-title">PERINGATAN</span>
-                            </div>
-                            <p class="warning-box-text">Anda sudah mendekati limit mingguan! Hati-hati dengan trade berikutnya.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab Content: Drawdown -->
-                <div class="risk-tab-content" data-content="drawdown">
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <span class="card-icon">📉</span>
-                            <span>DRAWDOWN ANALISIS</span>
-                        </div>
-                        
-                        <div class="today-summary">
-                            <div class="summary-row">
-                                <span class="summary-label">Limit Drawdown:</span>
-                                <span class="summary-value">8%</span>
-                            </div>
-                            <div class="summary-row">
-                                <span class="summary-label">Peak Balance:</span>
-                                <span class="summary-value" id="ddPeakBalance">Rp 0</span>
-                            </div>
-                            <div class="summary-row">
-                                <span class="summary-label">Current Balance:</span>
-                                <span class="summary-value" id="ddCurrentBalance">Rp 0</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Drawdown Progress -->
-                        <div class="total-progress-section">
-                            <h4 class="section-title">Drawdown Saat Ini:</h4>
-                            <div class="total-amount-row">
-                                <span class="total-amount" id="ddPercent">0%</span>
-                                <span class="total-limit">/ 8%</span>
-                            </div>
-                            <div class="risk-progress-bar large">
-                                <div class="risk-progress-fill" id="ddProgressBar" style="width: 0%"></div>
-                            </div>
-                            <div class="progress-percentage" id="ddProgressPercentage">0% / 8%</div>
-                        </div>
-                        
-                        <!-- Status -->
-                        <div class="warning-box" id="ddStatusBox" style="background: rgba(0, 255, 136, 0.15); border-color: #00ff88;">
-                            <div class="warning-box-header">
-                                <span class="warning-box-icon">✅</span>
-                                <span class="warning-box-title" id="ddStatusTitle">AMAN</span>
-                            </div>
-                            <p class="warning-box-text" id="ddStatusText">Drawdown Anda masih dalam batas aman.</p>
-                        </div>
-                        
-                        <!-- Reset Button -->
-                        <button class="btn-reset-testing" id="btnResetDrawdown">🔄 Reset Peak Balance (Testing)</button>
-                    </div>
-                </div>
-
-                <!-- Tab Content: Settings -->
-                <div class="risk-tab-content" data-content="settings">
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <span class="card-icon">⚙️</span>
-                            <span>PENGATURAN RISIKO</span>
-                        </div>
-                        
-                        <div class="today-summary">
-                            <div class="summary-row">
-                                <span class="summary-label">Framework NAC:</span>
-                                <span class="summary-value" style="color: #00ff88;">Aktif</span>
-                            </div>
-                            <div class="summary-row">
-                                <span class="summary-label">Daily Loss Limit:</span>
-                                <span class="summary-value">2% (Fixed)</span>
-                            </div>
-                            <div class="summary-row">
-                                <span class="summary-label">Weekly Loss Limit:</span>
-                                <span class="summary-value">5% (Fixed)</span>
-                            </div>
-                            <div class="summary-row">
-                                <span class="summary-label">Max Drawdown:</span>
-                                <span class="summary-value">8% (Fixed)</span>
-                            </div>
-                        </div>
-                        
-                        <div style="background: rgba(0, 212, 255, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-                            <h4 style="color: #00d4ff; margin-bottom: 10px;">📋 Framework NAC</h4>
-                            <p style="color: #8b92b8; font-size: 0.85rem; line-height: 1.6;">
-                                <strong>Daily Loss Limit (2%):</strong> Jika tercapai, STOP trading hari ini.<br>
-                                <strong>Weekly Loss Limit (5%):</strong> Jika tercapai, STOP trading minggu ini.<br>
-                                <strong>Max Drawdown (8%):</strong> Jika tercapai, EVALUASI dan stop semua aktivitas.<br>
-                                <br>
-                                <em>Limit ini tidak dapat diubah untuk menjaga disiplin trading.</em>
-                            </p>
-                        </div>
-                        
-                        <!-- Auto Reset Settings -->
-                        <div style="background: rgba(255, 165, 0, 0.1); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
-                            <h4 style="color: #ffa500; margin-bottom: 10px;">⏰ Reset Otomatis</h4>
-                            <p style="color: #8b92b8; font-size: 0.85rem; line-height: 1.6;">
-                                <strong>Daily Loss:</strong> Reset setiap hari pukul 00:00 WIB<br>
-                                <strong>Weekly Loss:</strong> Reset setiap Senin pukul 00:00 WIB<br>
-                                <strong>Drawdown Peak:</strong> Update otomatis saat balance baru lebih tinggi<br>
-                                <br>
-                                <span id="nextResetInfo">Next reset: -</span>
-                            </p>
-                        </div>
-                        
-                        <!-- Manual Reset -->
-                        <div class="warning-box">
-                            <div class="warning-box-header">
-                                <span class="warning-box-icon">⚠️</span>
-                                <span class="warning-box-title">RESET MANUAL</span>
-                            </div>
-                            <p class="warning-box-text">
-                                Reset manual hanya untuk testing. Semua data loss harian/mingguan akan direset.
-                            </p>
-                            <button class="btn-reset-testing" id="btnResetAll" style="margin-top: 10px;">🔄 Reset Semua Counter</button>
-                        </div>
-
-                        <!-- Dropdown Management -->
-                        <div style="margin-top: 30px;">
-                            <h4 style="color: #00d4ff; margin-bottom: 15px;">🎯 MANAGE DROPDOWN OPTIONS</h4>
-                            
-                            <!-- Manage Metode -->
-                            <div class="dropdown-manager">
-                                <div class="dropdown-manager-header">
-                                    <span class="dropdown-manager-title">Metode Trading</span>
-                                    <button class="btn-add-option" id="btnAddMetode">+ Add</button>
-                                </div>
-                                <div class="dropdown-list" id="metodeList">
-                                    <div class="dropdown-item">
-                                        <span>Breakout</span>
-                                        <button class="btn-delete-option" data-type="metode" data-value="breakout">🗑️</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Manage Sumber Sinyal -->
-                            <div class="dropdown-manager">
-                                <div class="dropdown-manager-header">
-                                    <span class="dropdown-manager-title">Sumber Sinyal</span>
-                                    <button class="btn-add-option" id="btnAddSumber">+ Add</button>
-                                </div>
-                                <div class="dropdown-list" id="sumberList">
-                                    <div class="dropdown-item">
-                                        <span>Analisa Sendiri</span>
-                                        <button class="btn-delete-option disabled" data-type="sumber" data-value="analisa-sendiri">🔒</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <p style="color: #8b92b8; font-size: 0.8rem; margin-top: 15px;">
-                                💡 "Analisa Sendiri" tidak bisa dihapus (default option)
-                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Bottom Navigation (Mobile) -->
-    <div class="bottom-nav">
-        <div class="nav-item active" data-nav="ringkasan">
-            <span class="nav-icon">🏠</span>
-            <span class="nav-label">Ringkasan</span>
-        </div>
-        <div class="nav-item" data-nav="kalkulator">
-            <span class="nav-icon">🧮</span>
-            <span class="nav-label">Kalkulator</span>
-        </div>
-        <div class="nav-item" data-nav="riwayat">
-            <span class="nav-icon">📜</span>
-            <span class="nav-label">Riwayat</span>
-        </div>
-        <div class="nav-item" data-nav="risiko">
-            <span class="nav-icon">⚠️</span>
-            <span class="nav-label">Risiko</span>
-        </div>
-    </div>
+    </div> <!-- Close .main-content -->
 
     <!-- EXISTING MODALS (Status, Balance, Edit, Manual Confirm) -->
     <!-- Status Update Modal -->
@@ -968,7 +969,8 @@
         <div class="edit-modal-content">
             <h3>Edit Trade</h3>
             <div id="editFormContainer">
-                <!-- Edit form will be dynamically generated -->
+                <!-- Form will be dynamically generated by script.js -->
+                <!-- Will include: Pair, Entry, TP/SL, Sessions, Metode, Sumber Sinyal, Charts, Catatan -->
             </div>
         </div>
     </div>
@@ -1023,7 +1025,7 @@
                         </div>
                         <div class="expanded-item">
                             <span class="expanded-label">Risk:Reward:</span>
-                            <span class="expanded-value" data-field="rrRatio">-</span>
+                            <span class="expanded-value rr-value" data-field="rrRatio">-</span>
                         </div>
                         <div class="expanded-item">
                             <span class="expanded-label">Metode:</span>

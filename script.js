@@ -74,15 +74,11 @@ function showPage(pageName) {
     }
     
     // Update nav active state
-    document.querySelectorAll('.nav-item').forEach(nav => {
+    document.querySelectorAll('.sidebar-item').forEach(nav => {
         nav.classList.remove('active');
     });
-    document.querySelectorAll('.nav-item-desktop').forEach(nav => {
-        nav.classList.remove('active');
-    });
-    
-    document.querySelector(`.nav-item[data-nav="${pageName}"]`)?.classList.add('active');
-    document.querySelector(`.nav-item-desktop[data-nav="${pageName}"]`)?.classList.add('active');
+
+    document.querySelector(`.sidebar-item[data-nav="${pageName}"]`)?.classList.add('active');
     
     // Update specific page content if needed
     if (pageName === 'ringkasan' || pageName === 'risiko') {
@@ -125,6 +121,17 @@ function showRiskTab(tabName) {
     }
     
     riskTab = tabName;
+}
+
+// ===================== SIDEBAR TOGGLE FUNCTIONALITY =====================
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebarNav');
+    const mainContent = document.getElementById('mainContent');
+    const hamburger = document.getElementById('hamburgerBtn');
+    
+    sidebar.classList.toggle('hidden');
+    mainContent.classList.toggle('expanded');
+    hamburger.classList.toggle('active');
 }
 
 // ===================== DROPDOWN MANAGEMENT SYSTEM =====================
@@ -394,7 +401,7 @@ function showRiskWarningModal(warnings) {
             ${warning.message}
         </div>
     `).join('<hr style="border-color: rgba(255, 165, 0, 0.3); margin: 15px 0;">');
-    
+
     warningBody.innerHTML = warningHTML;
     modal.classList.add('show');
     
@@ -723,6 +730,10 @@ function calculateRecapBySumber() {
         const partialCount = trades.filter(t => t.status === 'partial').length;
         const bepCount = trades.filter(t => t.status === 'break-even').length;
         
+        // Calculate Win Rate: (TP + Partial) / (TP + Partial + SL) × 100%
+        const totalClosed = tpCount + partialCount + slCount;
+        const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
+        
         const icon = sumber === 'Analisa Sendiri' ? '🧠' : '📡';
         
         recapContainer.innerHTML += `
@@ -733,6 +744,7 @@ function calculateRecapBySumber() {
                     <span class="recap-stat">❌ SL: <strong>${slCount}</strong></span>
                     <span class="recap-stat">🎯 Partial: <strong>${partialCount}</strong></span>
                     <span class="recap-stat">🔄 BEP: <strong>${bepCount}</strong></span>
+                    <span class="recap-stat recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                 </div>
             </div>
         `;
@@ -763,6 +775,10 @@ function calculateRecapByMetode() {
         const partialCount = trades.filter(t => t.status === 'partial').length;
         const bepCount = trades.filter(t => t.status === 'break-even').length;
         
+        // Calculate Win Rate: (TP + Partial) / (TP + Partial + SL) × 100%
+        const totalClosed = tpCount + partialCount + slCount;
+        const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
+        
         recapContainer.innerHTML += `
             <div class="recap-category">
                 <div class="recap-category-title">📈 ${metode}</div>
@@ -771,6 +787,7 @@ function calculateRecapByMetode() {
                     <span class="recap-stat">❌ SL: <strong>${slCount}</strong></span>
                     <span class="recap-stat">🎯 Partial: <strong>${partialCount}</strong></span>
                     <span class="recap-stat">🔄 BEP: <strong>${bepCount}</strong></span>
+                    <span class="recap-stat recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                 </div>
             </div>
         `;
@@ -1953,7 +1970,30 @@ function toggleExpandedRow(row, item) {
     const expandedRow = clone.querySelector('.expanded-row');
     
     expandedRow.querySelector('[data-field="positionSize"]').textContent = item.positionSize ? item.positionSize.toFixed(6) : '-';
-    expandedRow.querySelector('[data-field="rrRatio"]').textContent = item.rrRatio ? `1:${item.rrRatio.toFixed(2)}` : '-';
+    
+    // Set RR with color coding
+    const rrElement = expandedRow.querySelector('[data-field="rrRatio"]');
+    if (item.rrRatio) {
+        const rrValue = item.rrRatio;
+        rrElement.textContent = `1:${rrValue.toFixed(2)}`;
+        
+        // Remove all existing RR classes
+        rrElement.classList.remove('rr-excellent', 'rr-good', 'rr-medium', 'rr-bad');
+        
+        // Add appropriate class based on RR value
+        if (rrValue >= 2) {
+            rrElement.classList.add('rr-excellent'); // Green
+        } else if (rrValue >= 1.5) {
+            rrElement.classList.add('rr-good'); // Blue
+        } else if (rrValue >= 1) {
+            rrElement.classList.add('rr-medium'); // Yellow
+        } else {
+            rrElement.classList.add('rr-bad'); // Red
+        }
+    } else {
+        rrElement.textContent = '-';
+    }
+    
     expandedRow.querySelector('[data-field="metode"]').textContent = item.metode || '-';
     expandedRow.querySelector('[data-field="sumberSignal"]').textContent = item.sumberSignal || '-';
     expandedRow.querySelector('[data-field="catatan"]').textContent = item.catatan || '-';
@@ -2039,6 +2079,24 @@ function openEditModal(index) {
 
     const editFormContainer = document.getElementById('editFormContainer');
     
+    // Get dropdown options
+    const metodeOptions = JSON.parse(localStorage.getItem('metodeOptions') || '[]');
+    const sumberOptions = JSON.parse(localStorage.getItem('sumberOptions') || '[]');
+
+    let metodeOptionsHTML = '<option value="">-- Pilih Metode --</option>';
+    metodeOptions.forEach(option => {
+        const value = option.toLowerCase().replace(/\s+/g, '-');
+        const selected = item.metode === value ? 'selected' : '';
+        metodeOptionsHTML += `<option value="${value}" ${selected}>${option}</option>`;
+    });
+
+    let sumberOptionsHTML = '<option value="">-- Pilih Sumber --</option>';
+    sumberOptions.forEach(option => {
+        const value = option.toLowerCase().replace(/\s+/g, '-');
+        const selected = item.sumberSignal === value ? 'selected' : '';
+        sumberOptionsHTML += `<option value="${value}" ${selected}>${option}</option>`;
+    });
+    
     if (item.usePartialTP) {
         const tpInputs = item.tpLevels.map((tp, idx) => `
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
@@ -2073,6 +2131,18 @@ function openEditModal(index) {
                         <option value="asia" ${item.sessions === 'asia' ? 'selected' : ''}>Asia</option>
                         <option value="london" ${item.sessions === 'london' ? 'selected' : ''}>London</option>
                         <option value="newyork" ${item.sessions === 'newyork' ? 'selected' : ''}>New York</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Metode</label>
+                    <select id="editMetode">
+                        ${metodeOptionsHTML}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sumber Sinyal</label>
+                    <select id="editSumberSignal">
+                        ${sumberOptionsHTML}
                     </select>
                 </div>
                 <div class="form-group">
@@ -2122,6 +2192,18 @@ function openEditModal(index) {
                         <option value="asia" ${item.sessions === 'asia' ? 'selected' : ''}>Asia</option>
                         <option value="london" ${item.sessions === 'london' ? 'selected' : ''}>London</option>
                         <option value="newyork" ${item.sessions === 'newyork' ? 'selected' : ''}>New York</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Metode</label>
+                    <select id="editMetode">
+                        ${metodeOptionsHTML}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sumber Sinyal</label>
+                    <select id="editSumberSignal">
+                        ${sumberOptionsHTML}
                     </select>
                 </div>
                 <div class="form-group">
@@ -2301,6 +2383,9 @@ function saveEditTrade() {
     
     // 🆕 SAVE NEW FIELDS
     history[currentEditTradeIndex].sessions = document.getElementById('editSessions').value;
+    // Save Metode & Sumber Sinyal
+    history[currentEditTradeIndex].metode = document.getElementById('editMetode').value;
+    history[currentEditTradeIndex].sumberSignal = document.getElementById('editSumberSignal').value;
     history[currentEditTradeIndex].chartBefore = document.getElementById('editChartBefore').value;
     history[currentEditTradeIndex].chartAfter = document.getElementById('editChartAfter').value;
     history[currentEditTradeIndex].catatan = document.getElementById('editCatatan').value;
@@ -2670,19 +2755,14 @@ function calculateROI() {
 }
 
 // ===================== EVENT LISTENERS =====================
-document.querySelectorAll('.nav-item').forEach(nav => {
+document.querySelectorAll('.sidebar-item').forEach(nav => {
     nav.addEventListener('click', function() {
         const page = this.dataset.nav;
         showPage(page);
     });
 });
 
-document.querySelectorAll('.nav-item-desktop').forEach(nav => {
-    nav.addEventListener('click', function() {
-        const page = this.dataset.nav;
-        showPage(page);
-    });
-});
+document.getElementById('hamburgerBtn').addEventListener('click', toggleSidebar);
 
 document.querySelectorAll('.risk-tab').forEach(tab => {
     tab.addEventListener('click', function() {
