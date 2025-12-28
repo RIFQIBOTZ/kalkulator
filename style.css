@@ -136,6 +136,41 @@ body::after {
     color: #8b92b8;
 }
 
+/* ===================== FILTER DROPDOWN STYLING ===================== */
+.filter-dropdown {
+    background: rgba(13, 16, 37, 0.8);
+    border: 1px solid rgba(123, 47, 247, 0.3);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #00d4ff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: auto;
+}
+
+.filter-dropdown:hover {
+    border-color: #7b2ff7;
+    box-shadow: 0 0 10px rgba(123, 47, 247, 0.3);
+}
+
+.filter-dropdown:focus {
+    outline: none;
+    border-color: #00d4ff;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: #00d4ff;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
 /* ===================== HAMBURGER BUTTON ===================== */
 
 .hamburger-btn {
@@ -813,51 +848,136 @@ body::after {
     transform: translateY(-2px);
 }
 
-/* Recap Cards Styling (Dashboard) */
+/* Recap Container */
 .recap-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.recap-category {
+/* Recap Cards with Progress Bar - NEW DESIGN */
+.recap-card-progress {
     background: rgba(13, 16, 37, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    padding: 15px;
+    padding: 16px;
+    margin-bottom: 12px;
     transition: all 0.3s ease;
 }
 
-.recap-category:hover {
+.recap-card-progress:hover {
     border-color: rgba(123, 47, 247, 0.5);
-    transform: translateX(5px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(123, 47, 247, 0.2);
 }
 
-.recap-category-title {
-    font-size: 0.9rem;
+.recap-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.recap-icon {
+    font-size: 1.3rem;
+}
+
+.recap-title {
+    font-size: 0.95rem;
     font-weight: 600;
     color: #00d4ff;
-    margin-bottom: 10px;
+    flex: 1;
 }
 
-.recap-stats-mini {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.recap-stats-row {
+    display: flex;
+    justify-content: space-around;
     gap: 8px;
-}
-
-.recap-stat {
-    font-size: 0.75rem;
-    color: #8b92b8;
-    padding: 8px;
+    margin-bottom: 12px;
+    padding: 10px;
     background: rgba(255, 255, 255, 0.02);
-    border-radius: 6px;
+    border-radius: 8px;
 }
 
-.recap-stat strong {
+.recap-stat-item {
+    font-size: 0.8rem;
+    color: #8b92b8;
+    text-align: center;
+}
+
+.recap-stat-item strong {
+    display: block;
+    font-size: 1.2rem;
     color: #e0e0e0;
-    font-size: 1rem;
-    margin-left: 5px;
+    margin-top: 2px;
+}
+
+.recap-progress-bar {
+    height: 8px;
+    background: rgba(13, 16, 37, 0.8);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.recap-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00d4ff);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.recap-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.recap-winrate {
+    font-size: 0.85rem;
+    color: #8b92b8;
+}
+
+.recap-winrate strong {
+    color: #00d4ff;
+    font-size: 0.95rem;
+}
+
+.recap-total {
+    font-size: 0.85rem;
+    color: #8b92b8;
+}
+
+.recap-total strong {
+    color: #7b2ff7;
+    font-size: 0.95rem;
+}
+
+/* Mobile Responsive untuk Recap */
+@media (max-width: 480px) {
+    .recap-stats-row {
+        gap: 4px;
+        padding: 8px;
+    }
+    
+    .recap-stat-item {
+        font-size: 0.7rem;
+    }
+    
+    .recap-stat-item strong {
+        font-size: 1rem;
+    }
+    
+    .recap-winrate, .recap-total {
+        font-size: 0.75rem;
+    }
+    
+    .recap-winrate strong, .recap-total strong {
+        font-size: 0.85rem;
+    }
 }
 
 /* Current Balance Display */
@@ -2937,8 +3057,28 @@ textarea::placeholder {
         padding: 10px 6px;
     }
 
-    .recap-stats-mini {
-        grid-template-columns: repeat(2, 1fr);
+    /* Mobile Responsive untuk Recap */
+    @media (max-width: 480px) {
+        .recap-stats-row {
+            gap: 4px;
+            padding: 8px;
+        }
+        
+        .recap-stat-item {
+            font-size: 0.7rem;
+        }
+        
+        .recap-stat-item strong {
+            font-size: 1rem;
+        }
+        
+        .recap-winrate, .recap-total {
+            font-size: 0.75rem;
+        }
+        
+        .recap-winrate strong, .recap-total strong {
+            font-size: 0.85rem;
+        }
     }
 
     /* KEEP TABLE AS TABLE ON MOBILE - HORIZONTAL SCROLL */

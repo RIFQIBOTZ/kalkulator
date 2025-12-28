@@ -80,9 +80,11 @@ function showPage(pageName) {
 
     document.querySelector(`.sidebar-item[data-nav="${pageName}"]`)?.classList.add('active');
     
-    // Update specific page content if needed
+// Update specific page content if needed
     if (pageName === 'ringkasan' || pageName === 'risiko') {
         updateRiskDashboard();
+        // 🆕 TAMBAHKAN INI:
+        initializeRecapFilters(); // Refresh dropdown options
     } else if (pageName === 'riwayat') {
         loadHistory();
         updateStats();
@@ -729,32 +731,44 @@ function calculateRecapBySumber() {
         const sumberKey = sumber.toLowerCase().replace(/\s+/g, '-');
         const trades = history.filter(t => t.sumberSignal === sumberKey);
         
+        if (trades.length === 0) return; // Skip jika tidak ada trade
+        
         const tpCount = trades.filter(t => t.status === 'hit-tp').length;
         const slCount = trades.filter(t => t.status === 'hit-sl').length;
         const partialCount = trades.filter(t => t.status === 'partial').length;
         const bepCount = trades.filter(t => t.status === 'break-even').length;
+        const totalTrades = trades.length;
         
-        // Calculate Win Rate: (TP + Partial) / (TP + Partial + SL) × 100%
         const totalClosed = tpCount + partialCount + slCount;
         const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
+        const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
         
         const icon = sumber === 'Analisa Sendiri' ? '🧠' : '📡';
         
         recapContainer.innerHTML += `
-            <div class="recap-category">
-                <div class="recap-category-title">${icon} ${sumber}</div>
-                <div class="recap-stats-mini">
-                    <span class="recap-stat">✅ TP: <strong>${tpCount}</strong></span>
-                    <span class="recap-stat">❌ SL: <strong>${slCount}</strong></span>
-                    <span class="recap-stat">🎯 Partial: <strong>${partialCount}</strong></span>
-                    <span class="recap-stat">🔄 BEP: <strong>${bepCount}</strong></span>
-                    <span class="recap-stat recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
+            <div class="recap-card-progress">
+                <div class="recap-card-header">
+                    <span class="recap-icon">${icon}</span>
+                    <span class="recap-title">${sumber}</span>
+                </div>
+                <div class="recap-stats-row">
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
+                </div>
+                <div class="recap-progress-bar">
+                    <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
+                </div>
+                <div class="recap-footer">
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
                 </div>
             </div>
         `;
     });
     
-    if (sumberOptions.length === 0) {
+    if (recapContainer.innerHTML === '') {
         recapContainer.innerHTML = '<p style="text-align: center; color: #8b92b8;">Belum ada data</p>';
     }
 }
@@ -772,26 +786,36 @@ function calculateRecapByMetode() {
         const metodeKey = metode.toLowerCase().replace(/\s+/g, '-');
         const trades = history.filter(t => t.metode === metodeKey);
         
-        if (trades.length === 0) return; // Skip if no trades
+        if (trades.length === 0) return;
         
         const tpCount = trades.filter(t => t.status === 'hit-tp').length;
         const slCount = trades.filter(t => t.status === 'hit-sl').length;
         const partialCount = trades.filter(t => t.status === 'partial').length;
         const bepCount = trades.filter(t => t.status === 'break-even').length;
+        const totalTrades = trades.length;
         
-        // Calculate Win Rate: (TP + Partial) / (TP + Partial + SL) × 100%
         const totalClosed = tpCount + partialCount + slCount;
         const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
+        const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
         
         recapContainer.innerHTML += `
-            <div class="recap-category">
-                <div class="recap-category-title">📈 ${metode}</div>
-                <div class="recap-stats-mini">
-                    <span class="recap-stat">✅ TP: <strong>${tpCount}</strong></span>
-                    <span class="recap-stat">❌ SL: <strong>${slCount}</strong></span>
-                    <span class="recap-stat">🎯 Partial: <strong>${partialCount}</strong></span>
-                    <span class="recap-stat">🔄 BEP: <strong>${bepCount}</strong></span>
-                    <span class="recap-stat recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
+            <div class="recap-card-progress">
+                <div class="recap-card-header">
+                    <span class="recap-icon">📈</span>
+                    <span class="recap-title">${metode}</span>
+                </div>
+                <div class="recap-stats-row">
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
+                </div>
+                <div class="recap-progress-bar">
+                    <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
+                </div>
+                <div class="recap-footer">
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
                 </div>
             </div>
         `;
@@ -891,6 +915,185 @@ form.addEventListener('submit', function(e) {
     
     proceedWithCalculation(true);
 });
+
+// ===================== 🆕 FILTER FUNCTIONS FOR RECAP =====================
+
+/**
+ * Initialize dropdown filter options
+ */
+function initializeRecapFilters() {
+    // Populate Sumber Sinyal filter
+    const sumberOptions = JSON.parse(localStorage.getItem('sumberOptions') || '[]');
+    const filterSumberDropdown = document.getElementById('filterSumberSignal');
+    
+    if (filterSumberDropdown) {
+        filterSumberDropdown.innerHTML = '<option value="all">Show All</option>';
+        sumberOptions.forEach(option => {
+            const optElement = document.createElement('option');
+            optElement.value = option.toLowerCase().replace(/\s+/g, '-');
+            optElement.textContent = option;
+            filterSumberDropdown.appendChild(optElement);
+        });
+    }
+    
+    // Populate Metode filter
+    const metodeOptions = JSON.parse(localStorage.getItem('metodeOptions') || '[]');
+    const filterMetodeDropdown = document.getElementById('filterMetode');
+    
+    if (filterMetodeDropdown) {
+        filterMetodeDropdown.innerHTML = '<option value="all">Show All</option>';
+        metodeOptions.forEach(option => {
+            const optElement = document.createElement('option');
+            optElement.value = option.toLowerCase().replace(/\s+/g, '-');
+            optElement.textContent = option;
+            filterMetodeDropdown.appendChild(optElement);
+        });
+    }
+}
+
+/**
+ * Filter and display recap by sumber sinyal
+ */
+function filterRecapBySumber(selectedSumber = 'all') {
+    const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+    const sumberOptions = JSON.parse(localStorage.getItem('sumberOptions') || '[]');
+    
+    const recapContainer = document.getElementById('recapBySumber');
+    if (!recapContainer) return;
+    
+    recapContainer.innerHTML = '';
+    
+    const displayOptions = selectedSumber === 'all' 
+        ? sumberOptions 
+        : sumberOptions.filter(s => s.toLowerCase().replace(/\s+/g, '-') === selectedSumber);
+    
+    if (displayOptions.length === 0) {
+        recapContainer.innerHTML = '<p style="text-align: center; color: #8b92b8;">Belum ada data</p>';
+        return;
+    }
+    
+    displayOptions.forEach(sumber => {
+        const sumberKey = sumber.toLowerCase().replace(/\s+/g, '-');
+        const trades = history.filter(t => t.sumberSignal === sumberKey);
+        
+        if (trades.length === 0) return;
+        
+        const tpCount = trades.filter(t => t.status === 'hit-tp').length;
+        const slCount = trades.filter(t => t.status === 'hit-sl').length;
+        const partialCount = trades.filter(t => t.status === 'partial').length;
+        const bepCount = trades.filter(t => t.status === 'break-even').length;
+        const totalTrades = trades.length;
+        
+        const totalClosed = tpCount + partialCount + slCount;
+        const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
+        const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
+        
+        const icon = sumber === 'Analisa Sendiri' ? '🧠' : '📡';
+        
+        recapContainer.innerHTML += `
+            <div class="recap-card-progress">
+                <div class="recap-card-header">
+                    <span class="recap-icon">${icon}</span>
+                    <span class="recap-title">${sumber}</span>
+                </div>
+                <div class="recap-stats-row">
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
+                </div>
+                <div class="recap-progress-bar">
+                    <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
+                </div>
+                <div class="recap-footer">
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
+                </div>
+            </div>
+        `;
+    });
+    
+    if (recapContainer.innerHTML === '') {
+        recapContainer.innerHTML = '<p style="text-align: center; color: #8b92b8;">Belum ada data</p>';
+    }
+}
+
+/**
+ * Filter and display recap by metode
+ */
+function filterRecapByMetode(selectedMetode = 'all') {
+    const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+    const metodeOptions = JSON.parse(localStorage.getItem('metodeOptions') || '[]');
+    
+    const recapContainer = document.getElementById('recapByMetode');
+    if (!recapContainer) return;
+    
+    recapContainer.innerHTML = '';
+    
+    let displayOptions = selectedMetode === 'all' 
+        ? metodeOptions 
+        : metodeOptions.filter(m => m.toLowerCase().replace(/\s+/g, '-') === selectedMetode);
+    
+    displayOptions = displayOptions.filter(metode => {
+        const metodeKey = metode.toLowerCase().replace(/\s+/g, '-');
+        const trades = history.filter(t => t.metode === metodeKey);
+        return trades.length > 0;
+    });
+    
+    if (displayOptions.length === 0) {
+        recapContainer.innerHTML = '<p style="text-align: center; color: #8b92b8;">Belum ada data</p>';
+        return;
+    }
+    
+    displayOptions.forEach(metode => {
+        const metodeKey = metode.toLowerCase().replace(/\s+/g, '-');
+        const trades = history.filter(t => t.metode === metodeKey);
+        
+        const tpCount = trades.filter(t => t.status === 'hit-tp').length;
+        const slCount = trades.filter(t => t.status === 'hit-sl').length;
+        const partialCount = trades.filter(t => t.status === 'partial').length;
+        const bepCount = trades.filter(t => t.status === 'break-even').length;
+        const totalTrades = trades.length;
+        
+        const totalClosed = tpCount + partialCount + slCount;
+        const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
+        const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
+        
+        recapContainer.innerHTML += `
+            <div class="recap-card-progress">
+                <div class="recap-card-header">
+                    <span class="recap-icon">📈</span>
+                    <span class="recap-title">${metode}</span>
+                </div>
+                <div class="recap-stats-row">
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
+                </div>
+                <div class="recap-progress-bar">
+                    <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
+                </div>
+                <div class="recap-footer">
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// ===================== UPDATE EXISTING FUNCTIONS =====================
+
+// REPLACE calculateRecapBySumber() dengan ini:
+function calculateRecapBySumber() {
+    filterRecapBySumber('all'); // Default show all
+}
+
+// REPLACE calculateRecapByMetode() dengan ini:
+function calculateRecapByMetode() {
+    filterRecapByMetode('all'); // Default show all
+}
 
 // ===================== TP LEVELS FUNCTIONS =====================
 function initializeTPLevels() {
@@ -2945,6 +3148,15 @@ document.getElementById('btnEditBalance').addEventListener('click', openBalanceM
 document.getElementById('btnAddMetode').addEventListener('click', () => addDropdownOption('metode'));
 document.getElementById('btnAddSumber').addEventListener('click', () => addDropdownOption('sumber'));
 
+// Event listeners untuk filter dropdown recap
+document.getElementById('filterSumberSignal')?.addEventListener('change', function() {
+    filterRecapBySumber(this.value);
+});
+
+document.getElementById('filterMetode')?.addEventListener('change', function() {
+    filterRecapByMetode(this.value);
+});
+
 // ===================== INITIALIZATION =====================
 window.addEventListener('DOMContentLoaded', function() {
     const initialBalance = localStorage.getItem('initialBalance');
@@ -2973,27 +3185,24 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     // ===================== AUTO-HIDE HAMBURGER ON SCROLL =====================
-// GANTI bagian auto-hide hamburger (di akhir DOMContentLoaded)
-// HAPUS kode yang ada, GANTI dengan:
+    const scrollContainer = document.querySelector('.scroll-container');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
 
-const scrollContainer = document.querySelector('.scroll-container');
-const hamburgerBtn = document.getElementById('hamburgerBtn');
-
-if (hamburgerBtn && scrollContainer) {
-    let lastScrollTop = 0;
-    
-    scrollContainer.addEventListener('scroll', function() {
-        let scrollTop = scrollContainer.scrollTop;
+    if (hamburgerBtn && scrollContainer) {
+        let lastScrollTop = 0;
         
-        if (scrollTop > lastScrollTop && scrollTop > 50) {
-            hamburgerBtn.classList.add('hide');
-        } else {
-            hamburgerBtn.classList.remove('hide');
-        }
-        
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    }, false);
-}
+        scrollContainer.addEventListener('scroll', function() {
+            let scrollTop = scrollContainer.scrollTop;
+            
+            if (scrollTop > lastScrollTop && scrollTop > 50) {
+                hamburgerBtn.classList.add('hide');
+            } else {
+                hamburgerBtn.classList.remove('hide');
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, false);
+    }
     // =========================================================================
     
     setInterval(() => {

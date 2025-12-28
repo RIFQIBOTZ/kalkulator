@@ -173,34 +173,33 @@
                         </div>
                     </div>
 
-                    <!-- Card 4: Rekap by Category -->
+                    <!-- Card 4: Rekap by Sumber Sinyal -->
                     <div class="dashboard-card">
                         <div class="card-header">
                             <span class="card-icon">📊</span>
                             <span>REKAP BY SUMBER SINYAL</span>
+                            <select id="filterSumberSignal" class="filter-dropdown">
+                                <option value="all">Show All</option>
+                            </select>
                         </div>
                         
                         <div class="recap-container" id="recapBySumber">
-                            <div class="recap-category">
-                                <div class="recap-category-title">🧠 Analisa Sendiri</div>
-                                <div class="recap-stats-mini">
-                                    <span class="recap-stat">✅ TP: <strong id="recap-sendiri-tp">0</strong></span>
-                                    <span class="recap-stat">❌ SL: <strong id="recap-sendiri-sl">0</strong></span>
-                                    <span class="recap-stat">🎯 Partial: <strong id="recap-sendiri-partial">0</strong></span>
-                                    <span class="recap-stat">🔄 BEP: <strong id="recap-sendiri-bep">0</strong></span>
-                                </div>
-                            </div>
+                            <!-- Content will be dynamically generated -->
                         </div>
                     </div>
 
+                    <!-- Card 5: Rekap by Metode -->
                     <div class="dashboard-card">
                         <div class="card-header">
                             <span class="card-icon">📈</span>
                             <span>REKAP BY METODE</span>
+                            <select id="filterMetode" class="filter-dropdown">
+                                <option value="all">Show All</option>
+                            </select>
                         </div>
                         
                         <div class="recap-container" id="recapByMetode">
-                            <p style="text-align: center; color: #8b92b8;">Belum ada data</p>
+                            <!-- Content will be dynamically generated -->
                         </div>
                     </div>
 
