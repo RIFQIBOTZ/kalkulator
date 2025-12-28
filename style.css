@@ -936,6 +936,35 @@ body::after {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+/* Recap Net P/L - Badge Style (Opsi 6) */
+.recap-netpl {
+    margin-top: 8px;
+    text-align: center;
+}
+
+.recap-netpl span {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.recap-netpl.positive span {
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.recap-netpl.negative span {
+    background: rgba(255, 51, 102, 0.15);
+    color: #ff3366;
+    border: 1px solid rgba(255, 51, 102, 0.3);
+}
+
+.recap-netpl strong {
+    font-size: 1rem;
+}
 .recap-winrate {
     font-size: 0.85rem;
     color: #8b92b8;

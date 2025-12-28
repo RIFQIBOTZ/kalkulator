@@ -80,12 +80,14 @@ function showPage(pageName) {
 
     document.querySelector(`.sidebar-item[data-nav="${pageName}"]`)?.classList.add('active');
     
-// Update specific page content if needed
+    // Update specific page content if needed
     if (pageName === 'ringkasan' || pageName === 'risiko') {
         updateRiskDashboard();
         // 🆕 TAMBAHKAN INI:
         initializeRecapFilters(); // Refresh dropdown options
     } else if (pageName === 'riwayat') {
+        // 🆕 UPDATED: Panggil populateHistoryFilters()
+        populateHistoryFilters();
         loadHistory();
         updateStats();
         updateFilterCounts();
@@ -743,6 +745,28 @@ function calculateRecapBySumber() {
         const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
         const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
         
+        // 🆕 Calculate Net P/L for this sumber
+        let netPL = 0;
+        trades.forEach(trade => {
+            if (trade.status === 'hit-tp') {
+                netPL += trade.profit;
+            } else if (trade.status === 'hit-sl') {
+                if (trade.slInProfit) {
+                    netPL += trade.loss;
+                } else {
+                    netPL -= trade.loss;
+                }
+            } else if (trade.status === 'partial') {
+                if (trade.usePartialTP && trade.tpLevels) {
+                    const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                    netPL += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                }
+            }
+        });
+        const netPLFormatted = formatRupiah(Math.abs(netPL));
+        const netPLClass = netPL >= 0 ? 'positive' : 'negative';
+        const netPLSign = netPL >= 0 ? '+' : '-';
+        
         const icon = sumber === 'Analisa Sendiri' ? '🧠' : '📡';
         
         recapContainer.innerHTML += `
@@ -763,6 +787,9 @@ function calculateRecapBySumber() {
                 <div class="recap-footer">
                     <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
+                </div>
+                <div class="recap-netpl ${netPLClass}">
+                    <span>Net P/L: ${netPLSign}${netPLFormatted}</span>
                 </div>
             </div>
         `;
@@ -798,6 +825,28 @@ function calculateRecapByMetode() {
         const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
         const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
         
+        // 🆕 Calculate Net P/L for this metode
+        let netPL = 0;
+        trades.forEach(trade => {
+            if (trade.status === 'hit-tp') {
+                netPL += trade.profit;
+            } else if (trade.status === 'hit-sl') {
+                if (trade.slInProfit) {
+                    netPL += trade.loss;
+                } else {
+                    netPL -= trade.loss;
+                }
+            } else if (trade.status === 'partial') {
+                if (trade.usePartialTP && trade.tpLevels) {
+                    const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                    netPL += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                }
+            }
+        });
+        const netPLFormatted = formatRupiah(Math.abs(netPL));
+        const netPLClass = netPL >= 0 ? 'positive' : 'negative';
+        const netPLSign = netPL >= 0 ? '+' : '-';
+        
         recapContainer.innerHTML += `
             <div class="recap-card-progress">
                 <div class="recap-card-header">
@@ -816,6 +865,9 @@ function calculateRecapByMetode() {
                 <div class="recap-footer">
                     <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
+                </div>
+                <div class="recap-netpl ${netPLClass}">
+                    <span>Net P/L: ${netPLSign}${netPLFormatted}</span>
                 </div>
             </div>
         `;
@@ -952,6 +1004,38 @@ function initializeRecapFilters() {
 }
 
 /**
+ * 🆕 Populate dropdown filters di halaman History
+ */
+function populateHistoryFilters() {
+    const metodeOptions = JSON.parse(localStorage.getItem('metodeOptions') || '[]');
+    const sumberOptions = JSON.parse(localStorage.getItem('sumberOptions') || '[]');
+    
+    // Populate Metode dropdown
+    const filterMetodeDropdown = document.getElementById('filterMetodeHistory');
+    if (filterMetodeDropdown) {
+        filterMetodeDropdown.innerHTML = '<option value="all">Show All</option>';
+        metodeOptions.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option.toLowerCase().replace(/\s+/g, '-');
+            opt.textContent = option;
+            filterMetodeDropdown.appendChild(opt);
+        });
+    }
+    
+    // Populate Sumber dropdown
+    const filterSumberDropdown = document.getElementById('filterSumberHistory');
+    if (filterSumberDropdown) {
+        filterSumberDropdown.innerHTML = '<option value="all">Show All</option>';
+        sumberOptions.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option.toLowerCase().replace(/\s+/g, '-');
+            opt.textContent = option;
+            filterSumberDropdown.appendChild(opt);
+        });
+    }
+}
+
+/**
  * Filter and display recap by sumber sinyal
  */
 function filterRecapBySumber(selectedSumber = 'all') {
@@ -988,6 +1072,28 @@ function filterRecapBySumber(selectedSumber = 'all') {
         const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
         const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
         
+        // 🆕 ADD THIS: Net P/L calculation
+        let netPL = 0;
+        trades.forEach(trade => {
+            if (trade.status === 'hit-tp') {
+                netPL += trade.profit;
+            } else if (trade.status === 'hit-sl') {
+                if (trade.slInProfit) {
+                    netPL += trade.loss;
+                } else {
+                    netPL -= trade.loss;
+                }
+            } else if (trade.status === 'partial') {
+                if (trade.usePartialTP && trade.tpLevels) {
+                    const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                    netPL += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                }
+            }
+        });
+        const netPLFormatted = formatRupiah(Math.abs(netPL));
+        const netPLClass = netPL >= 0 ? 'positive' : 'negative';
+        const netPLSign = netPL >= 0 ? '+' : '-';
+        
         const icon = sumber === 'Analisa Sendiri' ? '🧠' : '📡';
         
         recapContainer.innerHTML += `
@@ -1008,6 +1114,9 @@ function filterRecapBySumber(selectedSumber = 'all') {
                 <div class="recap-footer">
                     <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
+                </div>
+                <div class="recap-netpl ${netPLClass}">
+                    <span>Net P/L: ${netPLSign}${netPLFormatted}</span>
                 </div>
             </div>
         `;
@@ -1059,6 +1168,28 @@ function filterRecapByMetode(selectedMetode = 'all') {
         const winRate = totalClosed > 0 ? (((tpCount + partialCount) / totalClosed) * 100).toFixed(1) : 0;
         const winRatePercent = totalClosed > 0 ? ((tpCount + partialCount) / totalClosed) * 100 : 0;
         
+        // 🆕 ADD THIS: Net P/L calculation
+        let netPL = 0;
+        trades.forEach(trade => {
+            if (trade.status === 'hit-tp') {
+                netPL += trade.profit;
+            } else if (trade.status === 'hit-sl') {
+                if (trade.slInProfit) {
+                    netPL += trade.loss;
+                } else {
+                    netPL -= trade.loss;
+                }
+            } else if (trade.status === 'partial') {
+                if (trade.usePartialTP && trade.tpLevels) {
+                    const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                    netPL += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+                }
+            }
+        });
+        const netPLFormatted = formatRupiah(Math.abs(netPL));
+        const netPLClass = netPL >= 0 ? 'positive' : 'negative';
+        const netPLSign = netPL >= 0 ? '+' : '-';
+        
         recapContainer.innerHTML += `
             <div class="recap-card-progress">
                 <div class="recap-card-header">
@@ -1077,6 +1208,9 @@ function filterRecapByMetode(selectedMetode = 'all') {
                 <div class="recap-footer">
                     <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
+                </div>
+                <div class="recap-netpl ${netPLClass}">
+                    <span>Net P/L: ${netPLSign}${netPLFormatted}</span>
                 </div>
             </div>
         `;
@@ -2064,6 +2198,18 @@ function loadHistory() {
     } else if (currentFilter !== 'all') {
         filteredHistory = history.filter(t => t.status === currentFilter);
     }
+    
+    // 🆕 Apply Metode filter
+    const filterMetodeValue = document.getElementById('filterMetodeHistory')?.value;
+    if (filterMetodeValue && filterMetodeValue !== 'all') {
+        filteredHistory = filteredHistory.filter(t => t.metode === filterMetodeValue);
+    }
+    
+    // 🆕 Apply Sumber Sinyal filter
+    const filterSumberValue = document.getElementById('filterSumberHistory')?.value;
+    if (filterSumberValue && filterSumberValue !== 'all') {
+        filteredHistory = filteredHistory.filter(t => t.sumberSignal === filterSumberValue);
+    }
 
     if (filteredHistory.length === 0) {
         let message = 'No trading history yet. Start calculating!';
@@ -2618,7 +2764,7 @@ function deleteHistory(index) {
     updatePositionSize();
     updateFilterCounts();
     updateRiskDashboard();
-    showToast('🗑️ Deleted from history!');
+    showToast('??️ Deleted from history!');
 }
 
 function clearHistory() {
@@ -3157,6 +3303,15 @@ document.getElementById('filterMetode')?.addEventListener('change', function() {
     filterRecapByMetode(this.value);
 });
 
+// 🆕 Event listeners untuk History filter dropdowns
+document.getElementById('filterMetodeHistory')?.addEventListener('change', function() {
+    loadHistory();
+});
+
+document.getElementById('filterSumberHistory')?.addEventListener('change', function() {
+    loadHistory();
+});
+
 // ===================== INITIALIZATION =====================
 window.addEventListener('DOMContentLoaded', function() {
     const initialBalance = localStorage.getItem('initialBalance');
@@ -3183,6 +3338,9 @@ window.addEventListener('DOMContentLoaded', function() {
         calculateRecapBySumber();
         calculateRecapByMetode();
     }
+    
+    // 🆕 Initialize history filters
+    populateHistoryFilters();
     
     // ===================== AUTO-HIDE HAMBURGER ON SCROLL =====================
     const scrollContainer = document.querySelector('.scroll-container');

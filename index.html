@@ -623,6 +623,22 @@
                             <button class="filter-btn sessions-newyork" data-filter="sessions-newyork">🇺🇸 NY (0)</button>
                         </div>
                         
+                        <!-- 🆕 NEW: Advanced Filters for Metode & Sinyal -->
+                        <div class="advanced-filters">
+                            <div class="advanced-filter-group">
+                                <label for="filterMetodeHistory" class="filter-label">📈 Filter by Metode:</label>
+                                <select id="filterMetodeHistory" class="filter-dropdown-history">
+                                    <option value="all">Show All</option>
+                                </select>
+                            </div>
+                            <div class="advanced-filter-group">
+                                <label for="filterSumberHistory" class="filter-label">📡 Filter by Sinyal:</label>
+                                <select id="filterSumberHistory" class="filter-dropdown-history">
+                                    <option value="all">Show All</option>
+                                </select>
+                            </div>
+                        </div>
+                        
                         <div class="history-table-container">
                             <table class="history-table" id="historyTable">
                                 <thead>
@@ -705,160 +721,160 @@
 
             <!-- Total Trades -->
             <div class="form-group">
-                <label for="totalTrades">Total Trades</label>
-                <input type="number" id="totalTrades" placeholder="100" min="1" max="10000" value="100" required>
-            </div>
+                                <label for="totalTrades">Total Trades</label>
+                                <input type="number" id="totalTrades" placeholder="100" min="1" max="10000" value="100" required>
+                            </div>
 
-            <!-- Win Rate Slider -->
-            <div class="form-group" style="grid-column: 1 / -1;">
-                <label for="winRate">Win Rate (%)</label>
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <input type="range" id="winRateSlider" class="winrate-slider" min="0" max="100" value="50" step="1" style="flex: 1;">
-                    <input type="number" id="winRate" style="width: 80px;" min="0" max="100" value="50" step="1" required>
+                            <!-- Win Rate Slider -->
+                            <div class="form-group" style="grid-column: 1 / -1;">
+                                <label for="winRate">Win Rate (%)</label>
+                                <div style="display: flex; gap: 15px; align-items: center;">
+                                    <input type="range" id="winRateSlider" class="winrate-slider" min="0" max="100" value="50" step="1" style="flex: 1;">
+                                    <input type="number" id="winRate" style="width: 80px;" min="0" max="100" value="50" step="1" required>
+                                </div>
+                                <div class="winrate-display">
+                                    <div class="winrate-value" id="winRateDisplay">50%</div>
+                                    <div class="winrate-label">Current Win Rate</div>
+                                </div>
+                            </div>
+
+                            <!-- Average Win -->
+                            <div class="form-group">
+                                <label for="avgWinPercent">Average Win (%)</label>
+                                <input type="number" id="avgWinPercent" placeholder="5" min="0.1" step="0.1" value="5" required>
+                                <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
+                                    Jarak rata-rata dari entry ke TP
+                                </small>
+                            </div>
+
+                            <!-- Average Loss -->
+                            <div class="form-group">
+                                <label for="avgLossPercent">Average Loss (%)</label>
+                                <input type="number" id="avgLossPercent" placeholder="2" min="0.1" step="0.1" value="2" required>
+                                <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
+                                    Jarak rata-rata dari entry ke SL
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Calculate Button -->
+                        <button type="submit" class="btn-calculate" id="btnCalculateWinrate">
+                            🎲 Run Simulation
+                        </button>
+                    </form>
                 </div>
-                <div class="winrate-display">
-                    <div class="winrate-value" id="winRateDisplay">50%</div>
-                    <div class="winrate-label">Current Win Rate</div>
+
+                <!-- Results Section -->
+                <div class="results" id="winrateResults" style="display: none;">
+                    <!-- Risk Warning (if any) -->
+                    <div class="winrate-risk-warning" id="riskWarnings" style="display: none;">
+                        <!-- Warnings will be dynamically inserted here -->
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="winrate-results-grid">
+                        <div class="winrate-result-card positive">
+                            <div class="winrate-result-label">Final Equity</div>
+                            <div class="winrate-result-value" id="finalEquityValue">-</div>
+                            <div class="winrate-result-subtitle">After all trades</div>
+                        </div>
+                        
+                        <div class="winrate-result-card neutral">
+                            <div class="winrate-result-label">Net Profit/Loss</div>
+                            <div class="winrate-result-value" id="netPLValue">-</div>
+                            <div class="winrate-result-subtitle">Total P/L</div>
+                        </div>
+                        
+                        <div class="winrate-result-card neutral">
+                            <div class="winrate-result-label">ROI (%)</div>
+                            <div class="winrate-result-value" id="roiValue">-</div>
+                            <div class="winrate-result-subtitle">Return on investment</div>
+                        </div>
+                        
+                        <div class="winrate-result-card positive">
+                            <div class="winrate-result-label">Total Win Trades</div>
+                            <div class="winrate-result-value" id="winTradesValue">-</div>
+                            <div class="winrate-result-subtitle">Winning trades</div>
+                        </div>
+                        
+                        <div class="winrate-result-card negative">
+                            <div class="winrate-result-label">Total Loss Trades</div>
+                            <div class="winrate-result-value" id="lossTradesValue">-</div>
+                            <div class="winrate-result-subtitle">Losing trades</div>
+                        </div>
+                        
+                        <div class="winrate-result-card neutral">
+                            <div class="winrate-result-label">Expected Value</div>
+                            <div class="winrate-result-value" id="expectedValueValue">-</div>
+                            <div class="winrate-result-subtitle">Per trade expectancy</div>
+                        </div>
+                        
+                        <div class="winrate-result-card neutral">
+                            <div class="winrate-result-label">Risk:Reward Ratio</div>
+                            <div class="winrate-result-value" id="rrRatioValue">-</div>
+                            <div class="winrate-result-subtitle">Average R:R</div>
+                        </div>
+                        
+                        <div class="winrate-result-card neutral">
+                            <div class="winrate-result-label">Additional Stats</div>
+                            <div class="winrate-result-value" style="font-size: 0.9rem;" id="additionalStats">-</div>
+                            <div class="winrate-result-subtitle">More metrics</div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="winrate-chart-container">
+                        <div class="winrate-chart-header">
+                            <span class="card-icon">📈</span>
+                            <h3 class="winrate-chart-title">Equity Curve Progression</h3>
+                        </div>
+                        <div class="winrate-chart-wrapper">
+                            <canvas id="equityChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="winrate-chart-container">
+                        <div class="winrate-chart-header">
+                            <span class="card-icon">📊</span>
+                            <h3 class="winrate-chart-title">Win vs Loss Distribution</h3>
+                        </div>
+                        <div class="winrate-chart-wrapper">
+                            <canvas id="distributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Monte Carlo Section -->
+                    <div class="monte-carlo-section" id="monteCarloSection" style="display: none;">
+                        <div class="monte-carlo-header" onclick="this.parentElement.classList.toggle('expanded')">
+                            <h3 class="monte-carlo-title">
+                                <span>🎲</span>
+                                Monte Carlo Simulation (1000 runs)
+                            </h3>
+                            <div class="monte-carlo-toggle">▼</div>
+                        </div>
+                        <div class="monte-carlo-content">
+                            <div class="monte-carlo-grid">
+                                <div class="scenario-card best">
+                                    <div class="scenario-label">Best Case Scenario</div>
+                                    <div class="scenario-value" id="bestCaseValue">-</div>
+                                    <div class="scenario-subtitle">Top 5% outcomes</div>
+                                </div>
+                                
+                                <div class="scenario-card average">
+                                    <div class="scenario-label">Average Case</div>
+                                    <div class="scenario-value" id="averageCaseValue">-</div>
+                                    <div class="scenario-subtitle">Median outcome</div>
+                                </div>
+                                
+                                <div class="scenario-card worst">
+                                    <div class="scenario-label">Worst Case Scenario</div>
+                                    <div class="scenario-value" id="worstCaseValue">-</div>
+                                    <div class="scenario-subtitle">Bottom 5% outcomes</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Average Win -->
-            <div class="form-group">
-                <label for="avgWinPercent">Average Win (%)</label>
-                <input type="number" id="avgWinPercent" placeholder="5" min="0.1" step="0.1" value="5" required>
-                <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
-                    Jarak rata-rata dari entry ke TP
-                </small>
-            </div>
-
-            <!-- Average Loss -->
-            <div class="form-group">
-                <label for="avgLossPercent">Average Loss (%)</label>
-                <input type="number" id="avgLossPercent" placeholder="2" min="0.1" step="0.1" value="2" required>
-                <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
-                    Jarak rata-rata dari entry ke SL
-                </small>
-            </div>
-        </div>
-
-        <!-- Calculate Button -->
-        <button type="submit" class="btn-calculate" id="btnCalculateWinrate">
-            🎲 Run Simulation
-        </button>
-    </form>
-</div>
-
-<!-- Results Section -->
-<div class="results" id="winrateResults" style="display: none;">
-    <!-- Risk Warning (if any) -->
-    <div class="winrate-risk-warning" id="riskWarnings" style="display: none;">
-        <!-- Warnings will be dynamically inserted here -->
-    </div>
-
-    <!-- Summary Cards -->
-    <div class="winrate-results-grid">
-        <div class="winrate-result-card positive">
-            <div class="winrate-result-label">Final Equity</div>
-            <div class="winrate-result-value" id="finalEquityValue">-</div>
-            <div class="winrate-result-subtitle">After all trades</div>
-        </div>
-        
-        <div class="winrate-result-card neutral">
-            <div class="winrate-result-label">Net Profit/Loss</div>
-            <div class="winrate-result-value" id="netPLValue">-</div>
-            <div class="winrate-result-subtitle">Total P/L</div>
-        </div>
-        
-        <div class="winrate-result-card neutral">
-            <div class="winrate-result-label">ROI (%)</div>
-            <div class="winrate-result-value" id="roiValue">-</div>
-            <div class="winrate-result-subtitle">Return on investment</div>
-        </div>
-        
-        <div class="winrate-result-card positive">
-            <div class="winrate-result-label">Total Win Trades</div>
-            <div class="winrate-result-value" id="winTradesValue">-</div>
-            <div class="winrate-result-subtitle">Winning trades</div>
-        </div>
-        
-        <div class="winrate-result-card negative">
-            <div class="winrate-result-label">Total Loss Trades</div>
-            <div class="winrate-result-value" id="lossTradesValue">-</div>
-            <div class="winrate-result-subtitle">Losing trades</div>
-        </div>
-        
-        <div class="winrate-result-card neutral">
-            <div class="winrate-result-label">Expected Value</div>
-            <div class="winrate-result-value" id="expectedValueValue">-</div>
-            <div class="winrate-result-subtitle">Per trade expectancy</div>
-        </div>
-        
-        <div class="winrate-result-card neutral">
-            <div class="winrate-result-label">Risk:Reward Ratio</div>
-            <div class="winrate-result-value" id="rrRatioValue">-</div>
-            <div class="winrate-result-subtitle">Average R:R</div>
-        </div>
-        
-        <div class="winrate-result-card neutral">
-            <div class="winrate-result-label">Additional Stats</div>
-            <div class="winrate-result-value" style="font-size: 0.9rem;" id="additionalStats">-</div>
-            <div class="winrate-result-subtitle">More metrics</div>
-        </div>
-    </div>
-
-    <!-- Charts Section -->
-    <div class="winrate-chart-container">
-        <div class="winrate-chart-header">
-            <span class="card-icon">📈</span>
-            <h3 class="winrate-chart-title">Equity Curve Progression</h3>
-        </div>
-        <div class="winrate-chart-wrapper">
-            <canvas id="equityChart"></canvas>
-        </div>
-    </div>
-
-    <div class="winrate-chart-container">
-        <div class="winrate-chart-header">
-            <span class="card-icon">📊</span>
-            <h3 class="winrate-chart-title">Win vs Loss Distribution</h3>
-        </div>
-        <div class="winrate-chart-wrapper">
-            <canvas id="distributionChart"></canvas>
-        </div>
-    </div>
-
-    <!-- Monte Carlo Section -->
-    <div class="monte-carlo-section" id="monteCarloSection" style="display: none;">
-        <div class="monte-carlo-header" onclick="this.parentElement.classList.toggle('expanded')">
-            <h3 class="monte-carlo-title">
-                <span>🎲</span>
-                Monte Carlo Simulation (1000 runs)
-            </h3>
-            <div class="monte-carlo-toggle">▼</div>
-        </div>
-        <div class="monte-carlo-content">
-            <div class="monte-carlo-grid">
-                <div class="scenario-card best">
-                    <div class="scenario-label">Best Case Scenario</div>
-                    <div class="scenario-value" id="bestCaseValue">-</div>
-                    <div class="scenario-subtitle">Top 5% outcomes</div>
-                </div>
-                
-                <div class="scenario-card average">
-                    <div class="scenario-label">Average Case</div>
-                    <div class="scenario-value" id="averageCaseValue">-</div>
-                    <div class="scenario-subtitle">Median outcome</div>
-                </div>
-                
-                <div class="scenario-card worst">
-                    <div class="scenario-label">Worst Case Scenario</div>
-                    <div class="scenario-value" id="worstCaseValue">-</div>
-                    <div class="scenario-subtitle">Bottom 5% outcomes</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
                     </div>
                 </div>
 
