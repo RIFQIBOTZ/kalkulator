@@ -785,11 +785,12 @@
                             <div class="winrate-result-subtitle">Total P/L</div>
                         </div>
                         
-                        <div class="winrate-result-card neutral">
-                            <div class="winrate-result-label">ROI (%)</div>
-                            <div class="winrate-result-value" id="roiValue">-</div>
-                            <div class="winrate-result-subtitle">Return on investment</div>
-                        </div>
+             <!-- ✅ FIXED - Around line 1082 -->
+<div class="winrate-result-card neutral">
+    <div class="winrate-result-label">ROI (%)</div>
+    <div class="winrate-result-value" id="roiValueWinrate">-</div>  <!-- ✅ New unique ID -->
+    <div class="winrate-result-subtitle">Return on investment</div>
+</div>
                         
                         <div class="winrate-result-card positive">
                             <div class="winrate-result-label">Total Win Trades</div>

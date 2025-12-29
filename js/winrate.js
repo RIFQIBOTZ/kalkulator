@@ -1216,16 +1216,21 @@ function updateChartCurrencyLabels() {
 /**
  * Display simulation results
  */
+// ✅ FIXED - Around line 1015 in winrate.js
 function displayResults(results) {
     try {
-        // Convert values based on currency
         const displayMultiplier = isIDR ? 1 : 1 / getCurrentKurs();
         const currencySymbol = isIDR ? 'Rp' : '$';
         
         // Update summary cards
         updateResultCard('finalEquityValue', results.finalEquity * displayMultiplier, currencySymbol);
         updateResultCard('netPLValue', results.netPL * displayMultiplier, currencySymbol, true);
-        updateResultCard('roiValue', results.roi, '%', false, true);
+        
+        // ✅ FIX ROI - Use new ID and correct parameters
+        updateResultCard('roiValueWinrate', results.roi, '%', false, true);
+        //                ^^^^^^^^^^^^^^^^  New ID
+        
+        // ... rest of the code
         
         // Update trade statistics
         const winTradesElement = document.getElementById('winTradesValue');
@@ -1300,12 +1305,19 @@ function displayResults(results) {
 /**
  * Update a result card with proper formatting
  */
+// ✅ IMPROVED - Around line 1105 in winrate.js
 function updateResultCard(elementId, value, suffix = '', isMonetary = true, isPercentage = false) {
-    const element = document.getElementById(elementId);
-    if (!element) return;
+    console.log(`🔍 Updating ${elementId}: value=${value}, suffix=${suffix}, isPercentage=${isPercentage}`);
     
-    // Clear existing classes
-    element.className = 'winrate-result-value';
+    const element = document.getElementById(elementId);
+    
+    if (!element) {
+        console.error(`❌ Element not found: ${elementId}`);
+        return;
+    }
+    
+    // Clear previous classes
+    element.classList.remove('positive', 'negative');
     
     // Add color class for monetary values and percentages
     if (isMonetary || isPercentage) {
@@ -1320,8 +1332,9 @@ function updateResultCard(elementId, value, suffix = '', isMonetary = true, isPe
     let formattedValue;
     try {
         if (isPercentage) {
-            // Format percentage with 2 decimal places
-            formattedValue = value.toFixed(2) + suffix;
+            // ✅ Format percentage with sign
+            const sign = value >= 0 ? '+' : '';
+            formattedValue = sign + value.toFixed(2) + suffix;
         } else if (isMonetary) {
             formattedValue = formatCurrency(value, suffix);
         } else {
@@ -1332,6 +1345,7 @@ function updateResultCard(elementId, value, suffix = '', isMonetary = true, isPe
         formattedValue = 'Error';
     }
     
+    console.log(`✅ Updated ${elementId} to: ${formattedValue}`);
     element.textContent = formattedValue;
 }
 
