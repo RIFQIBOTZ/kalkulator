@@ -513,7 +513,8 @@ input#startingEquity:focus {
     border: 1px solid rgba(123, 47, 247, 0.3);
     border-radius: 15px;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: 0px;
+    margin-bottom: 15px;    /* ✅ FIXED: Tambah margin bawah yang pas */
     backdrop-filter: blur(10px);
     transition: var(--transition-default);
     animation: fadeIn 0.7s ease;
@@ -686,7 +687,8 @@ input#startingEquity:focus {
     border: 2px solid var(--danger-color);
     border-radius: 12px;
     padding: 20px;
-    margin-top: 20px;
+    margin-top: 0px;
+    margin-bottom: 15px;    /* ✅ FIXED: Tambah margin bawah yang pas */
     display: none;
     backdrop-filter: blur(10px);
 }
@@ -772,7 +774,8 @@ input#startingEquity:focus {
 
 /* 8c. Loading Text */
 .winrate-loading-text {
-    margin-top: 20px;
+    margin-top: 0px;
+    margin-bottom: 15px;    /* ✅ FIXED: Tambah margin bawah yang pas */
     color: var(--text-muted);
     font-size: 0.9rem;
     text-align: center;
