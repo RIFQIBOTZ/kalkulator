@@ -192,28 +192,42 @@ function renderMetodeList() {
     const metodeOptions = JSON.parse(localStorage.getItem('metodeOptions') || '[]');
     const metodeList = document.getElementById('metodeList');
     
-    metodeList.innerHTML = metodeOptions.map(option => `
+    metodeList.innerHTML = metodeOptions.map(option => {
+        const key = option.toLowerCase().replace(/\s+/g, '-');
+        return `
         <div class="dropdown-item">
-            <span>${option}</span>
-            <button class="btn-delete-option" onclick="deleteDropdownOption('metode', '${option}')">🗑️</button>
+            <span class="dropdown-item-name">${option}</span>
+            <div class="dropdown-item-actions">
+                <button class="btn-edit-option" onclick="editDropdownOption('metode', '${key}', '${option}')">✏️</button>
+                <button class="btn-delete-option" onclick="deleteDropdownOption('metode', '${option}')">🗑️</button>
+            </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function renderSumberList() {
     const sumberOptions = JSON.parse(localStorage.getItem('sumberOptions') || '[]');
     const sumberList = document.getElementById('sumberList');
     
-    sumberList.innerHTML = sumberOptions.map((option, index) => `
+    sumberList.innerHTML = sumberOptions.map((option, index) => {
+        const key = option.toLowerCase().replace(/\s+/g, '-');
+        const isDefault = index === 0;
+        
+        return `
         <div class="dropdown-item">
-            <span>${option}</span>
-            <button class="btn-delete-option ${index === 0 ? 'disabled' : ''}" 
-                    onclick="deleteDropdownOption('sumber', '${option}')" 
-                    ${index === 0 ? 'disabled' : ''}>
-                ${index === 0 ? '🔒' : '🗑️'}
-            </button>
+            <span class="dropdown-item-name">${option}</span>
+            <div class="dropdown-item-actions">
+                ${!isDefault ? `<button class="btn-edit-option" onclick="editDropdownOption('sumber', '${key}', '${option}')">✏️</button>` : ''}
+                <button class="btn-delete-option ${isDefault ? 'disabled' : ''}" 
+                        onclick="deleteDropdownOption('sumber', '${option}')" 
+                        ${isDefault ? 'disabled' : ''}>
+                    ${isDefault ? '🔒' : '🗑️'}
+                </button>
+            </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function addDropdownOption(type) {
@@ -257,6 +271,148 @@ function deleteDropdownOption(type, option) {
     updateDropdownSelects();
     renderDropdownLists();
     showToast(`🗑️ ${typeName} "${option}" dihapus!`);
+}
+// ===================== EDIT DROPDOWN OPTION FUNCTIONS =====================
+
+/**
+ * Edit dropdown option dengan modal
+ */
+function editDropdownOption(type, oldKey, oldValue) {
+    const typeName = type === 'metode' ? 'Metode' : 'Sumber Sinyal';
+    
+    // Create modal
+    const modal = document.createElement('div');
+    modal.className = 'edit-dropdown-modal show';
+    modal.innerHTML = `
+        <div class="edit-dropdown-content">
+            <h3>✏️ Edit ${typeName}</h3>
+            <input type="text" class="edit-dropdown-input" id="editDropdownInput" value="${oldValue}" placeholder="Enter new name">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="btnCancelEdit">Cancel</button>
+                <button class="modal-btn confirm" id="btnConfirmEdit">Save</button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Focus input
+    const input = document.getElementById('editDropdownInput');
+    input.focus();
+    input.select();
+    
+    // Cancel button
+    document.getElementById('btnCancelEdit').onclick = () => {
+        modal.remove();
+    };
+    
+    // Confirm button
+    document.getElementById('btnConfirmEdit').onclick = () => {
+        const newValue = input.value.trim();
+        
+        if (!newValue) {
+            showToast('❌ Nama tidak boleh kosong!');
+            return;
+        }
+        
+        if (newValue === oldValue) {
+            showToast('ℹ️ Tidak ada perubahan');
+            modal.remove();
+            return;
+        }
+        
+        // Check duplicate
+        const storageKey = type === 'metode' ? 'metodeOptions' : 'sumberOptions';
+        const options = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        
+        if (options.includes(newValue)) {
+            showToast(`❌ ${typeName} "${newValue}" sudah ada!`);
+            return;
+        }
+        
+        // Confirm if there are existing trades using this option
+        const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+        const fieldName = type === 'metode' ? 'metode' : 'sumberSignal';
+        const affectedTrades = history.filter(t => t[fieldName] === oldKey);
+        
+        if (affectedTrades.length > 0) {
+            const confirmMsg = `⚠️ Ada ${affectedTrades.length} trade menggunakan "${oldValue}".\n\nSemua trade akan diupdate ke "${newValue}".\n\nLanjutkan?`;
+            
+            if (!confirm(confirmMsg)) {
+                return;
+            }
+        }
+        
+        // Perform update
+        performDropdownEdit(type, oldKey, oldValue, newValue);
+        modal.remove();
+    };
+    
+    // Enter key to save
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            document.getElementById('btnConfirmEdit').click();
+        }
+    });
+    
+    // Close on outside click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+        }
+    });
+}
+
+/**
+ * Perform the actual edit operation
+ */
+function performDropdownEdit(type, oldKey, oldValue, newValue) {
+    const storageKey = type === 'metode' ? 'metodeOptions' : 'sumberOptions';
+    const fieldName = type === 'metode' ? 'metode' : 'sumberSignal';
+    const typeName = type === 'metode' ? 'Metode' : 'Sumber Sinyal';
+    
+    // 1. Update options list
+    let options = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    const index = options.indexOf(oldValue);
+    
+    if (index !== -1) {
+        options[index] = newValue;
+        localStorage.setItem(storageKey, JSON.stringify(options));
+    }
+    
+    // 2. Update all affected trades in history
+    let history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+    const newKey = newValue.toLowerCase().replace(/\s+/g, '-');
+    
+    let updatedCount = 0;
+    history.forEach(trade => {
+        if (trade[fieldName] === oldKey) {
+            trade[fieldName] = newKey;
+            updatedCount++;
+        }
+    });
+    
+    if (updatedCount > 0) {
+        localStorage.setItem('tpslHistory', JSON.stringify(history));
+    }
+    
+    // 3. Update UI
+    updateDropdownSelects();
+    renderDropdownLists();
+    
+    // Refresh history if on history page
+    if (currentPage === 'riwayat') {
+        populateHistoryFilters();
+        loadHistory();
+    }
+    
+    // Refresh recap if on ringkasan page
+    if (currentPage === 'ringkasan') {
+        calculateRecapBySumber();
+        calculateRecapByMetode();
+    }
+    
+    showToast(`✅ ${typeName} "${oldValue}" berhasil diubah menjadi "${newValue}"!${updatedCount > 0 ? ` (${updatedCount} trade diupdate)` : ''}`);
 }
 
 // ===================== RISK MANAGEMENT FUNCTIONS =====================
@@ -3403,3 +3559,4 @@ window.loadCalculation = loadCalculation;
 window.deleteHistory = deleteHistory;
 window.closeEditModal = closeEditModal;
 window.deleteDropdownOption = deleteDropdownOption;
+window.editDropdownOption = editDropdownOption;

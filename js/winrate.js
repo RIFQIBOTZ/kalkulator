@@ -3,6 +3,9 @@ let equityChart = null;
 let distributionChart = null;
 let simulationResults = null;
 let isIDR = true; // Default currency display
+let winrateCurrentCurrency = 'idr'; // Currency for winrate starting equity
+let winrateModalCurrency = 'idr'; // Currency for modal
+let winrateStartingEquityValue = 0; // Stored value in IDR
 
 // ============================================
 // INITIALIZATION FLAGS (FIX 1: Prevent double init)
@@ -192,6 +195,9 @@ function initializeWinrateModule() {
     if (resultsSection) {
         resultsSection.style.display = 'none';
     }
+    
+    // Initialize starting equity display
+    updateWinrateBalanceDisplay();
 }
 
 /**
@@ -210,10 +216,65 @@ function setupEventListeners() {
         currencyToggle.addEventListener('change', handleCurrencyToggle);
     }
     
-    // Current balance button
+// Current balance button
     const useCurrentBalanceBtn = document.getElementById('useCurrentBalanceWinrate');
     if (useCurrentBalanceBtn) {
         useCurrentBalanceBtn.addEventListener('click', handleUseCurrentBalance);
+    }
+    
+    // Winrate balance display currency toggle
+    const winrateCurrencyPill = document.getElementById('winrateCurrencyPill');
+    if (winrateCurrencyPill) {
+        winrateCurrencyPill.querySelectorAll('.currency-option').forEach(opt => {
+            opt.addEventListener('click', handleWinrateCurrencyToggle);
+        });
+    }
+    
+    // Edit starting equity button
+    const btnEditStartingEquity = document.getElementById('btnEditStartingEquity');
+    if (btnEditStartingEquity) {
+        btnEditStartingEquity.addEventListener('click', openWinrateEquityModal);
+    }
+    
+    // Modal currency toggle
+    const winrateModalCurrencyPill = document.getElementById('winrateModalCurrencyPill');
+    if (winrateModalCurrencyPill) {
+        winrateModalCurrencyPill.querySelectorAll('.currency-option').forEach(opt => {
+            opt.addEventListener('click', handleWinrateModalCurrencyToggle);
+        });
+    }
+    
+    // Modal buttons
+    const btnCancelWinrateEquity = document.getElementById('btnCancelWinrateEquity');
+    const btnConfirmWinrateEquity = document.getElementById('btnConfirmWinrateEquity');
+    
+    if (btnCancelWinrateEquity) {
+        btnCancelWinrateEquity.addEventListener('click', closeWinrateEquityModal);
+    }
+    
+    if (btnConfirmWinrateEquity) {
+        btnConfirmWinrateEquity.addEventListener('click', saveWinrateEquity);
+    }
+    
+    // Auto-format input in modal
+    const winrateEquityInput = document.getElementById('winrateEquityInput');
+    if (winrateEquityInput) {
+        winrateEquityInput.addEventListener('input', autoFormatWinrateInput);
+        winrateEquityInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                saveWinrateEquity();
+            }
+        });
+    }
+    
+    // Close modal on outside click
+    const winrateEquityModal = document.getElementById('winrateEquityModal');
+    if (winrateEquityModal) {
+        winrateEquityModal.addEventListener('click', (e) => {
+            if (e.target === winrateEquityModal) {
+                closeWinrateEquityModal();
+            }
+        });
     }
     
     // Max entry selection
@@ -337,7 +398,194 @@ function initializeCharts() {
         });
     }
 }
+// ============================================
+// WINRATE BALANCE DISPLAY FUNCTIONS
+// ============================================
 
+/**
+ * Update winrate balance display
+ */
+function updateWinrateBalanceDisplay() {
+    const balanceAmount = document.getElementById('winrateBalanceAmount');
+    const balanceConversion = document.getElementById('winrateBalanceConversion');
+    
+    if (!balanceAmount || !balanceConversion) return;
+    
+    // Update active currency pill
+    document.querySelectorAll('#winrateCurrencyPill .currency-option').forEach(opt => {
+        opt.classList.remove('active');
+        if (opt.dataset.currency === winrateCurrentCurrency) {
+            opt.classList.add('active');
+        }
+    });
+    
+    const kurs = getCurrentKurs();
+    
+    if (winrateCurrentCurrency === 'idr') {
+        balanceAmount.textContent = formatRupiah(winrateStartingEquityValue);
+        balanceConversion.textContent = `≈ ${formatUSD(winrateStartingEquityValue / kurs)}`;
+    } else {
+        const usdAmount = winrateStartingEquityValue / kurs;
+        balanceAmount.textContent = formatUSD(usdAmount);
+        balanceConversion.textContent = `≈ ${formatRupiah(winrateStartingEquityValue)}`;
+    }
+}
+
+/**
+ * Handle winrate currency toggle
+ */
+function handleWinrateCurrencyToggle() {
+    winrateCurrentCurrency = this.dataset.currency;
+    
+    document.querySelectorAll('#winrateCurrencyPill .currency-option').forEach(opt => {
+        opt.classList.remove('active');
+    });
+    this.classList.add('active');
+    
+    updateWinrateBalanceDisplay();
+}
+
+/**
+ * Open winrate equity modal
+ */
+function openWinrateEquityModal() {
+    const modal = document.getElementById('winrateEquityModal');
+    const input = document.getElementById('winrateEquityInput');
+    
+    if (!modal || !input) return;
+    
+    // Set modal currency to current display currency
+    winrateModalCurrency = winrateCurrentCurrency;
+    
+    // Update modal currency pill
+    document.querySelectorAll('#winrateModalCurrencyPill .currency-option').forEach(opt => {
+        opt.classList.remove('active');
+        if (opt.dataset.currency === winrateModalCurrency) {
+            opt.classList.add('active');
+        }
+    });
+    
+    // Set input value
+    if (winrateStartingEquityValue > 0) {
+        if (winrateModalCurrency === 'idr') {
+            input.value = formatNumber(Math.floor(winrateStartingEquityValue).toString());
+        } else {
+            const kurs = getCurrentKurs();
+            input.value = (winrateStartingEquityValue / kurs).toFixed(2);
+        }
+    } else {
+        input.value = '';
+    }
+    
+    modal.classList.add('show');
+    input.focus();
+}
+
+/**
+ * Close winrate equity modal
+ */
+function closeWinrateEquityModal() {
+    const modal = document.getElementById('winrateEquityModal');
+    if (modal) {
+        modal.classList.remove('show');
+    }
+}
+
+/**
+ * Handle modal currency toggle
+ */
+function handleWinrateModalCurrencyToggle() {
+    const oldCurrency = winrateModalCurrency;
+    winrateModalCurrency = this.dataset.currency;
+    
+    document.querySelectorAll('#winrateModalCurrencyPill .currency-option').forEach(opt => {
+        opt.classList.remove('active');
+    });
+    this.classList.add('active');
+    
+    // Convert current input value
+    const input = document.getElementById('winrateEquityInput');
+    if (input && input.value) {
+        const currentValue = parseNumber(input.value.replace(/\./g, '').replace(',', '.'));
+        const kurs = getCurrentKurs();
+        
+        if (oldCurrency === 'idr' && winrateModalCurrency === 'usd') {
+            // IDR to USD
+            input.value = (currentValue / kurs).toFixed(2);
+        } else if (oldCurrency === 'usd' && winrateModalCurrency === 'idr') {
+            // USD to IDR
+            input.value = formatNumber(Math.floor(currentValue * kurs).toString());
+        }
+    }
+}
+
+/**
+ * Auto-format winrate input
+ */
+function autoFormatWinrateInput(e) {
+    const input = e.target;
+    
+    // Only format for IDR
+    if (winrateModalCurrency !== 'idr') return;
+    
+    let value = input.value.replace(/\./g, '');
+    
+    if (value === '') return;
+    
+    // Allow decimal with comma
+    let parts = value.split(',');
+    if (parts.length > 1) {
+        parts[0] = formatNumber(parts[0]);
+        input.value = parts.join(',');
+    } else {
+        input.value = formatNumber(value);
+    }
+}
+
+/**
+ * Save winrate equity
+ */
+function saveWinrateEquity() {
+    const input = document.getElementById('winrateEquityInput');
+    if (!input || !input.value) {
+        showToast('⚠️ Please enter a valid amount!');
+        return;
+    }
+    
+    const inputValue = parseNumber(input.value.replace(/\./g, '').replace(',', '.'));
+    
+    if (isNaN(inputValue) || inputValue <= 0) {
+        showToast('⚠️ Please enter a valid amount!');
+        return;
+    }
+    
+    const kurs = getCurrentKurs();
+    
+    // Always store in IDR
+    if (winrateModalCurrency === 'idr') {
+        winrateStartingEquityValue = inputValue;
+    } else {
+        winrateStartingEquityValue = inputValue * kurs;
+    }
+    
+    updateWinrateBalanceDisplay();
+    closeWinrateEquityModal();
+    showToast('💰 Starting equity saved!');
+}
+
+/**
+ * Parse number from formatted string
+ */
+function parseNumber(str) {
+    return parseFloat(str.replace(/\./g, '').replace(',', '.'));
+}
+
+/**
+ * Format number with thousand separators
+ */
+function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 // ============================================
 // FORM HANDLING
 // ============================================
@@ -391,10 +639,10 @@ function handleFormSubmit(e) {
             displayResults(combinedResults);
             
             // Validate risk limits
-            const warnings = validateRiskLimits(combinedResults, inputs.startingEquity);
-            if (warnings.length > 0) {
-                displayRiskWarnings(warnings);
-            }
+const warnings = validateWinrateRiskLimits(combinedResults, inputs.startingEquity);
+if (warnings.length > 0) {
+    displayRiskWarnings(warnings);
+}
             
             // Show success message
             showToast('✅ Simulation complete! Results updated.');
@@ -417,8 +665,8 @@ function collectFormInputs() {
     const currencyToggle = document.getElementById('currencyToggleWinrate');
     const isIDR = currencyToggle ? currencyToggle.checked : true;
     
-    // Collect values with safety parsing
-    let startingEquity = parseFloat(document.getElementById('startingEquity').value) || 0;
+ // Collect values with safety parsing
+    let startingEquity = winrateStartingEquityValue || 0; // Use stored value
     const riskPercent = parseFloat(document.getElementById('riskPercentWinrate').value) || 0;
     const totalTrades = parseInt(document.getElementById('totalTrades').value) || 0;
     const winRate = parseFloat(document.getElementById('winRate').value) || 0;
@@ -503,14 +751,12 @@ function handleUseCurrentBalance() {
         const currentBalance = window.calculateCurrentBalance();
         
         if (currentBalance && currentBalance > 0) {
-            // Convert to appropriate currency
-            let displayBalance = currentBalance;
-            if (!isIDR) {
-                displayBalance = currentBalance / getCurrentKurs();
-            }
+            // Store value in IDR
+            winrateStartingEquityValue = currentBalance;
             
-            // Set the value
-            document.getElementById('startingEquity').value = Math.floor(displayBalance);
+            // Update display
+            updateWinrateBalanceDisplay();
+            
             showToast('✅ Current balance loaded!');
         } else {
             showToast('❌ Could not calculate current balance');
@@ -894,7 +1140,7 @@ function calculateStandardDeviation(values) {
 /**
  * Validate risk limits
  */
-function validateRiskLimits(results, startingEquity) {
+function validateWinrateRiskLimits(results, startingEquity) {
     const warnings = [];
     
     // Check max drawdown
@@ -1423,6 +1669,7 @@ window.WinrateCalculator = {
     runMonteCarlo: runMonteCarloSimulation,
     exportResults: exportResults,
     reset: resetWinrateCalculator,
+    validateRiskLimits: validateWinrateRiskLimits,  // ✅ TAMBAHKAN INI
     updateExchangeRate: function(kurs) {
         window.currentKurs = kurs;
         console.log('Exchange rate updated to:', kurs);

@@ -684,14 +684,23 @@
 <div class="calculator-card">
     <form id="winrateForm">
         <div class="form-grid">
-            <!-- Starting Equity -->
-            <div class="form-group">
-                <label for="startingEquity">Starting Equity</label>
-                <input type="number" id="startingEquity" placeholder="10000000" min="0" step="1000" required>
-                <button type="button" class="btn-use-balance" id="useCurrentBalanceWinrate">
-                    💰 Use Current Balance
-                </button>
-            </div>
+ <!-- Starting Equity Display -->
+<div class="winrate-balance-display" id="winrateBalanceDisplay">
+    <div class="balance-header">
+        <span class="balance-label">STARTING EQUITY</span>
+        <div class="currency-pill" id="winrateCurrencyPill">
+            <span class="currency-option active" data-currency="idr">IDR</span>
+            <span class="currency-option" data-currency="usd">USD</span>
+        </div>
+    </div>
+    <div class="balance-amount" id="winrateBalanceAmount">Rp 0</div>
+    <div class="balance-conversion" id="winrateBalanceConversion">≈ $0.00 USD</div>
+    <button type="button" class="btn-edit-balance" id="btnEditStartingEquity">✏️ Edit Starting Equity</button>
+</div>
+
+<button type="button" class="btn-use-balance" id="useCurrentBalanceWinrate">
+    💰 Use Current Balance
+</button>
 
             <!-- Max Entry Per Day -->
             <div class="form-group">
@@ -1284,7 +1293,23 @@
             </td>
         </tr>
     </template>
-
+<!-- Winrate Starting Equity Modal -->
+    <div class="balance-modal" id="winrateEquityModal">
+        <div class="balance-modal-content">
+            <div class="balance-modal-header">
+                <h3>Edit Starting Equity</h3>
+                <div class="modal-currency-pill" id="winrateModalCurrencyPill">
+                    <span class="currency-option active" data-currency="idr">IDR</span>
+                    <span class="currency-option" data-currency="usd">USD</span>
+                </div>
+            </div>
+            <input type="text" class="balance-input" id="winrateEquityInput" placeholder="Masukkan starting equity">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="btnCancelWinrateEquity">Cancel</button>
+                <button class="modal-btn confirm" id="btnConfirmWinrateEquity">Save</button>
+            </div>
+        </div>
+    </div>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     
