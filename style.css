@@ -148,7 +148,11 @@ body::after {
     cursor: pointer;
     transition: all 0.3s ease;
     margin-left: auto;
-    min-width: 130px; /* Ensures consistent width across all dropdowns */
+    width: 150px; /* ✅ FIXED: Consistent width for all dropdowns */
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .filter-dropdown:hover {
