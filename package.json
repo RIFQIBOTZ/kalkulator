@@ -1,0 +1,23 @@
+{
+  "name": "kalkulator",
+  "version": "2.0.0",
+  "description": "TP/SL Profit Calculator by RIFQI - Trading Risk Management Tool",
+  "main": "index.html",
+  "scripts": {
+    "dev": "http-server",
+    "build": "echo 'No build step needed for static site'"
+  },
+  "keywords": [
+    "calculator",
+    "trading",
+    "tp",
+    "sl",
+    "profit",
+    "risk-management"
+  ],
+  "author": "RIFQI",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.11"
+  }
+}
