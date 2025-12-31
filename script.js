@@ -3498,24 +3498,123 @@ window.addEventListener('DOMContentLoaded', function() {
     // 🆕 Initialize history filters
     populateHistoryFilters();
     
-    // ===================== AUTO-HIDE HAMBURGER ON SCROLL =====================
+
+    // ===================== AUTO-HIDE HAMBURGER ON SCROLL (v2.4 - SIDEBAR STATE) =====================
     const scrollContainer = document.querySelector('.scroll-container');
     const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebarNav = document.getElementById('sidebarNav');
 
-    if (hamburgerBtn && scrollContainer) {
+    if (hamburgerBtn && scrollContainer && sidebarNav) {
         let lastScrollTop = 0;
+        let scrollTimeout = null;
+        let isUserInputting = false;
         
+        // Fungsi untuk cek apakah user sedang mengisi input/dropdown/textarea
+        function checkIfUserInputting() {
+            const activeElement = document.activeElement;
+            const inputElements = ['INPUT', 'TEXTAREA', 'SELECT'];
+            
+            // Cek apakah element yang aktif adalah input/textarea/select
+            if (inputElements.includes(activeElement.tagName)) {
+                return true;
+            }
+            
+            // Cek apakah ada dropdown yang terbuka
+            const openDropdowns = document.querySelectorAll('select:focus, .edit-modal.show, .balance-modal.show, .status-modal.show');
+            if (openDropdowns.length > 0) {
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // 🆕 v2.4: Fungsi untuk cek apakah SIDEBAR sedang TERBUKA
+        function isSidebarOpen() {
+            return !sidebarNav.classList.contains('hidden');
+        }
+        
+        // Event listener untuk detect input focus
+        document.addEventListener('focusin', function(e) {
+            const inputElements = ['INPUT', 'TEXTAREA', 'SELECT'];
+            if (inputElements.includes(e.target.tagName)) {
+                isUserInputting = true;
+                // Jangan hide jika sidebar terbuka
+                if (!isSidebarOpen()) {
+                    hamburgerBtn.classList.add('hide');
+                }
+            }
+        });
+        
+        document.addEventListener('focusout', function(e) {
+            const inputElements = ['INPUT', 'TEXTAREA', 'SELECT'];
+            if (inputElements.includes(e.target.tagName)) {
+                isUserInputting = false;
+            }
+        });
+        
+        // Scroll event dengan timeout 1.5 detik
         scrollContainer.addEventListener('scroll', function() {
             let scrollTop = scrollContainer.scrollTop;
             
-            if (scrollTop > lastScrollTop && scrollTop > 50) {
-                hamburgerBtn.classList.add('hide');
-            } else {
+            // 🆕 v2.4: Jika SIDEBAR TERBUKA, hamburger SELALU visible (no auto-hide)
+            if (isSidebarOpen()) {
                 hamburgerBtn.classList.remove('hide');
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                return; // Skip auto-hide logic
+            }
+            
+            // Jangan tampilkan hamburger jika user sedang mengisi input
+            if (checkIfUserInputting() || isUserInputting) {
+                hamburgerBtn.classList.add('hide');
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+                return;
+            }
+            
+            // Tampilkan hamburger saat ada scroll (up atau down)
+            if (Math.abs(scrollTop - lastScrollTop) > 5) {
+                hamburgerBtn.classList.remove('hide');
+                
+                // Clear timeout sebelumnya
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                
+                // Set timeout baru untuk hide setelah 1.5 detik (lebih smooth)
+                scrollTimeout = setTimeout(function() {
+                    if (!checkIfUserInputting() && !isUserInputting && !isSidebarOpen()) {
+                        hamburgerBtn.classList.add('hide');
+                    }
+                }, 1500); // 1.5 detik
             }
             
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         }, false);
+        
+        // 🆕 v2.4: Initial state based on sidebar
+        if (isSidebarOpen()) {
+            hamburgerBtn.classList.remove('hide');
+        }
+        
+        // 🆕 v2.4: Observer untuk detect sidebar open/close
+        const sidebarObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'class') {
+                    if (isSidebarOpen()) {
+                        // Sidebar baru dibuka → Show hamburger
+                        hamburgerBtn.classList.remove('hide');
+                    } else {
+                        // Sidebar baru ditutup → Allow auto-hide
+                        // Hamburger tetap visible, tapi auto-hide enabled
+                    }
+                }
+            });
+        });
+        
+        // Start observing sidebar
+        sidebarObserver.observe(sidebarNav, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
     }
     // =========================================================================
     
