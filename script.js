@@ -1690,6 +1690,12 @@ async function fetchKurs() {
                 return;
             }
         } catch (error) {
+            // 🔧 FIX: Silent AbortError (timeout adalah hal normal)
+            if (error.name === 'AbortError') {
+                // Timeout terjadi, coba API berikutnya
+                continue;
+            }
+            // Error lainnya juga di-silent, coba API berikutnya
             continue;
         }
     }
@@ -2212,6 +2218,28 @@ function displayBalanceProjection(projection) {
     document.getElementById('balanceIfBE').textContent = formatRupiah(projection.balanceIfBE);
 }
 
+
+// 🆕 AUTO-FORMAT BALANCE INPUT (like winrate calculator)
+function autoFormatBalanceInput(e) {
+    const input = e.target;
+    
+    // Only format for IDR
+    if (modalCurrency !== 'idr') return;
+    
+    let value = input.value.replace(/\./g, '');
+    
+    if (value === '') return;
+    
+    // Allow decimal with comma
+    let parts = value.split(',');
+    if (parts.length > 1) {
+        parts[0] = formatNumber(parts[0]);
+        input.value = parts.join(',');
+    } else {
+        input.value = formatNumber(value);
+    }
+}
+
 function calculateCurrentBalance() {
     const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
     const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
@@ -2251,7 +2279,11 @@ function updateCurrentBalanceDisplay() {
     const balanceAmount = document.getElementById('balanceAmount');
     const balanceConversion = document.getElementById('balanceConversion');
     
-    document.querySelectorAll('#currencyPill .currency-option').forEach(opt => {
+    
+// 🆕 AUTO-FORMAT BALANCE INPUT EVENT LISTENER
+document.getElementById('balanceInput').addEventListener('input', autoFormatBalanceInput);
+
+document.querySelectorAll('#currencyPill .currency-option').forEach(opt => {
         opt.classList.remove('active');
         if (opt.dataset.currency === currentCurrency) {
             opt.classList.add('active');
@@ -3220,7 +3252,7 @@ function openBalanceModal() {
     });
     
     const currentBalance = calculateCurrentBalance();
-    document.getElementById('balanceInput').value = Math.floor(currentBalance).toString();
+    document.getElementById('balanceInput').value = formatNumber(Math.floor(currentBalance).toString());
     
     document.getElementById('balanceModal').classList.add('show');
 }
@@ -3382,12 +3414,16 @@ document.querySelectorAll('#modalCurrencyPill .currency-option').forEach(opt => 
         const input = document.getElementById('balanceInput');
         
         if (modalCurrency === 'idr') {
-            input.value = Math.floor(currentBalance).toString();
+            input.value = formatNumber(Math.floor(currentBalance).toString());
         } else {
             input.value = (currentBalance / currentKurs).toFixed(2);
         }
     });
 });
+
+
+// 🆕 AUTO-FORMAT BALANCE INPUT EVENT LISTENER
+document.getElementById('balanceInput').addEventListener('input', autoFormatBalanceInput);
 
 document.querySelectorAll('#currencyPill .currency-option').forEach(opt => {
     opt.addEventListener('click', function() {
@@ -3571,7 +3607,7 @@ window.addEventListener('DOMContentLoaded', function() {
     populateHistoryFilters();
     
 
-    // ===================== AUTO-HIDE HAMBURGER ON SCROLL (v2.4 - SIDEBAR STATE) =====================
+    // ===================== AUTO-HIDE HAMBURGER ON SCROLL (v2.5 - BUG FIX) =====================
     const scrollContainer = document.querySelector('.scroll-container');
     const hamburgerBtn = document.getElementById('hamburgerBtn');
     const sidebarNav = document.getElementById('sidebarNav');
@@ -3580,8 +3616,25 @@ window.addEventListener('DOMContentLoaded', function() {
         let lastScrollTop = 0;
         let scrollTimeout = null;
         let isUserInputting = false;
+        let allTimeouts = []; // 🔧 FIX 1: Track all timeouts untuk cleanup
+        let stuckCheckInterval = null; // 🔧 FIX 2: Interval untuk detect stuck state
         
-        // Fungsi untuk cek apakah user sedang mengisi input/dropdown/textarea
+        // 🔧 FIX 3: Fungsi untuk clear semua timeout yang menumpuk
+        function clearAllTimeouts() {
+            allTimeouts.forEach(timeout => clearTimeout(timeout));
+            allTimeouts = [];
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+                scrollTimeout = null;
+            }
+        }
+        
+        // 🔧 FIX 4: Fungsi untuk force reset flag
+        function forceResetFlags() {
+            isUserInputting = false;
+        }
+        
+        // 🔧 FIX 5: Fungsi untuk cek apakah user sedang mengisi input/dropdown/textarea
         function checkIfUserInputting() {
             const activeElement = document.activeElement;
             const inputElements = ['INPUT', 'TEXTAREA', 'SELECT'];
@@ -3591,18 +3644,28 @@ window.addEventListener('DOMContentLoaded', function() {
                 return true;
             }
             
-            // Cek apakah ada dropdown yang terbuka
-            const openDropdowns = document.querySelectorAll('select:focus, .edit-modal.show, .balance-modal.show, .status-modal.show');
-            if (openDropdowns.length > 0) {
-                return true;
+            // 🔧 FIX 6: Cek modal dengan lebih strict - hanya yang BENAR-BENAR visible
+            const modals = document.querySelectorAll('.edit-modal, .balance-modal, .status-modal, .confirmation-modal, .risk-warning-modal');
+            for (let modal of modals) {
+                if (modal.classList.contains('show') && 
+                    window.getComputedStyle(modal).display !== 'none' &&
+                    window.getComputedStyle(modal).visibility !== 'hidden') {
+                    return true;
+                }
             }
             
             return false;
         }
         
-        // 🆕 v2.4: Fungsi untuk cek apakah SIDEBAR sedang TERBUKA
+        // Fungsi untuk cek apakah SIDEBAR sedang TERBUKA
         function isSidebarOpen() {
             return !sidebarNav.classList.contains('hidden');
+        }
+        
+        // 🔧 FIX 7: Force show hamburger function
+        function forceShowHamburger() {
+            hamburgerBtn.classList.remove('hide');
+            clearAllTimeouts();
         }
         
         // Event listener untuk detect input focus
@@ -3617,20 +3680,59 @@ window.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // 🔧 FIX 8: Enhanced focusout dengan safety check
         document.addEventListener('focusout', function(e) {
             const inputElements = ['INPUT', 'TEXTAREA', 'SELECT'];
             if (inputElements.includes(e.target.tagName)) {
                 isUserInputting = false;
+                
+                // 🔧 Double check setelah 300ms untuk memastikan flag di-reset
+                const resetTimeout = setTimeout(() => {
+                    if (!checkIfUserInputting()) {
+                        isUserInputting = false;
+                        forceShowHamburger();
+                    }
+                }, 300);
+                allTimeouts.push(resetTimeout);
             }
+        });
+        
+        // 🔧 FIX 9: Cleanup saat modal ditutup
+        const modalCloseObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'class') {
+                    const target = mutation.target;
+                    if (!target.classList.contains('show')) {
+                        // Modal baru ditutup, reset flag dan show hamburger
+                        const cleanupTimeout = setTimeout(() => {
+                            forceResetFlags();
+                            if (!checkIfUserInputting() && !isSidebarOpen()) {
+                                forceShowHamburger();
+                            }
+                        }, 100);
+                        allTimeouts.push(cleanupTimeout);
+                    }
+                }
+            });
+        });
+        
+        // Observe semua modal
+        const modalsToObserve = document.querySelectorAll('.edit-modal, .balance-modal, .status-modal, .confirmation-modal, .risk-warning-modal');
+        modalsToObserve.forEach(modal => {
+            modalCloseObserver.observe(modal, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
         });
         
         // Scroll event dengan timeout 1.5 detik
         scrollContainer.addEventListener('scroll', function() {
             let scrollTop = scrollContainer.scrollTop;
             
-            // 🆕 v2.4: Jika SIDEBAR TERBUKA, hamburger SELALU visible (no auto-hide)
+            // Jika SIDEBAR TERBUKA, hamburger SELALU visible (no auto-hide)
             if (isSidebarOpen()) {
                 hamburgerBtn.classList.remove('hide');
+                clearAllTimeouts();
                 lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
                 return; // Skip auto-hide logic
             }
@@ -3646,37 +3748,36 @@ window.addEventListener('DOMContentLoaded', function() {
             if (Math.abs(scrollTop - lastScrollTop) > 5) {
                 hamburgerBtn.classList.remove('hide');
                 
-                // Clear timeout sebelumnya
-                if (scrollTimeout) {
-                    clearTimeout(scrollTimeout);
-                }
+                // 🔧 FIX 10: Clear ALL timeouts sebelum set yang baru
+                clearAllTimeouts();
                 
-                // Set timeout baru untuk hide setelah 1.5 detik (lebih smooth)
+                // Set timeout baru untuk hide setelah 1.5 detik
                 scrollTimeout = setTimeout(function() {
                     if (!checkIfUserInputting() && !isUserInputting && !isSidebarOpen()) {
                         hamburgerBtn.classList.add('hide');
                     }
-                }, 1500); // 1.5 detik
+                }, 1500);
+                allTimeouts.push(scrollTimeout);
             }
             
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
         }, false);
         
-        // 🆕 v2.4: Initial state based on sidebar
+        // Initial state based on sidebar
         if (isSidebarOpen()) {
             hamburgerBtn.classList.remove('hide');
         }
         
-        // 🆕 v2.4: Observer untuk detect sidebar open/close
+        // Observer untuk detect sidebar open/close
         const sidebarObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.attributeName === 'class') {
                     if (isSidebarOpen()) {
                         // Sidebar baru dibuka → Show hamburger
-                        hamburgerBtn.classList.remove('hide');
+                        forceShowHamburger();
                     } else {
-                        // Sidebar baru ditutup → Allow auto-hide
-                        // Hamburger tetap visible, tapi auto-hide enabled
+                        // Sidebar baru ditutup → Show hamburger juga
+                        forceShowHamburger();
                     }
                 }
             });
@@ -3686,6 +3787,46 @@ window.addEventListener('DOMContentLoaded', function() {
         sidebarObserver.observe(sidebarNav, {
             attributes: true,
             attributeFilter: ['class']
+        });
+        
+        // 🔧 FIX 11: Stuck State Detector - Check setiap 3 detik
+        stuckCheckInterval = setInterval(() => {
+            // Jika hamburger hidden tapi tidak ada input/modal aktif, force show
+            if (hamburgerBtn.classList.contains('hide') && 
+                !checkIfUserInputting() && 
+                !isUserInputting) {
+                console.log('🔧 Hamburger stuck detected! Force showing...');
+                forceResetFlags();
+                forceShowHamburger();
+            }
+        }, 3000);
+        
+        // 🔧 FIX 12: Click/Tap anywhere untuk force show hamburger
+        document.addEventListener('click', function(e) {
+            // Jika click bukan pada input/modal/sidebar, show hamburger
+            const isClickOnInput = e.target.tagName === 'INPUT' || 
+                                   e.target.tagName === 'TEXTAREA' || 
+                                   e.target.tagName === 'SELECT';
+            const isClickOnModal = e.target.closest('.edit-modal, .balance-modal, .status-modal, .confirmation-modal, .risk-warning-modal');
+            const isClickOnSidebar = e.target.closest('.sidebar-nav');
+            
+            if (!isClickOnInput && !isClickOnModal && !isClickOnSidebar) {
+                // User click di area kosong, kemungkinan mau show hamburger
+                const showTimeout = setTimeout(() => {
+                    if (!checkIfUserInputting() && !isSidebarOpen()) {
+                        forceShowHamburger();
+                    }
+                }, 50);
+                allTimeouts.push(showTimeout);
+            }
+        });
+        
+        // 🔧 FIX 13: Cleanup saat page unload
+        window.addEventListener('beforeunload', () => {
+            clearAllTimeouts();
+            if (stuckCheckInterval) {
+                clearInterval(stuckCheckInterval);
+            }
         });
     }
     // =========================================================================
