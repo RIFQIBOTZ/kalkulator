@@ -462,12 +462,68 @@ function calculateDrawdown() {
         localStorage.setItem('peakBalance', currentBalance.toString());
     }
     
-    const drawdown = ((currentBalance - peakBalance) / peakBalance) * 100;
+    // 🆕 FIX #4: Formula drawdown yang benar
+    // Drawdown = (Peak - Current) / Peak × 100%
+    // Jika Current > Peak, drawdown = 0% (tidak ada drawdown)
+    let drawdownPercent = 0;
+    
+    if (currentBalance < peakBalance) {
+        drawdownPercent = ((peakBalance - currentBalance) / peakBalance) * 100;
+    }
+    // Else: currentBalance >= peakBalance → drawdown = 0%
+    
     return {
-        drawdownPercent: Math.abs(drawdown),
+        drawdownPercent: Math.max(0, drawdownPercent),  // Ensure non-negative
         peakBalance: peakBalance,
         currentBalance: currentBalance
     };
+}
+
+/**
+ * Recalculate peak balance dari seluruh history
+ * Dipanggil saat delete trade atau import database
+ */
+function recalculatePeakBalance() {
+    const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
+    const history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
+    
+    // Start dari initial balance
+    let peakBalance = initialBalance;
+    let currentEquity = initialBalance;
+    
+    // Sort history by timestamp
+    const sortedHistory = [...history].sort((a, b) => 
+        new Date(a.timestamp) - new Date(b.timestamp)
+    );
+    
+    // Simulate balance changes dan track peak
+    sortedHistory.forEach(trade => {
+        if (trade.status === 'hit-tp') {
+            currentEquity += trade.profit;
+        } else if (trade.status === 'hit-sl') {
+            if (trade.slInProfit) {
+                currentEquity += trade.loss;
+            } else {
+                currentEquity -= trade.loss;
+            }
+        } else if (trade.status === 'partial') {
+            if (trade.usePartialTP && trade.tpLevels) {
+                const hitTPs = trade.tpLevels.filter(tp => tp.status === 'hit');
+                currentEquity += hitTPs.reduce((sum, tp) => sum + tp.profit, 0);
+            }
+        }
+        
+        // Update peak jika equity lebih tinggi
+        if (currentEquity > peakBalance) {
+            peakBalance = currentEquity;
+        }
+    });
+    
+    // Save new peak balance
+    localStorage.setItem('peakBalance', peakBalance.toString());
+    console.log(`📊 Peak balance recalculated: ${formatRupiah(peakBalance)}`);
+    
+    return peakBalance;
 }
 
 function validateRiskLimits() {
@@ -2914,13 +2970,17 @@ function deleteHistory(index) {
     let history = JSON.parse(localStorage.getItem('tpslHistory') || '[]');
     history.splice(index, 1);
     localStorage.setItem('tpslHistory', JSON.stringify(history));
+    
+    // 🆕 FIX #2: Recalculate peak balance from remaining history
+    recalculatePeakBalance();
+    
     loadHistory();
     updateStats();
     updateCurrentBalanceDisplay();
     updatePositionSize();
     updateFilterCounts();
     updateRiskDashboard();
-    showToast('??️ Deleted from history!');
+    showToast('🗑️ Deleted from history!');
 }
 
 function clearHistory() {
@@ -3122,6 +3182,15 @@ function updateTradeStatus() {
     }
 
     localStorage.setItem('tpslHistory', JSON.stringify(history));
+
+    // 🆕 FIX #1: Update peak balance if current balance increased
+    const currentBalance = calculateCurrentBalance();
+    const peakBalance = parseFloat(localStorage.getItem('peakBalance') || '0');
+    
+    if (currentBalance > peakBalance) {
+        localStorage.setItem('peakBalance', currentBalance.toString());
+        console.log(`✅ Peak balance updated: ${formatRupiah(currentBalance)}`);
+    }
 
     loadHistory();
     updateStats();
@@ -3423,6 +3492,9 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
                 if (data.sumberOptions) {
                     localStorage.setItem('sumberOptions', JSON.stringify(data.sumberOptions));
                 }
+                
+                // 🆕 FIX #5: Recalculate peak balance dari imported history
+                recalculatePeakBalance();
                 
                 initializeDropdownOptions();
                 loadHistory();
