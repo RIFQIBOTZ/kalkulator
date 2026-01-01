@@ -1608,7 +1608,8 @@ document.getElementById('manualPositionToggle').addEventListener('click', functi
 });
 
 document.getElementById('manualPositionUSDT').addEventListener('input', function(e) {
-    let value = e.target.value.replace(/\./g, '');
+    // 🔧 FIX: USDT uses dot (.) as decimal separator, don't remove it!
+    let value = e.target.value.trim();
     if (value === '') {
         manualPositionUSDT = 0;
         manualPositionSize = 0;
@@ -1617,7 +1618,11 @@ document.getElementById('manualPositionUSDT').addEventListener('input', function
         return;
     }
     
-    value = parseFloat(value.replace(',', '.'));
+    // Parse directly - USDT format: 4.5 (dot is decimal)
+    value = parseFloat(value);
+    if (isNaN(value)) {
+        value = 0;
+    }
     manualPositionUSDT = value;
     
     const entry = parseNumber(document.getElementById('entry').value.replace(',', '.') || '0');

@@ -234,6 +234,12 @@ Tidak perlu edit code! Cukup ketik pair baru di dropdown kalkulator.
 
 ## 🔄 **Changelog**
 
+### **v2.7.1** (2026-01-01)
+- 🔧 **FIX:** Manual position USDT decimal bug
+- ✅ Input `4.5` sekarang terbaca sebagai `$4.50` (bukan `$45.00`)
+- ✅ Full decimal support untuk USDT trading
+- 💎 Support micro & small position trading
+
 ### **v2.7** (2025-12-31)
 - 🔧 **FIX:** Hamburger auto-show yang terlalu aggressive
 - ✅ Auto-hide sekarang berfungsi normal
