@@ -48,6 +48,55 @@ function getRiskPercent() {
     return parseFloat(riskSelect.value) / 100;
 }
 
+
+// ===================== AUTO SESSION DETECTION =====================
+function getCurrentTradingSession() {
+    try {
+        const now = new Date();
+        
+        // Get time in each timezone (browser handles DST automatically!)
+        const tokyoTime = new Date(now.toLocaleString("en-US", {timeZone: "Asia/Tokyo"}));
+        const londonTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/London"}));
+        const nyTime = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}));
+        
+        const tokyoHour = tokyoTime.getHours();
+        const londonHour = londonTime.getHours();
+        const nyHour = nyTime.getHours();
+        
+        // Trading hours
+        // Tokyo: 00:00-09:00 JST
+        if (tokyoHour >= 0 && tokyoHour < 9) {
+            return 'asia';
+        }
+        // London: 08:00-16:30 GMT/BST  
+        else if (londonHour >= 8 && londonHour < 16) {
+            return 'london';
+        }
+        // New York: 08:00-17:00 EST/EDT
+        else if (nyHour >= 8 && nyHour < 17) {
+            return 'newyork';
+        }
+        
+        // Fallback: default to Asia for overlap/pre-market times
+        return 'asia';
+        
+    } catch (error) {
+        // Fallback if timezone API fails
+        console.warn('Timezone detection failed, using default Asia session:', error);
+        return 'asia';
+    }
+}
+
+function setDefaultSession() {
+    const sessionSelect = document.getElementById('sessions');
+    if (sessionSelect) {
+        const currentSession = getCurrentTradingSession();
+        sessionSelect.value = currentSession;
+        console.log('🌍 Auto-detected session:', currentSession);
+    }
+}
+
+
 function showToast(message) {
     const toast = document.getElementById('toast');
     toast.textContent = message;
@@ -3592,6 +3641,9 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     initializeDropdownOptions();
+    
+    // 🌍 Auto-detect and set trading session based on current time
+    setDefaultSession();
     
     showPage(currentPage);
     
