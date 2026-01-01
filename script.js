@@ -3617,7 +3617,7 @@ window.addEventListener('DOMContentLoaded', function() {
         let scrollTimeout = null;
         let isUserInputting = false;
         let allTimeouts = []; // 🔧 FIX 1: Track all timeouts untuk cleanup
-        let stuckCheckInterval = null; // 🔧 FIX 2: Interval untuk detect stuck state
+        // 🔧 FIX 2: Removed stuckCheckInterval (too aggressive)
         
         // 🔧 FIX 3: Fungsi untuk clear semua timeout yang menumpuk
         function clearAllTimeouts() {
@@ -3789,17 +3789,12 @@ window.addEventListener('DOMContentLoaded', function() {
             attributeFilter: ['class']
         });
         
-        // 🔧 FIX 11: Stuck State Detector - Check setiap 3 detik
-        stuckCheckInterval = setInterval(() => {
-            // Jika hamburger hidden tapi tidak ada input/modal aktif, force show
-            if (hamburgerBtn.classList.contains('hide') && 
-                !checkIfUserInputting() && 
-                !isUserInputting) {
-                console.log('🔧 Hamburger stuck detected! Force showing...');
-                forceResetFlags();
-                forceShowHamburger();
-            }
-        }, 3000);
+        // 🔧 FIX 11: Removed aggressive interval checker
+        // Hamburger akan show otomatis melalui:
+        // - Scroll trigger (langsung)
+        // - Modal close (FIX 9)
+        // - Input blur (FIX 8)
+        // - Click anywhere (FIX 12)
         
         // 🔧 FIX 12: Click/Tap anywhere untuk force show hamburger
         document.addEventListener('click', function(e) {
@@ -3824,9 +3819,6 @@ window.addEventListener('DOMContentLoaded', function() {
         // 🔧 FIX 13: Cleanup saat page unload
         window.addEventListener('beforeunload', () => {
             clearAllTimeouts();
-            if (stuckCheckInterval) {
-                clearInterval(stuckCheckInterval);
-            }
         });
     }
     // =========================================================================

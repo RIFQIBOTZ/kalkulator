@@ -234,6 +234,13 @@ Tidak perlu edit code! Cukup ketik pair baru di dropdown kalkulator.
 
 ## 🔄 **Changelog**
 
+### **v2.7** (2025-12-31)
+- 🔧 **FIX:** Hamburger auto-show yang terlalu aggressive
+- ✅ Auto-hide sekarang berfungsi normal
+- ✅ Hamburger muncul saat scroll/modal-close/click (event-based)
+- ❌ Removed interval checker 3 detik (too intrusive)
+- 🎯 Balanced UX antara auto-hide dan accessibility
+
 ### **v2.6** (2025-12-31)
 - ✨ **NEW:** Auto-format balance input dengan titik pemisah ribuan
 - 🎯 Consistency dengan winrate calculator starting equity
