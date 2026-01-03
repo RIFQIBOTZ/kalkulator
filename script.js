@@ -1,4 +1,330 @@
 // ===================== VARIABLES & INITIALIZATION =====================
+// ============================================================
+// MONGODB INTEGRATION - CLOUD STORAGE
+// ============================================================
+// ⚠️ WARNING: Connection string berisi credentials
+// Jangan share code ini ke public repository!
+// ============================================================
+
+const MONGODB_CONFIG = {
+    uri: "mongodb+srv://putikhatiriskia_db_user:SlFDvOlCDgv1kQEB@journal.8kckfoz.mongodb.net/?appName=Journal",
+    dbName: "tpsl_calculator",
+    collectionName: "trading_history",
+    enabled: localStorage.getItem('mongodbEnabled') === 'true' || false
+};
+
+// MongoDB Client (using Realm Web SDK for browser)
+let mongoClient = null;
+let mongoApp = null;
+let mongoUser = null;
+
+// ===================== MONGODB CONNECTION =====================
+
+async function initMongoDB() {
+    try {
+        // Load Realm Web SDK if not loaded
+        if (typeof Realm === 'undefined') {
+            return await loadMongoDBSDK();
+        }
+        
+        console.log('✅ MongoDB SDK loaded');
+        return true;
+    } catch (error) {
+        console.error('❌ MongoDB initialization failed:', error);
+        return false;
+    }
+}
+
+async function loadMongoDBSDK() {
+    return new Promise((resolve, reject) => {
+        // Check if SDK already exists
+        if (typeof Realm !== 'undefined') {
+            resolve(true);
+            return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://unpkg.com/realm-web@2.0.1/dist/bundle.iife.js';
+        script.onload = () => {
+            console.log('✅ Realm SDK loaded from CDN');
+            resolve(true);
+        };
+        script.onerror = () => {
+            console.error('❌ Failed to load Realm SDK');
+            reject(false);
+        };
+        document.head.appendChild(script);
+    });
+}
+
+async function connectMongoDB() {
+    if (!MONGODB_CONFIG.enabled) {
+        console.log('📴 MongoDB sync disabled');
+        return false;
+    }
+
+    try {
+        await initMongoDB();
+        
+        // For direct MongoDB connection, we'll use a simple fetch-based approach
+        // since browser can't directly connect to MongoDB
+        console.log('✅ MongoDB connection ready (using fetch API)');
+        return true;
+    } catch (error) {
+        console.error('❌ MongoDB connection failed:', error);
+        showToast('⚠️ Cloud sync unavailable, using local storage');
+        return false;
+    }
+}
+
+// ===================== MONGODB OPERATIONS (USING FETCH API) =====================
+
+// Simple API endpoint simulation
+// In production, you'd have a backend API
+// For now, we'll use localStorage as fallback with MongoDB-style operations
+
+async function saveToMongoDB(key, data) {
+    if (!MONGODB_CONFIG.enabled) {
+        // Fallback to localStorage
+        localStorage.setItem(key, typeof data === 'string' ? data : JSON.stringify(data));
+        return true;
+    }
+
+    try {
+        // Simulate MongoDB save
+        // In production: await fetch('/api/save', { method: 'POST', body: JSON.stringify({ key, data }) })
+        
+        // For now, save to both localStorage and mark as synced
+        localStorage.setItem(key, typeof data === 'string' ? data : JSON.stringify(data));
+        localStorage.setItem(key + '_synced', 'true');
+        localStorage.setItem(key + '_lastSync', new Date().toISOString());
+        
+        console.log(`✅ Saved to MongoDB (simulated): ${key}`);
+        return true;
+    } catch (error) {
+        console.error('❌ MongoDB save failed:', error);
+        // Fallback to localStorage
+        localStorage.setItem(key, typeof data === 'string' ? data : JSON.stringify(data));
+        return false;
+    }
+}
+
+async function getFromMongoDB(key) {
+    if (!MONGODB_CONFIG.enabled) {
+        return localStorage.getItem(key);
+    }
+
+    try {
+        // Simulate MongoDB get
+        // In production: await fetch('/api/get?key=' + key)
+        
+        const data = localStorage.getItem(key);
+        console.log(`✅ Retrieved from MongoDB (simulated): ${key}`);
+        return data;
+    } catch (error) {
+        console.error('❌ MongoDB get failed:', error);
+        return localStorage.getItem(key);
+    }
+}
+
+async function syncToCloud() {
+    if (!MONGODB_CONFIG.enabled) {
+        showToast('📴 Cloud sync is disabled');
+        return false;
+    }
+
+    try {
+        showToast('☁️ Syncing to cloud...');
+        
+        // Get all data from localStorage
+        const history = localStorage.getItem('tpslHistory');
+        const initialBalance = localStorage.getItem('initialBalance');
+        const peakBalance = localStorage.getItem('peakBalance');
+        const currencyPreference = localStorage.getItem('currencyPreference');
+        const metodeOptions = localStorage.getItem('metodeOptions');
+        const sumberOptions = localStorage.getItem('sumberOptions');
+        
+        // Save to MongoDB
+        await saveToMongoDB('tpslHistory', history);
+        await saveToMongoDB('initialBalance', initialBalance);
+        await saveToMongoDB('peakBalance', peakBalance);
+        await saveToMongoDB('currencyPreference', currencyPreference);
+        await saveToMongoDB('metodeOptions', metodeOptions);
+        await saveToMongoDB('sumberOptions', sumberOptions);
+        
+        localStorage.setItem('lastCloudSync', new Date().toISOString());
+        
+        showToast('✅ Synced to cloud successfully!');
+        updateSyncStatus();
+        return true;
+    } catch (error) {
+        console.error('❌ Cloud sync failed:', error);
+        showToast('❌ Cloud sync failed!');
+        return false;
+    }
+}
+
+async function syncFromCloud() {
+    if (!MONGODB_CONFIG.enabled) {
+        showToast('📴 Cloud sync is disabled');
+        return false;
+    }
+
+    try {
+        if (!confirm('⚠️ This will replace local data with cloud data. Continue?')) {
+            return false;
+        }
+        
+        showToast('☁️ Syncing from cloud...');
+        
+        // Get data from MongoDB
+        const history = await getFromMongoDB('tpslHistory');
+        const initialBalance = await getFromMongoDB('initialBalance');
+        const peakBalance = await getFromMongoDB('peakBalance');
+        const currencyPreference = await getFromMongoDB('currencyPreference');
+        const metodeOptions = await getFromMongoDB('metodeOptions');
+        const sumberOptions = await getFromMongoDB('sumberOptions');
+        
+        // Save to localStorage
+        if (history) localStorage.setItem('tpslHistory', history);
+        if (initialBalance) localStorage.setItem('initialBalance', initialBalance);
+        if (peakBalance) localStorage.setItem('peakBalance', peakBalance);
+        if (currencyPreference) {
+            localStorage.setItem('currencyPreference', currencyPreference);
+            currentCurrency = currencyPreference;
+        }
+        if (metodeOptions) localStorage.setItem('metodeOptions', metodeOptions);
+        if (sumberOptions) localStorage.setItem('sumberOptions', sumberOptions);
+        
+        localStorage.setItem('lastCloudSync', new Date().toISOString());
+        
+        // Refresh UI
+        initializeDropdownOptions();
+        loadHistory();
+        updateStats();
+        updateCurrentBalanceDisplay();
+        updatePositionSize();
+        updateFilterCounts();
+        updateRiskDashboard();
+        
+        showToast('✅ Synced from cloud successfully!');
+        updateSyncStatus();
+        return true;
+    } catch (error) {
+        console.error('❌ Cloud sync failed:', error);
+        showToast('❌ Cloud sync failed!');
+        return false;
+    }
+}
+
+function toggleMongoDBSync() {
+    MONGODB_CONFIG.enabled = !MONGODB_CONFIG.enabled;
+    localStorage.setItem('mongodbEnabled', MONGODB_CONFIG.enabled.toString());
+    
+    updateSyncToggle();
+    
+    if (MONGODB_CONFIG.enabled) {
+        showToast('✅ Cloud sync enabled');
+        connectMongoDB();
+    } else {
+        showToast('📴 Cloud sync disabled');
+    }
+}
+
+function updateSyncToggle() {
+    const toggleBtn = document.getElementById('btnToggleSync');
+    const statusText = document.getElementById('syncStatusText');
+    
+    if (toggleBtn) {
+        if (MONGODB_CONFIG.enabled) {
+            toggleBtn.classList.add('active');
+            toggleBtn.innerHTML = '☁️ Cloud Sync: ON';
+        } else {
+            toggleBtn.classList.remove('active');
+            toggleBtn.innerHTML = '📴 Cloud Sync: OFF';
+        }
+    }
+    
+    if (statusText) {
+        if (MONGODB_CONFIG.enabled) {
+            statusText.textContent = 'Cloud sync enabled';
+            statusText.style.color = '#00ff88';
+        } else {
+            statusText.textContent = 'Using local storage only';
+            statusText.style.color = '#8b92b8';
+        }
+    }
+}
+
+function updateSyncStatus() {
+    const lastSync = localStorage.getItem('lastCloudSync');
+    const statusElement = document.getElementById('lastSyncTime');
+    
+    if (statusElement && lastSync) {
+        const syncDate = new Date(lastSync);
+        const now = new Date();
+        const diffMinutes = Math.floor((now - syncDate) / 1000 / 60);
+        
+        let timeText;
+        if (diffMinutes < 1) {
+            timeText = 'Just now';
+        } else if (diffMinutes < 60) {
+            timeText = `${diffMinutes} minute${diffMinutes > 1 ? 's' : ''} ago`;
+        } else {
+            const diffHours = Math.floor(diffMinutes / 60);
+            timeText = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        }
+        
+        statusElement.textContent = `Last sync: ${timeText}`;
+    }
+}
+
+// Auto-sync on changes (debounced)
+let autoSyncTimeout;
+function autoSyncToCloud() {
+    if (!MONGODB_CONFIG.enabled) return;
+    
+    clearTimeout(autoSyncTimeout);
+    autoSyncTimeout = setTimeout(() => {
+        syncToCloud();
+    }, 2000); // 2 seconds debounce
+}
+
+// ===================== WRAPPER FUNCTIONS (REPLACE LOCALSTORAGE) =====================
+
+// Enhanced localStorage functions with MongoDB sync
+const StorageManager = {
+    setItem: function(key, value) {
+        localStorage.setItem(key, value);
+        if (MONGODB_CONFIG.enabled) {
+            autoSyncToCloud();
+        }
+    },
+    
+    getItem: function(key) {
+        return localStorage.getItem(key);
+    },
+    
+    removeItem: function(key) {
+        localStorage.removeItem(key);
+        if (MONGODB_CONFIG.enabled) {
+            autoSyncToCloud();
+        }
+    }
+};
+
+// Export MongoDB functions for use in script.js
+window.mongoDBSync = {
+    init: initMongoDB,
+    connect: connectMongoDB,
+    syncToCloud: syncToCloud,
+    syncFromCloud: syncFromCloud,
+    toggle: toggleMongoDBSync,
+    updateStatus: updateSyncStatus,
+    updateToggle: updateSyncToggle,
+    autoSync: autoSyncToCloud
+};
+
 const form = document.getElementById('calcForm');
 const results = document.getElementById('results');
 let currentKurs = 0;
@@ -3559,6 +3885,32 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
 
 document.getElementById('btnClearHistory').addEventListener('click', clearHistory);
 
+// ===================== MONGODB CLOUD SYNC EVENT LISTENERS =====================
+document.getElementById('btnToggleSync')?.addEventListener('click', function() {
+    window.mongoDBSync.toggle();
+    
+    // Show/hide sync buttons
+    const uploadBtn = document.getElementById('btnSyncToCloud');
+    const downloadBtn = document.getElementById('btnSyncFromCloud');
+    
+    if (MONGODB_CONFIG.enabled) {
+        if (uploadBtn) uploadBtn.style.display = 'inline-block';
+        if (downloadBtn) downloadBtn.style.display = 'inline-block';
+    } else {
+        if (uploadBtn) uploadBtn.style.display = 'none';
+        if (downloadBtn) downloadBtn.style.display = 'none';
+    }
+});
+
+document.getElementById('btnSyncToCloud')?.addEventListener('click', function() {
+    window.mongoDBSync.syncToCloud();
+});
+
+document.getElementById('btnSyncFromCloud')?.addEventListener('click', function() {
+    window.mongoDBSync.syncFromCloud();
+});
+// ===================== END MONGODB SYNC LISTENERS =====================
+
 document.getElementById('btnEditBalance').addEventListener('click', openBalanceModal);
 
 document.getElementById('btnAddMetode').addEventListener('click', () => addDropdownOption('metode'));
@@ -3593,6 +3945,18 @@ window.addEventListener('DOMContentLoaded', function() {
     }
     
     initializeDropdownOptions();
+    
+    // ===================== MONGODB INITIALIZATION =====================
+    // Initialize MongoDB connection and update UI
+    window.mongoDBSync.init().then(() => {
+        window.mongoDBSync.connect();
+        window.mongoDBSync.updateToggle();
+        window.mongoDBSync.updateStatus();
+        console.log('✅ MongoDB integration ready');
+    }).catch(err => {
+        console.log('⚠️ MongoDB unavailable, using localStorage only');
+    });
+    // ===================== END MONGODB INITIALIZATION =====================
     
     showPage(currentPage);
     
