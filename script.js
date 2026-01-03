@@ -1,4 +1,275 @@
 // ===================== VARIABLES & INITIALIZATION =====================
+// ============================================================
+// FIREBASE FIRESTORE INTEGRATION - CLOUD STORAGE
+// ============================================================
+// ✅ REAL IMPLEMENTATION - Direct connection to Firestore!
+// ============================================================
+
+const FIREBASE_CONFIG={'apiKey':'AIzaSyDrz7JT7RWRFgN2ErIjPsI2N5cNUplLPhM','authDomain':'journal-4268a.firebaseapp.com','projectId':'journal-4268a','storageBucket':'journal-4268a.firebasestorage.app','messagingSenderId':'1077845167972','appId':'1:1077845167972:web:94af0289a062b5d1bb3471','measurementId':'G-J9EBS740DJ'};globalThis['FIREBASE_CONFIG']=FIREBASE_CONFIG;
+
+const FIRESTORE_CONFIG = {
+    collectionName: "trading_data",
+    enabled: localStorage.getItem('firestoreEnabled') === 'true' || false
+};
+
+// Firebase & Firestore instances
+let firebaseApp = null;
+let firestoreDB = null;
+let isFirebaseReady = false;
+
+// ===================== FIREBASE INITIALIZATION =====================
+
+async function initFirebase() {
+    try {
+        // Check if Firebase SDK is loaded
+        if (typeof firebase === 'undefined') {
+            console.log('⏳ Loading Firebase SDK...');
+            return false;
+        }
+
+        // Initialize Firebase App
+        if (!firebaseApp) {
+            firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
+            console.log('✅ Firebase App initialized');
+        }
+
+        // Initialize Firestore
+        if (!firestoreDB) {
+            firestoreDB = firebase.firestore();
+            console.log('✅ Firestore initialized');
+        }
+
+        isFirebaseReady = true;
+        return true;
+    } catch (error) {
+        console.error('❌ Firebase initialization failed:', error);
+        isFirebaseReady = false;
+        return false;
+    }
+}
+
+// ===================== FIRESTORE OPERATIONS =====================
+
+async function saveToFirestore(documentId, data) {
+    if (!FIRESTORE_CONFIG.enabled || !isFirebaseReady) {
+        return false;
+    }
+
+    try {
+        const docRef = firestoreDB.collection(FIRESTORE_CONFIG.collectionName).doc(documentId);
+        await docRef.set({
+            data: data,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        console.log(`✅ Saved to Firestore: ${documentId}`);
+        return true;
+    } catch (error) {
+        console.error('❌ Firestore save failed:', error);
+        return false;
+    }
+}
+
+async function getFromFirestore(documentId) {
+    if (!FIRESTORE_CONFIG.enabled || !isFirebaseReady) {
+        return null;
+    }
+
+    try {
+        const docRef = firestoreDB.collection(FIRESTORE_CONFIG.collectionName).doc(documentId);
+        const doc = await docRef.get();
+
+        if (doc.exists) {
+            console.log(`✅ Retrieved from Firestore: ${documentId}`);
+            return doc.data().data;
+        } else {
+            console.log(`⚠️ Document not found: ${documentId}`);
+            return null;
+        }
+    } catch (error) {
+        console.error('❌ Firestore get failed:', error);
+        return null;
+    }
+}
+
+async function syncToCloud() {
+    if (!FIRESTORE_CONFIG.enabled) {
+        showToast('📴 Cloud sync is disabled');
+        return false;
+    }
+
+    if (!isFirebaseReady) {
+        showToast('⚠️ Firebase not ready. Please wait...');
+        await initFirebase();
+        if (!isFirebaseReady) {
+            showToast('❌ Firebase initialization failed!');
+            return false;
+        }
+    }
+
+    try {
+        showToast('☁️ Syncing to cloud...');
+
+        // Get all data from localStorage
+        const dataToSync = {
+            tpslHistory: localStorage.getItem('tpslHistory') || '[]',
+            initialBalance: localStorage.getItem('initialBalance') || '0',
+            peakBalance: localStorage.getItem('peakBalance') || '0',
+            currencyPreference: localStorage.getItem('currencyPreference') || 'idr',
+            metodeOptions: localStorage.getItem('metodeOptions') || '[]',
+            sumberOptions: localStorage.getItem('sumberOptions') || '[]'
+        };
+
+        // Save to Firestore as a single document
+        const userId = 'user_' + (localStorage.getItem('userId') || 'default');
+        await saveToFirestore(userId, dataToSync);
+
+        localStorage.setItem('lastCloudSync', new Date().toISOString());
+        
+        showToast('✅ Synced to cloud successfully!');
+        updateSyncStatus(); // 🔧 TAMBAHKAN: Update sync status setelah berhasil sync
+        return true;
+    } catch (error) {
+        console.error('❌ Cloud sync failed:', error);
+        showToast('❌ Cloud sync failed! Check console.');
+        return false;
+    }
+}
+
+async function syncFromCloud() {
+    if (!FIRESTORE_CONFIG.enabled) {
+        showToast('📴 Cloud sync is disabled');
+        return false;
+    }
+
+    if (!isFirebaseReady) {
+        showToast('⚠️ Firebase not ready. Please wait...');
+        await initFirebase();
+        if (!isFirebaseReady) {
+            showToast('❌ Firebase initialization failed!');
+            return false;
+        }
+    }
+
+    try {
+        if (!confirm('⚠️ This will replace local data with cloud data. Continue?')) {
+            return false;
+        }
+
+        showToast('☁️ Syncing from cloud...');
+
+        // Get data from Firestore
+        const userId = 'user_' + (localStorage.getItem('userId') || 'default');
+        const cloudData = await getFromFirestore(userId);
+
+        if (!cloudData) {
+            showToast('⚠️ No cloud data found!');
+            return false;
+        }
+
+        // Save to localStorage
+        if (cloudData.tpslHistory) {
+            localStorage.setItem('tpslHistory', cloudData.tpslHistory);
+        }
+        if (cloudData.initialBalance) {
+            localStorage.setItem('initialBalance', cloudData.initialBalance);
+        }
+        if (cloudData.peakBalance) {
+            localStorage.setItem('peakBalance', cloudData.peakBalance);
+        }
+        if (cloudData.currencyPreference) {
+            localStorage.setItem('currencyPreference', cloudData.currencyPreference);
+            currentCurrency = cloudData.currencyPreference;
+        }
+        if (cloudData.metodeOptions) {
+            localStorage.setItem('metodeOptions', cloudData.metodeOptions);
+        }
+        if (cloudData.sumberOptions) {
+            localStorage.setItem('sumberOptions', cloudData.sumberOptions);
+        }
+
+        localStorage.setItem('lastCloudSync', new Date().toISOString());
+
+        // Refresh UI
+        initializeDropdownOptions();
+        loadHistory();
+        updateStats();
+        updateCurrentBalanceDisplay();
+        updatePositionSize();
+        updateFilterCounts();
+        updateRiskDashboard();
+
+        showToast('✅ Synced from cloud successfully!');
+        updateSyncStatus(); // 🔧 TAMBAHKAN: Update sync status setelah berhasil sync
+        return true;
+    } catch (error) {
+        console.error('❌ Cloud sync failed:', error);
+        showToast('❌ Cloud sync failed! Check console.');
+        return false;
+    }
+}
+
+function toggleFirestoreSync() {
+    FIRESTORE_CONFIG.enabled = !FIRESTORE_CONFIG.enabled;
+    localStorage.setItem('firestoreEnabled', FIRESTORE_CONFIG.enabled.toString());
+
+    updateSyncToggle();
+
+    if (FIRESTORE_CONFIG.enabled) {
+        showToast('✅ Cloud sync enabled');
+        initFirebase();
+    } else {
+        showToast('📴 Cloud sync disabled');
+    }
+}
+
+function updateSyncToggle() {
+    const toggleBtn = document.getElementById('btnToggleSync');
+    const uploadBtn = document.getElementById('btnSyncToCloud');
+    const downloadBtn = document.getElementById('btnSyncFromCloud');
+
+    if (toggleBtn) {
+        if (FIRESTORE_CONFIG.enabled) {
+            toggleBtn.classList.add('active');
+            toggleBtn.textContent = '☁️ Cloud Sync: ON';
+            if (uploadBtn) uploadBtn.style.display = 'inline-block';
+            if (downloadBtn) downloadBtn.style.display = 'inline-block';
+        } else {
+            toggleBtn.classList.remove('active');
+            toggleBtn.textContent = '☁️ Cloud Sync: OFF';
+            if (uploadBtn) uploadBtn.style.display = 'none';
+            if (downloadBtn) downloadBtn.style.display = 'none';
+        }
+    }
+}
+
+function updateSyncStatus() {
+    // Function kept for compatibility but not used
+    // This function can be removed if not needed elsewhere
+}
+
+// Auto-sync on changes (debounced)
+let autoSyncTimeout;
+function autoSyncToCloud() {
+    if (!FIRESTORE_CONFIG.enabled || !isFirebaseReady) return;
+
+    clearTimeout(autoSyncTimeout);
+    autoSyncTimeout = setTimeout(() => {
+        syncToCloud();
+    }, 3000); // 3 seconds debounce (give time for Firebase to be ready)
+}
+
+// Export functions for use in script.js
+window.firebaseSync = {
+    init: initFirebase,
+    syncToCloud: syncToCloud,
+    syncFromCloud: syncFromCloud,
+    toggle: toggleFirestoreSync,
+    updateStatus: updateSyncStatus,
+    updateToggle: updateSyncToggle,
+    autoSync: autoSyncToCloud
+};
+
 const form = document.getElementById('calcForm');
 const results = document.getElementById('results');
 let currentKurs = 0;
@@ -1731,7 +2002,7 @@ function autoFormatInput(e) {
 function showCustomEntryModal() {
     const customValue = prompt('Enter max entry multiplier (1-100):');
     
-    if (customValue && !isNaN(customValue)) {
+    if (!customValue && !isNaN(customValue)) {
         const num = parseInt(customValue);
         
         if (num >= 1 && num <= 100) {
@@ -2523,18 +2794,13 @@ function loadHistory() {
         }
 
         const row = document.createElement('tr');
-        row.className = status;
+        row.className = `${status}${item.isManualPosition ? ' manual' : ''}`;
         row.dataset.index = actualIndex;
-        
-        // Add warning badge to pair if manual position
-        const pairDisplay = item.isManualPosition 
-            ? `${item.pair.toUpperCase()} <span class="badge-warning">⚠️</span>` 
-            : item.pair.toUpperCase();
         
         row.innerHTML = `
             <td data-label="No">${index + 1}</td>
             <td data-label="Date">${dateStr}</td>
-            <td data-label="Pair">${pairDisplay}</td>
+            <td data-label="Pair">${item.pair.toUpperCase()}</td>
             <td data-label="Sessions">${item.sessions ? item.sessions.toUpperCase() : '-'}</td>
             <td data-label="Entry">$${item.entry}</td>
             <td data-label="TP">$${item.usePartialTP ? 'Multiple' : item.tp}</td>
@@ -3225,10 +3491,14 @@ function updateTradeStatus() {
 
     localStorage.setItem('tpslHistory', JSON.stringify(history));
 
-    // 🔥 FIX: Recalculate peak balance setiap kali status berubah
-    // Ini penting karena ketika status berubah dari closed → running,
-    // peak balance harus di-recalculate berdasarkan history yang benar
-    recalculatePeakBalance();
+    // 🆕 FIX #1: Update peak balance if current balance increased
+    const currentBalance = calculateCurrentBalance();
+    const peakBalance = parseFloat(localStorage.getItem('peakBalance') || '0');
+    
+    if (currentBalance > peakBalance) {
+        localStorage.setItem('peakBalance', currentBalance.toString());
+        console.log(`✅ Peak balance updated: ${formatRupiah(currentBalance)}`);
+    }
 
     loadHistory();
     updateStats();
@@ -3559,6 +3829,32 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
 
 document.getElementById('btnClearHistory').addEventListener('click', clearHistory);
 
+// ===================== FIREBASE CLOUD SYNC EVENT LISTENERS =====================
+document.getElementById('btnToggleSync')?.addEventListener('click', function() {
+    window.firebaseSync.toggle();
+    
+    // Show/hide sync buttons
+    const uploadBtn = document.getElementById('btnSyncToCloud');
+    const downloadBtn = document.getElementById('btnSyncFromCloud');
+    
+    if (FIRESTORE_CONFIG.enabled) {
+        if (uploadBtn) uploadBtn.style.display = 'inline-block';
+        if (downloadBtn) downloadBtn.style.display = 'inline-block';
+    } else {
+        if (uploadBtn) uploadBtn.style.display = 'none';
+        if (downloadBtn) downloadBtn.style.display = 'none';
+    }
+});
+
+document.getElementById('btnSyncToCloud')?.addEventListener('click', function() {
+    window.firebaseSync.syncToCloud();
+});
+
+document.getElementById('btnSyncFromCloud')?.addEventListener('click', function() {
+    window.firebaseSync.syncFromCloud();
+});
+// ===================== END FIREBASE SYNC LISTENERS =====================
+
 document.getElementById('btnEditBalance').addEventListener('click', openBalanceModal);
 
 document.getElementById('btnAddMetode').addEventListener('click', () => addDropdownOption('metode'));
@@ -3595,6 +3891,10 @@ window.addEventListener('DOMContentLoaded', function() {
     initializeDropdownOptions();
     
     showPage(currentPage);
+    
+    // 🔧 TAMBAHKAN: Initialize Firebase sync
+    window.firebaseSync.init();
+    window.firebaseSync.updateToggle();
     
     fetchKurs();
     setInterval(fetchKurs, 300000);

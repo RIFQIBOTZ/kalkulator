@@ -2096,6 +2096,57 @@ textarea::placeholder {
     box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
 }
 
+/* Cloud Sync Buttons - Simple Rectangular Design */
+.btn-cloud-sync {
+    background: rgba(71, 85, 105, 0.3);
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    color: #94a3b8;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cloud-sync:hover {
+    background: rgba(71, 85, 105, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-cloud-sync.active {
+    background: linear-gradient(45deg, rgba(0, 212, 255, 0.3), rgba(123, 47, 247, 0.3));
+    border: 1px solid #00d4ff;
+    color: #00d4ff;
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.btn-cloud-sync.active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
+.btn-cloud-upload,
+.btn-cloud-download {
+    background: rgba(251, 146, 60, 0.2);
+    border: 1px solid rgba(251, 146, 60, 0.5);
+    color: #fb923c;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.btn-cloud-upload:hover,
+.btn-cloud-download:hover {
+    background: rgba(251, 146, 60, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(251, 146, 60, 0.3);
+}
+
 .btn-load-db {
     background: linear-gradient(45deg, #7b2ff7, #00d4ff);
     border: none;
@@ -2261,47 +2312,31 @@ textarea::placeholder {
     color: #e0e0e0;
 }
 
-/* Row Status Colors with Diagonal Gradient (Option 6) */
+/* Row Status Colors */
 .history-table tbody tr.hit-tp {
-    border-left: 2px solid #00ff88;
-    background: linear-gradient(135deg, 
-        rgba(0, 255, 136, 0.12) 0%, 
-        rgba(0, 255, 136, 0.04) 50%,
-        transparent 100%);
+    border-left: 4px solid #00ff88;
 }
 
 .history-table tbody tr.hit-sl {
-    border-left: 2px solid #ff3366;
-    background: linear-gradient(135deg, 
-        rgba(255, 51, 102, 0.12) 0%, 
-        rgba(255, 51, 102, 0.04) 50%,
-        transparent 100%);
+    border-left: 4px solid #ff3366;
 }
 
 .history-table tbody tr.break-even {
-    border-left: 2px solid #ffd700;
-    background: linear-gradient(135deg, 
-        rgba(255, 215, 0, 0.12) 0%, 
-        rgba(255, 215, 0, 0.04) 50%,
-        transparent 100%);
+    border-left: 4px solid #ffd700;
 }
 
 .history-table tbody tr.running {
-    border-left: 2px solid #00d4ff;
-    background: linear-gradient(135deg, 
-        rgba(0, 212, 255, 0.12) 0%, 
-        rgba(0, 212, 255, 0.04) 50%,
-        transparent 100%);
+    border-left: 4px solid #00d4ff;
 }
 
 .history-table tbody tr.partial {
-    border-left: 2px solid #ffa500;
-    background: linear-gradient(135deg, 
-        rgba(255, 165, 0, 0.12) 0%, 
-        rgba(255, 165, 0, 0.04) 50%,
-        transparent 100%);
+    border-left: 4px solid #ffa500;
 }
 
+.history-table tbody tr.manual {
+    border-left: 4px solid #ffa500;
+    background: rgba(255, 165, 0, 0.05);
+}
 
 /* Expanded Row Details */
 .expanded-row {
@@ -3188,6 +3223,13 @@ textarea::placeholder {
         justify-content: space-between;
     }
 
+    .btn-cloud-sync,
+    .btn-cloud-upload,
+    .btn-cloud-download {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
     .status-modal-content, .balance-modal-content, .edit-modal-content {
         padding: 20px;
     }
@@ -3324,21 +3366,15 @@ textarea::placeholder {
         padding: 4px 6px;
         font-size: 0.7rem;
     }
+
+    .btn-cloud-sync,
+    .btn-cloud-upload,
+    .btn-cloud-download {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+    }
 }
 
 #fileInput {
     display: none;
-}
-/* Warning Badge for Manual Position */
-.badge-warning {
-    display: inline-flex;
-    align-items: center;
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    border-radius: 10px;
-    background: rgba(255, 165, 0, 0.2);
-    color: #ffa500;
-    border: 1px solid rgba(255, 165, 0, 0.4);
-    margin-left: 5px;
-    vertical-align: middle;
 }
