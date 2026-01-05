@@ -2,19 +2,23 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on ALL elements */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 html {
     height: 100%;
     background: linear-gradient(135deg, #0a0e27 0%, #1a1d3e 100%);
-    overscroll-behavior: none; /* ✅ FIX: Prevent white line on mobile overscroll */
+    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on html */
+    overscroll-behavior-y: none; /* Extra protection for Y-axis */
 }
 
 body {
     min-height: 100%;
     overflow-x: hidden;
     background: transparent;
-    overscroll-behavior: none; /* ✅ FIX: Prevent white line on mobile overscroll */
+    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on body */
+    overscroll-behavior-y: none; /* Extra protection for Y-axis */
 }
 
 body {
@@ -44,6 +48,7 @@ body::after {
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
+    overscroll-behavior: none; /* ✅ OPSI C: Extra protection */
 }
 
 .sidebar-nav.hidden {
@@ -77,12 +82,13 @@ body::after {
     flex: 1;
     padding: 20px 0;
     overflow-y: auto;
-    /* ✅ FIX: Hide scrollbar in sidebar */
+    overscroll-behavior: none; /* ✅ OPSI C: Extra protection */
+    /* ✅ Hide scrollbar */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
 }
 
-/* ✅ FIX: Hide scrollbar for Chrome, Safari, Opera */
+/* ✅ Hide scrollbar for Chrome, Safari, Opera */
 .sidebar-menu::-webkit-scrollbar {
     display: none;
 }
@@ -248,6 +254,7 @@ body::after {
     margin-left: 280px;
     transition: margin-left 0.3s ease;
     min-height: 100vh;
+    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on main-content */
 }
 
 .main-content.expanded {
@@ -259,12 +266,16 @@ body::after {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 30px 20px;
-    /* ✅ FIX: Hide scrollbar for desktop */
+    /* ✅ OPSI C: Prevent overscroll on scroll-container (MOST IMPORTANT!) */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none; /* Extra protection for Y-axis */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    /* ✅ Hide scrollbar for desktop */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
 }
 
-/* ✅ FIX: Hide scrollbar for Chrome, Safari, Opera */
+/* ✅ Hide scrollbar for Chrome, Safari, Opera */
 .scroll-container::-webkit-scrollbar {
     display: none;
 }
