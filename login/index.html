@@ -282,7 +282,7 @@
 <body>
     <div class="login-container">
         <div class="logo-section">
-            <div class="logo-icon"></div>
+            <div class="logo-icon"></div>
             <h1 class="logo-title">TP/SL Calculator</h1>
             <p class="logo-subtitle">by RIFQI</p>
         </div>
@@ -292,7 +292,7 @@
         <form id="loginForm" onsubmit="handleLogin(event)">
             <div class="form-group">
                 <div class="input-wrapper">
-                    <span class="input-icon"></span>
+                    <span class="input-icon"></span>
                     <input 
                         type="text" 
                         id="username" 
@@ -306,7 +306,7 @@
 
             <div class="form-group">
                 <div class="input-wrapper">
-                    <span class="input-icon"></span>
+                    <span class="input-icon"></span>
                     <input 
                         type="password" 
                         id="password" 
@@ -319,7 +319,7 @@
             </div>
 
             <button type="submit" class="login-button">
-                <span id="buttonText"> Login</span>
+                <span id="buttonText"> Login</span>
                 <span class="loading" id="loading"></span>
             </button>
         </form>
@@ -332,12 +332,12 @@
     <script>
         // Cek session
         if (localStorage.getItem('isLoggedIn') === 'true') {
-            window.location.href = '../'; // <- GANTI dari 'index.html'
+            window.location.replace('../');
         }
 
         function showMessage(text, type) {
             const messageEl = document.getElementById('message');
-            const icon = type === 'error' ? '' : '';
+            const icon = type === 'error' ? '' : '';
             messageEl.innerHTML = `<span>${icon}</span><span>${text}</span>`;
             messageEl.className = `message ${type} show`;
             
@@ -365,7 +365,7 @@
                     showMessage('Login berhasil! Mengalihkan...', 'success');
                     
                     setTimeout(() => {
-                        window.location.href = '../'; // <- GANTI dari 'index.html'
+                        window.location.replace('../');
                     }, 1000);
                 } else {
                     showMessage('Username atau password salah!', 'error');

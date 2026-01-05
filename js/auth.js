@@ -9,7 +9,8 @@
     
     // ===================== CONFIGURATION =====================
     const AUTH_KEY = 'isLoggedIn';
-    const LOGIN_PAGE = 'login/'; // <- GANTI dari 'login.html'
+    const LOGIN_PAGE = 'login/';
+    const MAIN_PAGE = '../'; // Untuk redirect dari login ke main
     
     // ===================== UTILITY FUNCTIONS =====================
     
@@ -20,6 +21,15 @@
         const path = window.location.pathname;
         // Cek apakah di folder login atau file login.html
         return path.includes('/login') || path.includes('login.html');
+    }
+    
+    /**
+     * Cek apakah halaman saat ini adalah main page (index.html)
+     */
+    function isMainPage() {
+        const path = window.location.pathname;
+        const isRoot = path.endsWith('/') || path.endsWith('/index.html') || path.includes('/kalkulator/');
+        return isRoot && !isLoginPage();
     }
     
     /**
@@ -37,21 +47,33 @@
     
     /**
      * Cek status autentikasi user
-     * Jika belum login dan bukan di login page → redirect ke login
+     * - Jika BELUM login dan BUKAN di login page → redirect ke login
+     * - Jika SUDAH login dan MASIH di login page → redirect ke main page
+     * - Jika SUDAH login dan SUDAH di main page → tidak ada redirect
      */
     function checkAuth() {
-        // Skip jika di login page
-        if (isLoginPage()) {
+        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
+        
+        // Case 1: User belum login
+        if (!isLoggedIn) {
+            // Jika belum login tapi sedang di login page, biarkan tetap di login page
+            if (isLoginPage()) {
+                return;
+            }
+            // Jika belum login dan bukan di login page → redirect ke login
+            safeRedirect(LOGIN_PAGE);
             return;
         }
         
-        // Cek localStorage
-        const isLoggedIn = localStorage.getItem(AUTH_KEY);
-        
-        // Jika belum login → redirect (TANPA throw error!)
-        if (isLoggedIn !== 'true') {
-            safeRedirect(LOGIN_PAGE);
-            return; // ← PAKAI return, BUKAN throw!
+        // Case 2: User sudah login
+        if (isLoggedIn) {
+            // Jika sudah login tapi masih di login page → redirect ke main page
+            if (isLoginPage()) {
+                safeRedirect(MAIN_PAGE);
+                return;
+            }
+            // Jika sudah login dan sudah di main page → tidak ada redirect (biarkan load normal)
+            return;
         }
     }
     
