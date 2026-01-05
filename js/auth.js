@@ -18,9 +18,8 @@
      */
     function isLoginPage() {
         const path = window.location.pathname;
-        const page = path.split('/').pop();
-        // Cek exact match 'login.html' saja
-        return page === 'login.html';
+        // Cek apakah di folder login atau file login.html
+        return path.includes('/login') || path.includes('login.html');
     }
     
     /**
