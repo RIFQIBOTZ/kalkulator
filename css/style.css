@@ -7,12 +7,14 @@
 html {
     height: 100%;
     background: linear-gradient(135deg, #0a0e27 0%, #1a1d3e 100%);
+    overscroll-behavior: none; /* ✅ FIX: Prevent white line on mobile overscroll */
 }
 
 body {
     min-height: 100%;
     overflow-x: hidden;
     background: transparent;
+    overscroll-behavior: none; /* ✅ FIX: Prevent white line on mobile overscroll */
 }
 
 body {
@@ -249,6 +251,14 @@ body::after {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 30px 20px;
+    /* ✅ FIX: Hide scrollbar for desktop */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* ✅ FIX: Hide scrollbar for Chrome, Safari, Opera */
+.scroll-container::-webkit-scrollbar {
+    display: none;
 }
 
 .container {
