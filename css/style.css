@@ -275,20 +275,25 @@ body::after {
 }
 
 .scroll-container {
-    height: 100vh;
+    height: 100vh;      /* fallback */
+    height: 100dvh;     /* mobile fix */
+
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 30px 20px 60px 20px;
+
+    /* padding: top | right | bottom | left */
+    padding: 30px 20px 30px 20px;
+
     overscroll-behavior: none;
     overscroll-behavior-y: none;
     overscroll-behavior-x: none;
+
     -webkit-overflow-scrolling: touch;
-    /* ✅ Hide scrollbar */
+
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-/* ✅ Hide scrollbar for Chrome, Safari, Opera */
 .scroll-container::-webkit-scrollbar {
     display: none;
 }
