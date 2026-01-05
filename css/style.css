@@ -38,7 +38,7 @@ body::after {
     height: 100vh;
     background: rgba(26, 29, 62, 0.95);
     backdrop-filter: blur(20px);
-    border-right: 1px solid rgba(123, 47, 247, 0.3);
+    border-right: none; /* ✅ FIX: Remove vertical line on desktop */
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
     z-index: 1000;
     display: flex;
@@ -77,6 +77,14 @@ body::after {
     flex: 1;
     padding: 20px 0;
     overflow-y: auto;
+    /* ✅ FIX: Hide scrollbar in sidebar */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* ✅ FIX: Hide scrollbar for Chrome, Safari, Opera */
+.sidebar-menu::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar-item {
