@@ -9,7 +9,7 @@
     
     // ===================== CONFIGURATION =====================
     const AUTH_KEY = 'isLoggedIn';
-    const LOGIN_PAGE = 'login.html';
+    const LOGIN_PAGE = 'login/'; // <- GANTI dari 'login.html'
     
     // ===================== UTILITY FUNCTIONS =====================
     
@@ -132,7 +132,7 @@
         preventBack();
         
         // Console log untuk konfirmasi
-        console.log('%c🔐 Auth System Active', 'color: #2dbce6; font-weight: bold; font-size: 14px;');
+        console.log('%c🔒 Auth System Active', 'color: #2dbce6; font-weight: bold; font-size: 14px;');
         console.log('%cTP/SL Calculator v2.0 by RIFQI', 'color: #94a3b8; font-size: 12px;');
     }
     
