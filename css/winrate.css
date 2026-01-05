@@ -1,0 +1,2191 @@
+/* ============================================
+   WINRATE CALCULATOR - COMPLETE CSS STYLING
+   File: css/winrate.css
+   Dark Theme + Glassmorphism + Gradient Accents
+   ============================================ */
+
+/* ============================================
+   1. COLOR PALETTE & CSS VARIABLES
+   ============================================ */
+:root {
+    --primary-gradient-start: #7b2ff7;
+    --primary-gradient-end: #00d4ff;
+    --success-color: #00ff88;
+    --danger-color: #ff3366;
+    --warning-color: #ffa500;
+    --bg-dark-primary: #0a0e27;
+    --bg-dark-secondary: #1a1d3e;
+    --text-primary: #e0e0e0;
+    --text-muted: #8b92b8;
+    --glass-bg: rgba(13, 16, 37, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --transition-default: all 0.3s ease;
+}
+
+/* ============================================
+   2. GENERAL CONTAINER
+   ============================================ */
+.winrate-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+/* ============================================
+   3. FORM STYLING
+   ============================================ */
+
+/* 3a. Win Rate Slider Container */
+.winrate-slider {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, 
+        var(--danger-color) 0%, 
+        var(--warning-color) 50%, 
+        var(--success-color) 100%);
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.winrate-slider-container:hover {
+    border-color: rgba(123, 47, 247, 0.3);
+    box-shadow: 0 4px 20px rgba(123, 47, 247, 0.15);
+}
+
+/* 3b. Win Rate Slider Track */
+.winrate-slider {
+    width: 100%;
+    height: 8px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: linear-gradient(to right, 
+        var(--danger-color) 0%, 
+        var(--warning-color) 50%, 
+        var(--success-color) 100%);
+    border-radius: 5px;
+    outline: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.winrate-slider:hover {
+    opacity: 1;
+}
+
+/* 3c. Slider Thumb - Webkit (Chrome, Safari, Edge) */
+.winrate-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-gradient-end);
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 212, 255, 0.3);  /* ✅ KURANGI DARI 10px JADI 5px */
+    transition: var(--transition-default);
+    position: relative;  /* ✅ TAMBAHKAN INI */
+    z-index: 10;         /* ✅ TAMBAHKAN INI */
+}
+
+.winrate-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+}
+
+.winrate-slider::-webkit-slider-thumb:active {
+    transform: scale(1.1);
+}
+
+/* 3d. Slider Thumb - Firefox */
+.winrate-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--primary-gradient-end);
+    border: 2px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 212, 255, 0.3);  /* ✅ KURANGI */
+    transition: var(--transition-default);
+    position: relative;  /* ✅ TAMBAHKAN */
+    z-index: 10;         /* ✅ TAMBAHKAN */
+}
+
+.winrate-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+}
+
+.winrate-slider::-moz-range-thumb:active {
+    transform: scale(1.1);
+}
+
+/* 3e. Win Rate Display - MODIFIED PART 1 */
+.winrate-display {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.winrate-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-gradient-end);
+    display: inline-block;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    /* Background removed as requested */
+}
+
+.winrate-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* 3f. Use Balance Button */
+.btn-use-balance {
+    background: rgba(0, 212, 255, 0.2);
+    border: 1px solid rgba(0, 212, 255, 0.5);
+    color: var(--primary-gradient-end);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-default);
+    display: block;
+    width: 100%;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
+}
+
+.btn-use-balance:hover {
+    background: rgba(0, 212, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+}
+
+.btn-use-balance:active {
+    transform: translateY(0);
+}
+
+/* UPDATE: NEON PULSE EFFECT FOR STARTING EQUITY INPUT */
+@keyframes neonPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 10px rgba(123, 47, 247, 0.5),
+            0 0 20px rgba(0, 212, 255, 0.3),
+            inset 0 0 0 var(--primary-gradient-start);
+        border-color: var(--primary-gradient-start);
+    }
+    50% {
+        box-shadow: 
+            0 0 20px rgba(123, 47, 247, 0.8),
+            0 0 40px rgba(0, 212, 255, 0.6),
+            inset 0 0 10px var(--primary-gradient-end);
+        border-color: var(--primary-gradient-end);
+    }
+}
+
+input#startingEquity {
+    animation: neonPulse 2s ease-in-out infinite;
+    border: 2px solid var(--primary-gradient-start);
+    transition: border-color 0.3s ease;
+}
+
+input#startingEquity:focus {
+    border-color: var(--primary-gradient-end);
+    animation: none;
+    box-shadow: 
+        0 0 20px rgba(123, 47, 247, 0.8),
+        0 0 40px rgba(0, 212, 255, 0.6) !important;
+}
+
+/* ============================================
+   4. RESULTS SECTION
+   ============================================ */
+
+/* 4a. Results Grid */
+.winrate-results-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ✅ FIXED: Selalu 2 kolom seperti mobile */
+    gap: 15px;
+    margin-bottom: 30px;
+    animation: slideDown 0.4s ease;
+}
+
+/* 4b. Result Cards */
+.winrate-result-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid var(--glass-border);
+    border-left: 4px solid;
+    transition: var(--transition-default);
+    position: relative;
+    overflow: hidden;
+}
+
+.winrate-result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.03) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.winrate-result-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.winrate-result-card:hover::before {
+    opacity: 1;
+}
+
+/* 4c. Result Card Variants */
+.winrate-result-card.positive {
+    border-left-color: var(--success-color);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+.winrate-result-card.positive:hover {
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.2);
+}
+
+.winrate-result-card.negative {
+    border-left-color: var(--danger-color);
+    box-shadow: 0 0 20px rgba(255, 51, 102, 0.1);
+}
+
+.winrate-result-card.negative:hover {
+    box-shadow: 0 8px 25px rgba(255, 51, 102, 0.2);
+}
+
+.winrate-result-card.neutral {
+    border-left-color: var(--primary-gradient-end);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.winrate-result-card.neutral:hover {
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+}
+
+/* 4d. Result Card Content */
+.winrate-result-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.winrate-result-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.winrate-result-card.positive .winrate-result-value {
+    color: var(--success-color);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.winrate-result-card.negative .winrate-result-value {
+    color: var(--danger-color);
+    text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+}
+
+.winrate-result-card.neutral .winrate-result-value {
+    color: var(--primary-gradient-end);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.winrate-result-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* UPDATE: FIX ADDITIONAL STATS CARD TYPOGRAPHY & LAYOUT */
+#additionalStats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px 10px;
+    padding: 10px 0;
+}
+
+#additionalStats .stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 0;
+}
+
+#additionalStats .stat-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    order: 1;
+}
+
+#additionalStats .stat-value {
+    font-size: 0.75rem;
+    font-weight: 500;
+    order: 2;
+    line-height: 1.4;
+}
+
+#additionalStats .stat-value.positive {
+    color: var(--success-color);
+}
+
+#additionalStats .stat-value.negative {
+    color: var(--danger-color);
+}
+
+#additionalStats .stat-value.neutral {
+    color: var(--primary-gradient-end);
+}
+
+/* ============================================
+   NEW: ADDITIONAL STATS GRID (PART 2)
+   ============================================ */
+.winrate-additional-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+    animation: fadeIn 0.5s ease;
+}
+
+.winrate-additional-stats-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    border: 1px solid var(--glass-border);
+    transition: var(--transition-default);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 140px;
+}
+
+.winrate-additional-stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.03) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.winrate-additional-stats-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.winrate-additional-stats-card:hover::before {
+    opacity: 1;
+}
+
+.winrate-additional-stats-card.neutral {
+    border-left: 4px solid var(--primary-gradient-end);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+}
+
+.winrate-additional-stats-card.neutral:hover {
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.2);
+}
+
+.winrate-additional-stats-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-weight: 600;
+    display: block;
+}
+
+.winrate-additional-stats-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--primary-gradient-end);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    line-height: 1.2;
+    margin-bottom: 5px;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.winrate-additional-stats-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-top: 5px;
+}
+
+/* ============================================
+   5. CHARTS SECTION
+   ============================================ */
+
+/* 5a. Chart Container */
+.winrate-chart-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    transition: var(--transition-default);
+    animation: fadeIn 0.6s ease;
+}
+
+.winrate-chart-container:hover {
+    border-color: rgba(123, 47, 247, 0.3);
+    box-shadow: 0 4px 20px rgba(123, 47, 247, 0.15);
+}
+
+/* 5b. Chart Header */
+.winrate-chart-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.winrate-chart-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-gradient-end);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 5c. Chart Wrapper */
+.winrate-chart-wrapper {
+    position: relative;
+    height: 400px;
+    width: 100%;
+}
+
+.winrate-chart-wrapper canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* ============================================
+   6. MONTE CARLO SECTION
+   ============================================ */
+
+/* 6a. Monte Carlo Container */
+.monte-carlo-section {
+    background: linear-gradient(135deg, rgba(123, 47, 247, 0.1), rgba(0, 212, 255, 0.1));
+    border: 1px solid rgba(123, 47, 247, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    margin-top: 0px;
+    margin-bottom: 15px;    /* ✅ FIXED: Tambah margin bawah yang pas */
+    backdrop-filter: blur(10px);
+    transition: var(--transition-default);
+    animation: fadeIn 0.7s ease;
+}
+
+.monte-carlo-section:hover {
+    border-color: rgba(123, 47, 247, 0.5);
+    box-shadow: 0 4px 20px rgba(123, 47, 247, 0.2);
+}
+
+/* 6b. Monte Carlo Header */
+.monte-carlo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: var(--transition-default);
+}
+
+.monte-carlo-header:hover {
+    background: rgba(123, 47, 247, 0.2);
+}
+
+.monte-carlo-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-gradient-end);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.monte-carlo-toggle {
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
+    color: var(--primary-gradient-start);
+}
+
+.monte-carlo-section.expanded .monte-carlo-toggle {
+    transform: rotate(180deg);
+}
+
+/* 6c. Monte Carlo Content */
+.monte-carlo-content {
+    display: none;
+    padding-top: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.monte-carlo-section.expanded .monte-carlo-content {
+    display: block;
+}
+
+/* 6d. Monte Carlo Grid */
+.monte-carlo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ✅ Tetap 2 kolom */
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* 6e. Scenario Cards */
+.scenario-card {
+    background: rgba(13, 16, 37, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: var(--transition-default);
+    position: relative;
+    overflow: hidden;
+}
+
+.scenario-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.scenario-card:hover {
+    transform: translateY(-5px);
+}
+
+.scenario-card:hover::before {
+    opacity: 1;
+}
+
+.scenario-card.best {
+    border: 2px solid var(--success-color);
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
+}
+
+.scenario-card.best:hover {
+    box-shadow: 0 8px 30px rgba(0, 255, 136, 0.4);
+}
+
+.scenario-card.average {
+    border: 2px solid var(--primary-gradient-end);
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+}
+
+.scenario-card.average:hover {
+    box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
+}
+
+.scenario-card.worst {
+    border: 2px solid var(--danger-color);
+    box-shadow: 0 4px 20px rgba(255, 51, 102, 0.2);
+}
+
+.scenario-card.worst:hover {
+    box-shadow: 0 8px 30px rgba(255, 51, 102, 0.4);
+}
+
+/* 6f. Scenario Card Content */
+.scenario-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.scenario-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.scenario-card.best .scenario-value {
+    color: var(--success-color);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.scenario-card.average .scenario-value {
+    color: var(--primary-gradient-end);
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.scenario-card.worst .scenario-value {
+    color: var(--danger-color);
+    text-shadow: 0 0 10px rgba(255, 51, 102, 0.5);
+}
+
+.scenario-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* ============================================
+   7. RISK WARNING BOX
+   ============================================ */
+
+/* 7a. Risk Warning Container */
+.winrate-risk-warning {
+    background: rgba(255, 51, 102, 0.15);
+    border: 2px solid var(--danger-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 0px;
+    margin-bottom: 15px;    /* ✅ FIXED: Tambah margin bawah yang pas */
+    display: none;
+    backdrop-filter: blur(10px);
+}
+
+.winrate-risk-warning.show {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+/* 7b. Risk Warning Header */
+.risk-warning-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.risk-warning-icon {
+    font-size: 2rem;
+    animation: pulse 2s infinite;
+    color: var(--danger-color);
+}
+
+.risk-warning-title {
+    color: var(--danger-color);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 7c. Risk Warning List */
+.risk-warning-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.risk-warning-item {
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    border-left: 3px solid var(--danger-color);
+    transition: var(--transition-default);
+    line-height: 1.5;
+}
+
+.risk-warning-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateX(5px);
+}
+
+.risk-warning-item:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   8. LOADING STATE
+   ============================================ */
+
+/* 8a. Loading Container */
+.winrate-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    min-height: 300px;
+}
+
+/* 8b. Loading Spinner */
+.winrate-loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(123, 47, 247, 0.2);
+    border-top-color: var(--primary-gradient-start);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* 8c. Loading Text */
+.winrate-loading-text {
+    margin-top: 0px;
+    margin-bottom: 15px;    /* ✅ FIXED: Tambah margin bawah yang pas */
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+    animation: pulse 2s infinite;
+}
+
+/* ============================================
+   9. ANIMATIONS
+   ============================================ */
+
+/* 9a. Fade In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* 9b. Slide Down Animation */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 9c. Pulse Animation */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* 9d. Spin Animation */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 9e. Glow Animation */
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(123, 47, 247, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(123, 47, 247, 0.6);
+    }
+}
+
+/* 9f. Slide In From Left */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 9g. Slide In From Right */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 9h. Scale In Animation */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ============================================
+   10. RESPONSIVE DESIGN
+   ============================================ */
+
+/* 10a. Tablet Landscape (1024px and below) */
+@media (max-width: 1024px) {
+    .winrate-results-grid {
+        grid-template-columns: repeat(2, 1fr); /* ✅ Tetap 2 kolom */
+    }
+    
+    .winrate-additional-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .monte-carlo-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .winrate-chart-wrapper {
+        height: 350px;
+    }
+    
+    /* UPDATE: RESPONSIVE FOR ADDITIONAL STATS */
+    #additionalStats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px 8px;
+    }
+    
+    #additionalStats .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    #additionalStats .stat-value {
+        font-size: 0.7rem;
+    }
+}
+
+/* 10b. Tablet Portrait (768px and below) */
+@media (max-width: 768px) {
+    .winrate-container {
+        padding: 15px;
+    }
+    
+    .winrate-results-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .winrate-additional-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .winrate-additional-stats-card {
+        padding: 20px;
+        min-height: 120px;
+    }
+    
+    .winrate-additional-stats-value {
+        font-size: 1.6rem;
+    }
+    
+    .winrate-additional-stats-label {
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+    }
+    
+    .winrate-result-card {
+        padding: 15px;
+    }
+    
+    .winrate-result-value {
+        font-size: 1.4rem;
+    }
+    
+    .winrate-result-label {
+        font-size: 0.65rem;
+    }
+    
+    .winrate-chart-wrapper {
+        height: 300px;
+    }
+    
+    .winrate-chart-container {
+        padding: 20px;
+    }
+    
+    .monte-carlo-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .scenario-value {
+        font-size: 1.5rem;
+    }
+    
+    .scenario-card {
+        padding: 15px;
+    }
+    
+    .winrate-value {
+        font-size: 2rem;
+    }
+    
+    .winrate-slider-container {
+        padding: 15px;
+    }
+    
+    .monte-carlo-section {
+        padding: 15px;
+    }
+    
+    .risk-warning-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .risk-warning-icon {
+        font-size: 1.5rem;
+    }
+    
+    .risk-warning-title {
+        font-size: 1rem;
+    }
+    
+    /* UPDATE: RESPONSIVE FOR ADDITIONAL STATS */
+    #additionalStats {
+        gap: 10px 6px;
+        padding: 8px 0;
+    }
+    
+    #additionalStats .stat-item {
+        padding: 8px 0;
+        gap: 4px;
+    }
+    
+    #additionalStats .stat-label {
+        font-size: 0.75rem;
+    }
+    
+    #additionalStats .stat-value {
+        font-size: 0.65rem;
+    }
+}
+
+/* 10c. Mobile (480px and below) */
+@media (max-width: 480px) {
+    .winrate-container {
+        padding: 10px;
+    }
+    
+    .winrate-results-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .winrate-additional-stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .winrate-additional-stats-card {
+        padding: 18px;
+        min-height: 110px;
+    }
+    
+    .winrate-additional-stats-value {
+        font-size: 1.5rem;
+    }
+    
+    .winrate-additional-stats-label {
+        font-size: 0.65rem;
+    }
+    
+    .winrate-result-card {
+        padding: 12px;
+    }
+    
+    .winrate-result-value {
+        font-size: 1.2rem;
+    }
+    
+    .winrate-chart-wrapper {
+        height: 250px;
+    }
+    
+    .winrate-chart-container {
+        padding: 15px;
+    }
+    
+    .winrate-chart-title {
+        font-size: 0.9rem;
+    }
+    
+    .winrate-value {
+        font-size: 1.8rem;
+    }
+    
+    .winrate-label {
+        font-size: 0.75rem;
+    }
+    
+    .monte-carlo-title {
+        font-size: 0.9rem;
+    }
+    
+    .monte-carlo-toggle {
+        font-size: 1.2rem;
+    }
+    
+    .scenario-value {
+        font-size: 1.3rem;
+    }
+    
+    .scenario-label {
+        font-size: 0.7rem;
+    }
+    
+    .scenario-card {
+        padding: 12px;
+    }
+    
+    .winrate-slider-container {
+        padding: 12px;
+    }
+    
+    .btn-use-balance {
+        font-size: 0.75rem;
+        padding: 6px 12px;
+    }
+    
+    .risk-warning-item {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+    
+    .winrate-loading {
+        padding: 40px 15px;
+        min-height: 250px;
+    }
+    
+    .winrate-loading-spinner {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
+    }
+    
+    /* UPDATE: RESPONSIVE FOR ADDITIONAL STATS */
+    #additionalStats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 6px 0;
+    }
+    
+    #additionalStats .stat-item {
+        padding: 6px 0;
+        gap: 3px;
+    }
+    
+    #additionalStats .stat-label {
+        font-size: 0.7rem;
+    }
+    
+    #additionalStats .stat-value {
+        font-size: 0.6rem;
+    }
+}
+
+/* ============================================
+   11. UTILITY CLASSES
+   ============================================ */
+
+/* 11a. Animation Utilities */
+.fade-in {
+    animation: fadeIn 0.5s ease;
+}
+
+.slide-down {
+    animation: slideDown 0.3s ease;
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.4s ease;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.4s ease;
+}
+
+.scale-in {
+    animation: scaleIn 0.4s ease;
+}
+
+/* 11b. Interactive Utilities */
+.glow-on-hover {
+    transition: var(--transition-default);
+}
+
+.glow-on-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(123, 47, 247, 0.4);
+}
+
+.clickable {
+    cursor: pointer;
+    transition: var(--transition-default);
+}
+
+.clickable:hover {
+    opacity: 0.8;
+}
+
+.clickable:active {
+    transform: scale(0.98);
+}
+
+/* 11c. Text Utilities */
+.text-gradient {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-success {
+    color: var(--success-color);
+}
+
+.text-danger {
+    color: var(--danger-color);
+}
+
+.text-warning {
+    color: var(--warning-color);
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+/* 11d. Display Utilities */
+.hidden {
+    display: none !important;
+}
+
+.visible {
+    display: block !important;
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* ============================================
+   12. SPECIAL BADGES
+   ============================================ */
+
+/* 12a. Badge Base */
+.winrate-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: var(--transition-default);
+}
+
+/* 12b. Badge Variants */
+.winrate-badge.success {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.winrate-badge.success:hover {
+    background: rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+.winrate-badge.danger {
+    background: rgba(255, 51, 102, 0.2);
+    color: var(--danger-color);
+    border: 1px solid var(--danger-color);
+}
+
+.winrate-badge.danger:hover {
+    background: rgba(255, 51, 102, 0.3);
+    box-shadow: 0 0 15px rgba(255, 51, 102, 0.3);
+}
+
+.winrate-badge.info {
+    background: rgba(0, 212, 255, 0.2);
+    color: var(--primary-gradient-end);
+    border: 1px solid var(--primary-gradient-end);
+}
+
+.winrate-badge.info:hover {
+    background: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+}
+
+.winrate-badge.warning {
+    background: rgba(255, 165, 0, 0.2);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+}
+
+.winrate-badge.warning:hover {
+    background: rgba(255, 165, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 165, 0, 0.3);
+}
+
+/* ============================================
+   13. ADDITIONAL COMPONENTS
+   ============================================ */
+
+/* 13a. Info Tooltip */
+.winrate-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: help;
+}
+
+.winrate-tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(13, 16, 37, 0.95);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.winrate-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(13, 16, 37, 0.95);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.winrate-tooltip:hover::after,
+.winrate-tooltip:hover::before {
+    opacity: 1;
+}
+
+/* 13b. Progress Bar */
+.winrate-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.winrate-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.winrate-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* 13c. Divider */
+.winrate-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+    margin: 20px 0;
+}
+
+.winrate-divider.thick {
+    height: 2px;
+}
+
+.winrate-divider.gradient {
+    background: linear-gradient(90deg, transparent, var(--primary-gradient-start), var(--primary-gradient-end), transparent);
+}
+
+/* 13d. Empty State */
+.winrate-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.winrate-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.winrate-empty-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.winrate-empty-message {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* 13e. Card Header */
+.winrate-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.winrate-card-header-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primary-gradient-end);
+}
+
+.winrate-card-header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* 13f. Icon Button */
+.winrate-icon-btn {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-default);
+}
+
+.winrate-icon-btn:hover {
+    background: rgba(123, 47, 247, 0.2);
+    border-color: var(--primary-gradient-start);
+    color: var(--primary-gradient-end);
+}
+
+.winrate-icon-btn:active {
+    transform: scale(0.95);
+}
+
+/* ============================================
+   14. FORM INPUTS ENHANCEMENT
+   ============================================ */
+
+/* 14a. Input Field */
+.winrate-input {
+    width: 100%;
+    background: rgba(13, 16, 37, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+    transition: var(--transition-default);
+    backdrop-filter: blur(10px);
+}
+
+.winrate-input::placeholder {
+    color: var(--text-muted);
+}
+
+.winrate-input:focus {
+    border-color: var(--primary-gradient-start);
+    box-shadow: 0 0 15px rgba(123, 47, 247, 0.3);
+}
+
+.winrate-input:hover {
+    border-color: rgba(123, 47, 247, 0.5);
+}
+
+.winrate-input.error {
+    border-color: var(--danger-color);
+}
+
+.winrate-input.success {
+    border-color: var(--success-color);
+}
+
+/* 14b. Input Group */
+.winrate-input-group {
+    margin-bottom: 20px;
+}
+
+.winrate-input-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.winrate-input-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.winrate-input-error {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--danger-color);
+    margin-top: 6px;
+}
+
+/* 14c. Select Dropdown */
+.winrate-select {
+    width: 100%;
+    background: rgba(13, 16, 37, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-default);
+    backdrop-filter: blur(10px);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238b92b8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.winrate-select:focus {
+    border-color: var(--primary-gradient-start);
+    box-shadow: 0 0 15px rgba(123, 47, 247, 0.3);
+}
+
+.winrate-select:hover {
+    border-color: rgba(123, 47, 247, 0.5);
+}
+
+/* 14d. Checkbox */
+.winrate-checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.winrate-checkbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(13, 16, 37, 0.6);
+    border: 2px solid var(--glass-border);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition-default);
+    position: relative;
+}
+
+.winrate-checkbox:hover {
+    border-color: var(--primary-gradient-start);
+}
+
+.winrate-checkbox:checked {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    border-color: var(--primary-gradient-end);
+}
+
+.winrate-checkbox:checked::after {
+    content: 'âœ“';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.winrate-checkbox-label {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+}
+
+/* ============================================
+   15. TABLE STYLING
+   ============================================ */
+
+/* 15a. Table Container */
+.winrate-table-container {
+    overflow-x: auto;
+    background: var(--glass-bg);
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+/* 15b. Table */
+.winrate-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.winrate-table thead {
+    background: rgba(123, 47, 247, 0.1);
+}
+
+.winrate-table th {
+    padding: 15px;
+    text-align: left;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--primary-gradient-end);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--glass-border);
+}
+
+.winrate-table td {
+    padding: 15px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.winrate-table tbody tr {
+    transition: var(--transition-default);
+}
+
+.winrate-table tbody tr:hover {
+    background: rgba(123, 47, 247, 0.1);
+}
+
+.winrate-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 15c. Table Cell Variants */
+.winrate-table td.success {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.winrate-table td.danger {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+.winrate-table td.warning {
+    color: var(--warning-color);
+    font-weight: 600;
+}
+
+/* ============================================
+   16. MODAL/POPUP STYLING
+   ============================================ */
+
+/* 16a. Modal Overlay */
+.winrate-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+/* 16b. Modal Container */
+.winrate-modal {
+    background: var(--bg-dark-primary);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.3s ease;
+}
+
+/* 16c. Modal Header */
+.winrate-modal-header {
+    padding: 20px 25px;
+    border-bottom: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.winrate-modal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--primary-gradient-end);
+    margin: 0;
+}
+
+.winrate-modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition-default);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.winrate-modal-close:hover {
+    background: rgba(255, 51, 102, 0.2);
+    color: var(--danger-color);
+}
+
+/* 16d. Modal Body */
+.winrate-modal-body {
+    padding: 25px;
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+/* 16e. Modal Footer */
+.winrate-modal-footer {
+    padding: 20px 25px;
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+/* ============================================
+   17. BUTTON VARIANTS
+   ============================================ */
+
+/* 17a. Primary Button */
+.winrate-btn-primary {
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-default);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.winrate-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(123, 47, 247, 0.4);
+}
+
+.winrate-btn-primary:active {
+    transform: translateY(0);
+}
+
+/* 17b. Secondary Button */
+.winrate-btn-secondary {
+    background: transparent;
+    border: 2px solid var(--primary-gradient-start);
+    color: var(--primary-gradient-end);
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-default);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.winrate-btn-secondary:hover {
+    background: rgba(123, 47, 247, 0.2);
+    transform: translateY(-2px);
+}
+
+.winrate-btn-secondary:active {
+    transform: translateY(0);
+}
+
+/* 17c. Danger Button */
+.winrate-btn-danger {
+    background: var(--danger-color);
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-default);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.winrate-btn-danger:hover {
+    background: #ff4477;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 51, 102, 0.4);
+}
+
+.winrate-btn-danger:active {
+    transform: translateY(0);
+}
+
+/* 17d. Success Button */
+.winrate-btn-success {
+    background: var(--success-color);
+    border: none;
+    color: var(--bg-dark-primary);
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition-default);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.winrate-btn-success:hover {
+    background: #11ff99;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
+}
+
+.winrate-btn-success:active {
+    transform: translateY(0);
+}
+
+/* 17e. Button Disabled State */
+.winrate-btn-primary:disabled,
+.winrate-btn-secondary:disabled,
+.winrate-btn-danger:disabled,
+.winrate-btn-success:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.winrate-btn-primary:disabled:hover,
+.winrate-btn-secondary:disabled:hover,
+.winrate-btn-danger:disabled:hover,
+.winrate-btn-success:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* ============================================
+   18. SCROLLBAR STYLING
+   ============================================ */
+
+.winrate-container::-webkit-scrollbar,
+.winrate-modal::-webkit-scrollbar,
+.winrate-table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.winrate-container::-webkit-scrollbar-track,
+.winrate-modal::-webkit-scrollbar-track,
+.winrate-table-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.winrate-container::-webkit-scrollbar-thumb,
+.winrate-modal::-webkit-scrollbar-thumb,
+.winrate-table-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    border-radius: 10px;
+}
+
+.winrate-container::-webkit-scrollbar-thumb:hover,
+.winrate-modal::-webkit-scrollbar-thumb:hover,
+.winrate-table-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--primary-gradient-end), var(--primary-gradient-start));
+}
+
+/* ============================================
+   19. PRINT STYLES
+   ============================================ */
+
+@media print {
+    .winrate-container {
+        max-width: 100%;
+        padding: 0;
+    }
+    
+    .winrate-modal-overlay,
+    .winrate-icon-btn,
+    .btn-use-balance {
+        display: none;
+    }
+    
+    .winrate-result-card,
+    .winrate-chart-container,
+    .monte-carlo-section,
+    .winrate-additional-stats-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .winrate-chart-wrapper {
+        height: auto;
+    }
+}
+
+/* ============================================
+   20. ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* 20a. Focus Visible */
+.winrate-slider:focus-visible,
+.winrate-input:focus-visible,
+.winrate-select:focus-visible,
+.winrate-checkbox:focus-visible,
+.btn-use-balance:focus-visible,
+.winrate-icon-btn:focus-visible {
+    outline: 2px solid var(--primary-gradient-end);
+    outline-offset: 2px;
+}
+
+/* 20b. Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 20c. High Contrast Mode */
+@media (prefers-contrast: high) {
+    .winrate-result-card,
+    .winrate-chart-container,
+    .monte-carlo-section,
+    .scenario-card,
+    .winrate-additional-stats-card {
+        border-width: 2px;
+    }
+    
+    .winrate-slider {
+        height: 10px;
+    }
+    
+    .winrate-slider::-webkit-slider-thumb,
+    .winrate-slider::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-width: 3px;
+    }
+}
+
+/* ============================================
+   21. DARK MODE ENHANCEMENTS (Already dark by default)
+   ============================================ */
+
+/* Additional dark mode refinements if needed */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-bg: rgba(13, 16, 37, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.08);
+    }
+}
+
+/* ============================================
+   22. SPECIAL EFFECTS
+   ============================================ */
+
+/* 22a. Neon Glow Effect */
+.winrate-neon-effect {
+    position: relative;
+}
+
+.winrate-neon-effect::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--primary-gradient-start), var(--primary-gradient-end));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    filter: blur(10px);
+    transition: opacity 0.3s ease;
+}
+
+.winrate-neon-effect:hover::after {
+    opacity: 0.7;
+}
+
+/* 22b. Floating Animation */
+.winrate-floating {
+    animation: floating 3s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 22c. Typing Effect */
+.winrate-typing {
+    overflow: hidden;
+    border-right: 2px solid var(--primary-gradient-end);
+    white-space: nowrap;
+    animation: typing 3.5s steps(40) 1s 1 normal both, blink 0.75s step-end infinite;
+}
+/* ============================================
+   WINRATE BALANCE DISPLAY (Same as Kalkulator)
+   ============================================ */
+
+.winrate-balance-display {
+    background: linear-gradient(135deg, rgba(123, 47, 247, 0.15), rgba(0, 212, 255, 0.15));
+    border: 2px solid rgba(123, 47, 247, 0.4);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 2px;  /* ✅ DIUBAH JADI 8px */
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    animation: pulseBalance 3s infinite;
+}
+
+@keyframes pulseBalance {
+    0%, 100% {
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2), 0 0 20px rgba(123, 47, 247, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3), 0 0 30px rgba(123, 47, 247, 0.4);
+    }
+}
+
+.winrate-balance-display .balance-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.winrate-balance-display .balance-label {
+    font-size: 0.9rem;
+    color: #8b92b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.winrate-balance-display .currency-pill {
+    display: flex;
+    background: rgba(13, 16, 37, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.winrate-balance-display .currency-option {
+    padding: 5px 15px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #8b92b8;
+}
+
+.winrate-balance-display .currency-option.active {
+    background: linear-gradient(45deg, #7b2ff7, #00d4ff);
+    color: white;
+    box-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
+}
+
+.winrate-balance-display .balance-amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #00d4ff;
+    margin-bottom: 5px;
+    text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    padding-top: 10px;
+}
+
+.winrate-balance-display .balance-conversion {
+    font-size: 0.9rem;
+    color: #8b92b8;
+    margin-bottom: 15px;
+}
+
+.winrate-balance-display .btn-edit-balance {
+    background: rgba(123, 47, 247, 0.2);
+    border: 1px solid rgba(123, 47, 247, 0.5);
+    color: #7b2ff7;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.winrate-balance-display .btn-edit-balance:hover {
+    background: rgba(123, 47, 247, 0.4);
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .winrate-balance-display .balance-amount {
+        font-size: 2rem;
+    }
+    
+    .winrate-balance-display {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .winrate-balance-display .balance-amount {
+        font-size: 1.8rem;
+    }
+    
+    .winrate-balance-display .balance-label {
+        font-size: 0.75rem;
+    }
+}
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+/* ============================================
+   END OF WINRATE.CSS
