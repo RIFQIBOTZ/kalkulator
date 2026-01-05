@@ -2,23 +2,28 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on ALL elements */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    overscroll-behavior: none; /* ✅ Prevent overscroll on ALL elements */
 }
 
 html {
     height: 100%;
     background: linear-gradient(135deg, #0a0e27 0%, #1a1d3e 100%);
-    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on html */
-    overscroll-behavior-y: none; /* Extra protection for Y-axis */
+    background-color: #0a0e27 !important; /* ✅ Force solid background */
+    overscroll-behavior: none; /* ✅ Prevent overscroll */
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+    touch-action: pan-y; /* ✅ Only vertical scroll, no zoom */
 }
 
 body {
     min-height: 100%;
     overflow-x: hidden;
     background: transparent;
-    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on body */
-    overscroll-behavior-y: none; /* Extra protection for Y-axis */
+    background-color: #0a0e27 !important; /* ✅ Force solid background */
+    overscroll-behavior: none; /* ✅ Prevent overscroll */
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+    touch-action: pan-y; /* ✅ Only vertical scroll, no zoom */
 }
 
 body {
@@ -40,15 +45,17 @@ body::after {
     left: 0;
     width: 280px;
     height: 100vh;
-    background: rgba(26, 29, 62, 0.95);
+    background: #1a1d3e; /* ✅ Solid background */
+    background-color: #1a1d3e !important;
     backdrop-filter: blur(20px);
-    border-right: none; /* ✅ FIX: Remove vertical line on desktop */
+    border-right: none; /* ✅ No border line */
     box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
     z-index: 1000;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s ease;
-    overscroll-behavior: none; /* ✅ OPSI C: Extra protection */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
 }
 
 .sidebar-nav.hidden {
@@ -82,10 +89,15 @@ body::after {
     flex: 1;
     padding: 20px 0;
     overflow-y: auto;
-    overscroll-behavior: none; /* ✅ OPSI C: Extra protection */
+    overflow-x: hidden;
+    background: #1a1d3e; /* ✅ Solid background */
+    background-color: #1a1d3e !important;
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    -webkit-overflow-scrolling: touch;
     /* ✅ Hide scrollbar */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 /* ✅ Hide scrollbar for Chrome, Safari, Opera */
@@ -254,7 +266,8 @@ body::after {
     margin-left: 280px;
     transition: margin-left 0.3s ease;
     min-height: 100vh;
-    overscroll-behavior: none; /* ✅ OPSI C: Prevent overscroll on main-content */
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
 }
 
 .main-content.expanded {
@@ -266,13 +279,13 @@ body::after {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 30px 20px;
-    /* ✅ OPSI C: Prevent overscroll on scroll-container (MOST IMPORTANT!) */
     overscroll-behavior: none;
-    overscroll-behavior-y: none; /* Extra protection for Y-axis */
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    /* ✅ Hide scrollbar for desktop */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+    -webkit-overflow-scrolling: touch;
+    /* ✅ Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 /* ✅ Hide scrollbar for Chrome, Safari, Opera */
