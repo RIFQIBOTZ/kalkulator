@@ -148,7 +148,7 @@ function handleLogin(e) {
             showMessage('Login berhasil! Mengalihkan...', 'success');
             
             setTimeout(() => {
-                window.location.replace('../');
+                window.location.replace('../index.html');
             }, 1000);
         } else {
             showMessage('Username atau password salah!', 'error');
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check session
     if (localStorage.getItem('isLoggedIn') === 'true') {
-        window.location.replace('../');
+        window.location.replace('../index.html');
     }
 });
 
