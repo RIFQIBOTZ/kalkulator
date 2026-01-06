@@ -148,7 +148,9 @@ function handleLogin(e) {
             showMessage('Login berhasil! Mengalihkan...', 'success');
             
             setTimeout(() => {
-                window.location.replace('../index.html');
+                // PERBAIKAN: Gunakan path relatif yang benar dari halaman login
+                // Dari /login/index.html ke /index.html (root)
+                window.location.href = '../index.html';
             }, 1000);
         } else {
             showMessage('Username atau password salah!', 'error');
@@ -202,7 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check session
     if (localStorage.getItem('isLoggedIn') === 'true') {
-        window.location.replace('../index.html');
+        // PERBAIKAN: Gunakan path relatif yang benar
+        window.location.href = '../index.html';
     }
 });
 

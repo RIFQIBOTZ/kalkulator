@@ -4230,7 +4230,7 @@ function logout() {
         
         // Redirect to login page after short delay
         setTimeout(() => {
-            window.location.href = 'login/';
+            window.location.href = '/kalkulator/login/';
         }, 500);
     }
 }
