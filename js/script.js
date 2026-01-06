@@ -4275,6 +4275,19 @@ function extractPageFromUrl(pathname) {
 function initializeRouting() {
     console.log('🚀 Initializing client-side routing...');
     
+    // ✅ Cek apakah ada requested page dari 404.html
+    const requestedPage = sessionStorage.getItem('requestedPage');
+    if (requestedPage) {
+        console.log('📄 Loading requested page from 404:', requestedPage);
+        sessionStorage.removeItem('requestedPage'); // Clear after use
+        
+        const validPages = ['ringkasan', 'kalkulator', 'riwayat', 'winrate', 'risiko'];
+        if (validPages.includes(requestedPage)) {
+            showPage(requestedPage, true);
+            return; // Exit early
+        }
+    }
+    
     const currentPath = window.location.pathname;
     console.log('📍 Current path:', currentPath);
     
