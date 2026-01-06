@@ -1,198 +1,211 @@
-// ===================== AUTHENTICATION SYSTEM =====================
-// TP/SL Calculator - Auth Protection  
-// Version: 2.1 (FIXED - No Freeze)
-// Author: RIFQI
-// ===================================================================
+/* ===================================================================
+   JOURNAL TRADE - LOGIN AUTHENTICATION
+   Version: 2.0
+   =================================================================== */
 
-(function() {
-    'use strict';
-    
-    // ===================== CONFIGURATION =====================
-    const AUTH_KEY = 'isLoggedIn';
-    const LOGIN_PAGE = 'login/';
-    const MAIN_PAGE = '../'; // Untuk redirect dari login ke main
-    
-    // ===================== UTILITY FUNCTIONS =====================
-    
-    /**
-     * Cek apakah halaman saat ini adalah login page
-     */
-    function isLoginPage() {
-        const path = window.location.pathname;
-        // Cek apakah di folder login atau file login.html
-        return path.includes('/login') || path.includes('login.html');
-    }
-    
-    /**
-     * Cek apakah halaman saat ini adalah main page (index.html)
-     */
-    function isMainPage() {
-        const path = window.location.pathname;
-        const isRoot = path.endsWith('/') || path.endsWith('/index.html') || path.includes('/kalkulator/');
-        return isRoot && !isLoginPage();
-    }
-    
-    /**
-     * Safe redirect - Prevent download spam
-     */
-    function safeRedirect(page) {
-        try {
-            window.location.replace(page);
-        } catch (error) {
-            window.location.href = page;
-        }
-    }
-    
-    // ===================== AUTHENTICATION CHECK =====================
-    
-    /**
-     * Cek status autentikasi user
-     * - Jika BELUM login dan BUKAN di login page → redirect ke login
-     * - Jika SUDAH login dan MASIH di login page → redirect ke main page
-     * - Jika SUDAH login dan SUDAH di main page → tidak ada redirect
-     */
-    function checkAuth() {
-        const isLoggedIn = localStorage.getItem(AUTH_KEY) === 'true';
+// ===================== LOGIN CONFIGURATION =====================
+// Ganti username & password di sini
+const LOGIN_CONFIG = {
+    username: 'admin',
+    password: 'admin'
+};
+
+// ===================== PARTICLE EFFECTS =====================
+
+// Create particles
+function createParticles() {
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 25;
+
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.bottom = '-10px';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
         
-        // Case 1: User belum login
-        if (!isLoggedIn) {
-            // Jika belum login tapi sedang di login page, biarkan tetap di login page
-            if (isLoginPage()) {
-                return;
-            }
-            // Jika belum login dan bukan di login page → redirect ke login
-            safeRedirect(LOGIN_PAGE);
-            return;
-        }
+        // Random color between purple and cyan
+        const colors = [
+            'rgba(123, 47, 247, 0.5)',
+            'rgba(0, 212, 255, 0.5)'
+        ];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
         
-        // Case 2: User sudah login
-        if (isLoggedIn) {
-            // Jika sudah login tapi masih di login page → redirect ke main page
-            if (isLoginPage()) {
-                safeRedirect(MAIN_PAGE);
-                return;
-            }
-            // Jika sudah login dan sudah di main page → tidak ada redirect (biarkan load normal)
-            return;
-        }
+        particlesContainer.appendChild(particle);
     }
+}
+
+// Create sparkle effect
+function createSparkle(x, y) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+    sparkle.style.left = x + 'px';
+    sparkle.style.top = y + 'px';
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => {
+        sparkle.remove();
+    }, 1000);
+}
+
+// Validation functions
+function validateUsername() {
+    const usernameInput = document.getElementById('username');
+    const usernameValidation = document.getElementById('usernameValidation');
+    const value = usernameInput.value.trim();
     
-    // ===================== LOGOUT FUNCTION =====================
+    if (value.length > 0) {
+        usernameValidation.classList.add('show');
+        if (value === LOGIN_CONFIG.username) {
+            usernameValidation.classList.add('valid');
+            usernameValidation.classList.remove('invalid');
+            // Change to checkmark
+            usernameValidation.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            `;
+        } else {
+            usernameValidation.classList.add('invalid');
+            usernameValidation.classList.remove('valid');
+            // Change to X mark
+            usernameValidation.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            `;
+        }
+    } else {
+        usernameValidation.classList.remove('show');
+    }
+}
+
+function validatePassword() {
+    const passwordInput = document.getElementById('password');
+    const passwordValidation = document.getElementById('passwordValidation');
+    const value = passwordInput.value.trim();
     
-    /**
-     * Logout user dan redirect ke login page
-     * Function ini di-expose ke global scope agar bisa dipanggil dari HTML
-     */
-    window.logout = function() {
-        try {
-            // Stop pending requests
-            if (window.stop) {
-                window.stop();
-            }
+    if (value.length > 0) {
+        passwordValidation.classList.add('show');
+        if (value === LOGIN_CONFIG.password) {
+            passwordValidation.classList.add('valid');
+            passwordValidation.classList.remove('invalid');
+            // Change to checkmark
+            passwordValidation.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            `;
+        } else {
+            passwordValidation.classList.add('invalid');
+            passwordValidation.classList.remove('valid');
+            // Change to X mark
+            passwordValidation.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            `;
+        }
+    } else {
+        passwordValidation.classList.remove('show');
+    }
+}
+
+// Show message
+function showMessage(text, type) {
+    const messageEl = document.getElementById('message');
+    const icon = type === 'error' ? '' : '';
+    messageEl.innerHTML = `<span style="font-size: 1.2rem;">${icon}</span><span>${text}</span>`;
+    messageEl.className = `message ${type} show`;
+    
+    setTimeout(() => {
+        messageEl.classList.remove('show');
+    }, 3000);
+}
+
+// Handle login
+function handleLogin(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const buttonText = document.getElementById('buttonText');
+    const buttonIcon = document.querySelector('.button-icon');
+    const loading = document.getElementById('loading');
+    const loginButton = document.querySelector('.login-button');
+    
+    loginButton.disabled = true;
+    buttonText.style.display = 'none';
+    buttonIcon.style.display = 'none';
+    loading.classList.add('show');
+    
+    setTimeout(() => {
+        if (username === LOGIN_CONFIG.username && password === LOGIN_CONFIG.password) {
+            localStorage.setItem('isLoggedIn', 'true');
+            showMessage('Login berhasil! Mengalihkan...', 'success');
             
-            // Clear session dari localStorage
-            localStorage.removeItem(AUTH_KEY);
-            
-            // Clear session storage juga
-            sessionStorage.clear();
-            
-            // Show logout message (optional)
-            if (typeof showToast === 'function') {
-                showToast('Logout berhasil!', 'info');
-            }
-            
-            // Redirect dengan small delay untuk smooth UX
             setTimeout(() => {
-                safeRedirect(LOGIN_PAGE);
-            }, 100);
+                window.location.replace('../');
+            }, 1000);
+        } else {
+            showMessage('Username atau password salah!', 'error');
+            loginButton.disabled = false;
+            buttonText.style.display = 'flex';
+            buttonText.style.alignItems = 'center';
+            buttonIcon.style.display = 'flex';
+            loading.classList.remove('show');
             
-        } catch (error) {
-            console.error('Logout error:', error);
-            // Tetap redirect meskipun ada error
-            safeRedirect(LOGIN_PAGE);
+            document.getElementById('password').value = '';
+            document.getElementById('password').focus();
+            
+            // Shake effect on inputs
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.style.animation = 'shake 0.4s ease-in-out';
+                setTimeout(() => {
+                    input.style.animation = '';
+                }, 400);
+            });
         }
-        
-        // Return false untuk prevent default action
-        return false;
-    };
+    }, 800);
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Create particles
+    createParticles();
     
-    // ===================== PREVENT BACK BUTTON =====================
-    
-    /**
-     * Mencegah user kembali ke halaman protected setelah logout
-     * Menggunakan history manipulation
-     */
-    function preventBack() {
-        // Push state baru untuk prevent back
-        window.history.pushState(null, '', window.location.href);
-        
-        // Listen untuk popstate event (back button)
-        window.addEventListener('popstate', function() {
-            // Cek apakah user masih login
-            const isLoggedIn = localStorage.getItem(AUTH_KEY);
-            
-            if (isLoggedIn !== 'true' && !isLoginPage()) {
-                // Push state lagi dan redirect ke login
-                window.history.pushState(null, '', window.location.href);
-                safeRedirect(LOGIN_PAGE);
+    // Add sparkle on button hover
+    const loginButton = document.querySelector('.login-button');
+    if (loginButton) {
+        loginButton.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.8) {
+                createSparkle(e.pageX, e.pageY);
             }
         });
     }
     
-    // ===================== INITIALIZATION =====================
+    // Input validation listeners
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
     
-    /**
-     * Initialize authentication system
-     * Dipanggil otomatis saat script loaded
-     */
-    function init() {
-        // Run authentication check
-        checkAuth();
-        
-        // Setup back button prevention
-        preventBack();
-        
-        // Console log untuk konfirmasi
-        console.log('%c🔒 Auth System Active', 'color: #2dbce6; font-weight: bold; font-size: 14px;');
-        console.log('%cTP/SL Calculator v2.0 by RIFQI', 'color: #94a3b8; font-size: 12px;');
+    if (usernameInput) {
+        usernameInput.addEventListener('input', validateUsername);
+        usernameInput.focus();
     }
     
-    // ===================== AUTO-RUN ON LOAD =====================
-    
-    // Run immediately jika DOM sudah ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
+    if (passwordInput) {
+        passwordInput.addEventListener('input', validatePassword);
     }
     
-    // ===================== EXPOSE UTILITY FUNCTIONS =====================
-    
-    /**
-     * Check if user is currently logged in
-     * Usage: if (window.isAuthenticated()) { ... }
-     */
-    window.isAuthenticated = function() {
-        try {
-            return localStorage.getItem(AUTH_KEY) === 'true';
-        } catch (error) {
-            return false;
-        }
-    };
-    
-    /**
-     * Get current session status
-     * Usage: const status = window.getAuthStatus();
-     */
-    window.getAuthStatus = function() {
-        return {
-            isLoggedIn: window.isAuthenticated(),
-            timestamp: new Date().toISOString()
-        };
-    };
-    
-})();
+    // Check session
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        window.location.replace('../');
+    }
+});
 
-// ===================================================================
-// END OF AUTHENTICATION SYSTEM
-// ===================================================================
+/* ===================================================================
+   END OF LOGIN AUTHENTICATION
+   =================================================================== */
