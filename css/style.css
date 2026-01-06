@@ -3605,3 +3605,48 @@ textarea::placeholder {
     transform: translateY(-1px);
     box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
 }
+
+/* ===== SVG ICON STYLING ===== */
+.sidebar-icon svg,
+.card-icon svg,
+.btn-icon svg,
+.logout-icon svg,
+.icon-inline svg {
+    display: inline-block;
+    vertical-align: middle;
+    stroke: currentColor;
+    transition: all 0.3s ease;
+}
+
+.sidebar-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.card-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.btn-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.logout-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.icon-inline svg {
+    width: 16px;
+    height: 16px;
+}
+
+.sidebar-item:hover .sidebar-icon svg {
+    transform: scale(1.1);
+}
+
+.btn-logout:hover .logout-icon svg {
+    transform: translateX(-2px);
+}
