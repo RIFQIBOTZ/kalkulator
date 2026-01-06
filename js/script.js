@@ -313,7 +313,7 @@ function showToast(message) {
 }
 
 // ===================== NAVIGATION =====================
-function showPage(pageName) {
+function showPage(pageName, updateHistory = true) {
     // Hide all pages
     document.querySelectorAll('.page-content').forEach(page => {
         page.classList.remove('active');
@@ -325,6 +325,13 @@ function showPage(pageName) {
         page.classList.add('active');
         currentPage = pageName;
         localStorage.setItem('currentPage', pageName);
+        
+        // ✅ NEW: Update URL without page reload
+        if (updateHistory) {
+            const newUrl = `/kalkulator/${pageName}`;
+            history.pushState({ page: pageName }, '', newUrl);
+            console.log('📍 URL updated to:', newUrl);
+        }
     }
     
     // Update nav active state
@@ -4237,3 +4244,67 @@ function logout() {
 
 // Export logout to window global
 window.logout = logout;
+/* ===================================================================
+   CLIENT-SIDE ROUTING - HISTORY API
+   Added: 6 Jan 2026
+   =================================================================== */
+
+// ✅ Handle browser back/forward buttons
+window.addEventListener('popstate', function(event) {
+    console.log('🔙 Browser navigation detected');
+    
+    if (event.state && event.state.page) {
+        showPage(event.state.page, false);
+    } else {
+        const currentPath = window.location.pathname;
+        const pageName = extractPageFromUrl(currentPath);
+        showPage(pageName, false);
+    }
+});
+
+// ✅ Extract page name dari URL
+function extractPageFromUrl(pathname) {
+    const match = pathname.match(/\/kalkulator\/([^\/]+)/);
+    if (match && match[1]) {
+        return match[1];
+    }
+    return 'ringkasan';
+}
+
+// ✅ Initialize routing saat page load
+function initializeRouting() {
+    console.log('🚀 Initializing client-side routing...');
+    
+    const currentPath = window.location.pathname;
+    console.log('📍 Current path:', currentPath);
+    
+    if (currentPath.includes('/kalkulator/')) {
+        const pageName = extractPageFromUrl(currentPath);
+        console.log('📄 Loading page from URL:', pageName);
+        
+        const validPages = ['ringkasan', 'kalkulator', 'riwayat', 'winrate', 'risiko'];
+        
+        if (validPages.includes(pageName)) {
+            showPage(pageName, false);
+            history.replaceState({ page: pageName }, '', currentPath);
+        } else {
+            console.log('⚠️ Invalid page, redirecting to ringkasan');
+            showPage('ringkasan', true);
+        }
+    } else if (currentPath === '/kalkulator' || currentPath === '/kalkulator/') {
+        showPage('ringkasan', true);
+    }
+}
+
+// ✅ Initialize saat DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeRouting);
+} else {
+    initializeRouting();
+}
+
+console.log('✅ Client-side routing initialized!');
+
+/* ===================================================================
+   END OF CLIENT-SIDE ROUTING
+   =================================================================== */
