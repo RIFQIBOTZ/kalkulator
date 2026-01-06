@@ -1,6 +1,6 @@
 /* ===================================================================
    JOURNAL TRADE - LOGIN AUTHENTICATION
-   Version: 2.0
+   Version: 2.1 - FIXED REDIRECT PATH
    =================================================================== */
 
 // ===================== LOGIN CONFIGURATION =====================
@@ -117,13 +117,36 @@ function validatePassword() {
 // Show message
 function showMessage(text, type) {
     const messageEl = document.getElementById('message');
-    const icon = type === 'error' ? '' : '';
+    const icon = type === 'error' ? '❌' : '✅';
     messageEl.innerHTML = `<span style="font-size: 1.2rem;">${icon}</span><span>${text}</span>`;
     messageEl.className = `message ${type} show`;
     
     setTimeout(() => {
         messageEl.classList.remove('show');
     }, 3000);
+}
+
+// ✅ FIXED: Get correct base path untuk redirect
+function getBasePath() {
+    const path = window.location.pathname;
+    
+    // Jika di GitHub Pages (rifqibotz.github.io)
+    if (window.location.hostname.includes('github.io')) {
+        // Cek apakah ada /kalkulator/ di path
+        if (path.includes('/kalkulator/')) {
+            return '/kalkulator/index.html';
+        }
+        // Jika tidak ada /kalkulator/, berarti root
+        return '/index.html';
+    }
+    
+    // Untuk local development
+    if (path.includes('/kalkulator/')) {
+        return '/kalkulator/index.html';
+    }
+    
+    // Default ke root
+    return '/index.html';
 }
 
 // Handle login
@@ -148,9 +171,10 @@ function handleLogin(e) {
             showMessage('Login berhasil! Mengalihkan...', 'success');
             
             setTimeout(() => {
-                // PERBAIKAN: Gunakan path relatif yang benar dari halaman login
-                // Dari /login/index.html ke /index.html (root)
-                window.location.href = '../index.html';
+                // ✅ FIXED: Gunakan fungsi getBasePath untuk redirect yang benar
+                const redirectPath = getBasePath();
+                console.log('Redirecting to:', redirectPath); // Debug log
+                window.location.href = redirectPath;
             }, 1000);
         } else {
             showMessage('Username atau password salah!', 'error');
@@ -172,6 +196,25 @@ function handleLogin(e) {
             });
         }
     }, 800);
+}
+
+// ✅ FIXED: Fungsi logout dengan path yang benar
+function logout() {
+    localStorage.removeItem('isLoggedIn');
+    
+    const path = window.location.pathname;
+    let loginPath = './login/';
+    
+    // Jika di GitHub Pages
+    if (window.location.hostname.includes('github.io')) {
+        if (path.includes('/kalkulator/')) {
+            loginPath = '/kalkulator/login/';
+        } else {
+            loginPath = '/login/';
+        }
+    }
+    
+    window.location.href = loginPath;
 }
 
 // Initialize when DOM is loaded
@@ -202,10 +245,11 @@ document.addEventListener('DOMContentLoaded', function() {
         passwordInput.addEventListener('input', validatePassword);
     }
     
-    // Check session
+    // ✅ FIXED: Check session dengan path yang benar
     if (localStorage.getItem('isLoggedIn') === 'true') {
-        // PERBAIKAN: Gunakan path relatif yang benar
-        window.location.href = '../index.html';
+        const redirectPath = getBasePath();
+        console.log('Already logged in, redirecting to:', redirectPath);
+        window.location.href = redirectPath;
     }
 });
 
