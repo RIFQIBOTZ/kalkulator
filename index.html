@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+    <!-- ✅ LOGIN PROTECTION - MUST BE FIRST -->
+    <script>
+    // Check login status before loading anything
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        window.location.href = 'login/';
+    }
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>TP/SL Profit Calculator by RIFQI</title>
@@ -361,7 +369,7 @@
 
                             <div class="partial-tp-section" id="partialTPSection">
                                 <div class="partial-tp-header">
-                                    <h3>📊 Take Profit Levels</h3>
+                                    <h3>🎯 Take Profit Levels</h3>
                                 </div>
                                 
                                 <table class="tp-table">
