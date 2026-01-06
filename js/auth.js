@@ -126,17 +126,17 @@ function showMessage(text, type) {
     }, 3000);
 }
 
-// ✅ FIXED: Fungsi untuk mendapatkan base path yang benar
+// ✅ FIXED: Fungsi untuk mendapatkan base path yang benar (clean URL tanpa index.html)
 function getBasePath() {
     const path = window.location.pathname;
     
     // Cek apakah ada /kalkulator/ di path
     if (path.includes('/kalkulator/')) {
-        return '/kalkulator/index.html';
+        return '/kalkulator/';  // Clean URL tanpa index.html
     }
     
     // Fallback: gunakan relative path
-    return '../index.html';
+    return '../';
 }
 
 // ✅ FIXED: Fungsi untuk mendapatkan login path yang benar
