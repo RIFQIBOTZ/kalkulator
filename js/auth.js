@@ -212,6 +212,18 @@ function logout() {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // ✅ CRITICAL FIX: Hanya jalankan script ini di halaman login
+    // Cek apakah ini halaman login dengan melihat ada elemen #username atau tidak
+    const isLoginPage = document.getElementById('username') !== null;
+    
+    if (!isLoginPage) {
+        // Jika bukan halaman login, jangan jalankan script auth
+        console.log('Auth.js loaded on non-login page. Skipping initialization.');
+        return;
+    }
+    
+    console.log('Auth.js: Initializing login page...');
+    
     // Create particles
     createParticles();
     
