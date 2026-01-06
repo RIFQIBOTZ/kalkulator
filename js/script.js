@@ -2,9 +2,7 @@
 // ============================================================
 // FIREBASE FIRESTORE INTEGRATION - CLOUD STORAGE
 // ============================================================
-// <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> REAL IMPLEMENTATION - Direct connection to Firestore!
+// ✅ REAL IMPLEMENTATION - Direct connection to Firestore!
 // ============================================================
 
 const FIREBASE_CONFIG={'apiKey':'AIzaSyDrz7JT7RWRFgN2ErIjPsI2N5cNUplLPhM','authDomain':'journal-4268a.firebaseapp.com','projectId':'journal-4268a','storageBucket':'journal-4268a.firebasestorage.app','messagingSenderId':'1077845167972','appId':'1:1077845167972:web:94af0289a062b5d1bb3471','measurementId':'G-J9EBS740DJ'};globalThis['FIREBASE_CONFIG']=FIREBASE_CONFIG;
@@ -25,34 +23,26 @@ async function initFirebase() {
     try {
         // Check if Firebase SDK is loaded
         if (typeof firebase === 'undefined') {
-            console.log('<svg class="icon-svg icon-clock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
-</svg> Loading Firebase SDK...');
+            console.log('⏳ Loading Firebase SDK...');
             return false;
         }
 
         // Initialize Firebase App
         if (!firebaseApp) {
             firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
-            console.log('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Firebase App initialized');
+            console.log('✅ Firebase App initialized');
         }
 
         // Initialize Firestore
         if (!firestoreDB) {
             firestoreDB = firebase.firestore();
-            console.log('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Firestore initialized');
+            console.log('✅ Firestore initialized');
         }
 
         isFirebaseReady = true;
         return true;
     } catch (error) {
-        console.error('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Firebase initialization failed:', error);
+        console.error('❌ Firebase initialization failed:', error);
         isFirebaseReady = false;
         return false;
     }
@@ -72,14 +62,10 @@ async function saveToFirestore(documentId, data) {
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
-        console.log(`<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Saved to Firestore: ${documentId}`);
+        console.log(`✅ Saved to Firestore: ${documentId}`);
         return true;
     } catch (error) {
-        console.error('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Firestore save failed:', error);
+        console.error('❌ Firestore save failed:', error);
         return false;
     }
 }
@@ -94,20 +80,14 @@ async function getFromFirestore(documentId) {
         const doc = await docRef.get();
 
         if (doc.exists) {
-            console.log(`<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Retrieved from Firestore: ${documentId}`);
+            console.log(`✅ Retrieved from Firestore: ${documentId}`);
             return doc.data().data;
         } else {
-            console.log(`<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Document not found: ${documentId}`);
+            console.log(`⚠️ Document not found: ${documentId}`);
             return null;
         }
     } catch (error) {
-        console.error('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Firestore get failed:', error);
+        console.error('❌ Firestore get failed:', error);
         return null;
     }
 }
@@ -119,22 +99,16 @@ async function syncToCloud() {
     }
 
     if (!isFirebaseReady) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Firebase not ready. Please wait...');
+        showToast('⚠️ Firebase not ready. Please wait...');
         await initFirebase();
         if (!isFirebaseReady) {
-            showToast('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Firebase initialization failed!');
+            showToast('❌ Firebase initialization failed!');
             return false;
         }
     }
 
     try {
-        showToast('<svg class="icon-svg icon-cloud" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c27b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(156, 39, 176, 0.5));">
-    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
-</svg> Syncing to cloud...');
+        showToast('☁️ Syncing to cloud...');
 
         // Get all data from localStorage
         const dataToSync = {
@@ -152,17 +126,11 @@ async function syncToCloud() {
 
         localStorage.setItem('lastCloudSync', new Date().toISOString());
         
-        showToast('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Synced to cloud successfully!');
+        showToast('✅ Synced to cloud successfully!');
         return true;
     } catch (error) {
-        console.error('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Cloud sync failed:', error);
-        showToast('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Cloud sync failed! Check console.');
+        console.error('❌ Cloud sync failed:', error);
+        showToast('❌ Cloud sync failed! Check console.');
         return false;
     }
 }
@@ -174,37 +142,27 @@ async function syncFromCloud() {
     }
 
     if (!isFirebaseReady) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Firebase not ready. Please wait...');
+        showToast('⚠️ Firebase not ready. Please wait...');
         await initFirebase();
         if (!isFirebaseReady) {
-            showToast('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Firebase initialization failed!');
+            showToast('❌ Firebase initialization failed!');
             return false;
         }
     }
 
     try {
-        if (!confirm('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> This will replace local data with cloud data. Continue?')) {
+        if (!confirm('⚠️ This will replace local data with cloud data. Continue?')) {
             return false;
         }
 
-        showToast('<svg class="icon-svg icon-cloud" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c27b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(156, 39, 176, 0.5));">
-    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
-</svg> Syncing from cloud...');
+        showToast('☁️ Syncing from cloud...');
 
         // Get data from Firestore
         const userId = 'user_' + (localStorage.getItem('userId') || 'default');
         const cloudData = await getFromFirestore(userId);
 
         if (!cloudData) {
-            showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> No cloud data found!');
+            showToast('⚠️ No cloud data found!');
             return false;
         }
 
@@ -240,17 +198,11 @@ async function syncFromCloud() {
         updateFilterCounts();
         updateRiskDashboard();
 
-        showToast('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Synced from cloud successfully!');
+        showToast('✅ Synced from cloud successfully!');
         return true;
     } catch (error) {
-        console.error('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Cloud sync failed:', error);
-        showToast('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Cloud sync failed! Check console.');
+        console.error('❌ Cloud sync failed:', error);
+        showToast('❌ Cloud sync failed! Check console.');
         return false;
     }
 }
@@ -262,9 +214,7 @@ function toggleFirestoreSync() {
     updateSyncToggle();
 
     if (FIRESTORE_CONFIG.enabled) {
-        showToast('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Cloud sync enabled');
+        showToast('✅ Cloud sync enabled');
         initFirebase();
     } else {
         showToast('📴 Cloud sync disabled');
@@ -279,16 +229,12 @@ function updateSyncToggle() {
     if (toggleBtn) {
         if (FIRESTORE_CONFIG.enabled) {
             toggleBtn.classList.add('active');
-            toggleBtn.textContent = '<svg class="icon-svg icon-cloud" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c27b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(156, 39, 176, 0.5));">
-    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
-</svg> Cloud Sync: ON';
+            toggleBtn.textContent = '☁️ Cloud Sync: ON';
             if (uploadBtn) uploadBtn.style.display = 'inline-block';
             if (downloadBtn) downloadBtn.style.display = 'inline-block';
         } else {
             toggleBtn.classList.remove('active');
-            toggleBtn.textContent = '<svg class="icon-svg icon-cloud" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9c27b0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(156, 39, 176, 0.5));">
-    <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
-</svg> Cloud Sync: OFF';
+            toggleBtn.textContent = '☁️ Cloud Sync: OFF';
             if (uploadBtn) uploadBtn.style.display = 'none';
             if (downloadBtn) downloadBtn.style.display = 'none';
         }
@@ -380,9 +326,7 @@ function showPage(pageName, updateHistory = true) {
         currentPage = pageName;
         localStorage.setItem('currentPage', pageName);
         
-        // <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> NEW: Update URL without page reload
+        // ✅ NEW: Update URL without page reload
         if (updateHistory) {
             const newUrl = `/kalkulator/${pageName}`;
             history.pushState({ page: pageName }, '', newUrl);
@@ -515,12 +459,8 @@ function renderMetodeList() {
         <div class="dropdown-item">
             <span class="dropdown-item-name">${option}</span>
             <div class="dropdown-item-actions">
-                <button class="btn-edit-option" onclick="editDropdownOption('metode', '${key}', '${option}')"><svg class="icon-svg icon-edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-</svg></button>
-                <button class="btn-delete-option" onclick="deleteDropdownOption('metode', '${option}')"><svg class="icon-svg icon-trash" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));">
-    <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-</svg></button>
+                <button class="btn-edit-option" onclick="editDropdownOption('metode', '${key}', '${option}')">✏️</button>
+                <button class="btn-delete-option" onclick="deleteDropdownOption('metode', '${option}')">🗑️</button>
             </div>
         </div>
         `;
@@ -539,17 +479,11 @@ function renderSumberList() {
         <div class="dropdown-item">
             <span class="dropdown-item-name">${option}</span>
             <div class="dropdown-item-actions">
-                ${!isDefault ? `<button class="btn-edit-option" onclick="editDropdownOption('sumber', '${key}', '${option}')"><svg class="icon-svg icon-edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-</svg></button>` : ''}
+                ${!isDefault ? `<button class="btn-edit-option" onclick="editDropdownOption('sumber', '${key}', '${option}')">✏️</button>` : ''}
                 <button class="btn-delete-option ${isDefault ? 'disabled' : ''}" 
                         onclick="deleteDropdownOption('sumber', '${option}')" 
                         ${isDefault ? 'disabled' : ''}>
-                    ${isDefault ? '<svg class="icon-svg icon-lock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9e9e9e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(158, 158, 158, 0.5));">
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-</svg>' : '<svg class="icon-svg icon-trash" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));">
-    <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-</svg>'}
+                    ${isDefault ? '🔒' : '🗑️'}
                 </button>
             </div>
         </div>
@@ -567,9 +501,7 @@ function addDropdownOption(type) {
     const options = JSON.parse(localStorage.getItem(storageKey) || '[]');
     
     if (options.includes(newOption.trim())) {
-        showToast(`<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> ${typeName} "${newOption}" sudah ada!`);
+        showToast(`⚠️ ${typeName} "${newOption}" sudah ada!`);
         return;
     }
     
@@ -578,9 +510,7 @@ function addDropdownOption(type) {
     
     updateDropdownSelects();
     renderDropdownLists();
-    showToast(`<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> ${typeName} "${newOption}" ditambahkan!`);
+    showToast(`✅ ${typeName} "${newOption}" ditambahkan!`);
 }
 
 function deleteDropdownOption(type, option) {
@@ -589,9 +519,7 @@ function deleteDropdownOption(type, option) {
     
     // Prevent deleting "Analisa Sendiri"
     if (type === 'sumber' && option === 'Analisa Sendiri') {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> "Analisa Sendiri" tidak bisa dihapus!');
+        showToast('⚠️ "Analisa Sendiri" tidak bisa dihapus!');
         return;
     }
     
@@ -603,9 +531,7 @@ function deleteDropdownOption(type, option) {
     
     updateDropdownSelects();
     renderDropdownLists();
-    showToast(`<svg class="icon-svg icon-trash" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));">
-    <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-</svg> ${typeName} "${option}" dihapus!`);
+    showToast(`🗑️ ${typeName} "${option}" dihapus!`);
 }
 // ===================== EDIT DROPDOWN OPTION FUNCTIONS =====================
 
@@ -620,9 +546,7 @@ function editDropdownOption(type, oldKey, oldValue) {
     modal.className = 'edit-dropdown-modal show';
     modal.innerHTML = `
         <div class="edit-dropdown-content">
-            <h3><svg class="icon-svg icon-edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-</svg> Edit ${typeName}</h3>
+            <h3>✏️ Edit ${typeName}</h3>
             <input type="text" class="edit-dropdown-input" id="editDropdownInput" value="${oldValue}" placeholder="Enter new name">
             <div class="modal-buttons">
                 <button class="modal-btn cancel" id="btnCancelEdit">Cancel</button>
@@ -648,9 +572,7 @@ function editDropdownOption(type, oldKey, oldValue) {
         const newValue = input.value.trim();
         
         if (!newValue) {
-            showToast('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Nama tidak boleh kosong!');
+            showToast('❌ Nama tidak boleh kosong!');
             return;
         }
         
@@ -665,9 +587,7 @@ function editDropdownOption(type, oldKey, oldValue) {
         const options = JSON.parse(localStorage.getItem(storageKey) || '[]');
         
         if (options.includes(newValue)) {
-            showToast(`<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> ${typeName} "${newValue}" sudah ada!`);
+            showToast(`❌ ${typeName} "${newValue}" sudah ada!`);
             return;
         }
         
@@ -677,9 +597,7 @@ function editDropdownOption(type, oldKey, oldValue) {
         const affectedTrades = history.filter(t => t[fieldName] === oldKey);
         
         if (affectedTrades.length > 0) {
-            const confirmMsg = `<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Ada ${affectedTrades.length} trade menggunakan "${oldValue}".\n\nSemua trade akan diupdate ke "${newValue}".\n\nLanjutkan?`;
+            const confirmMsg = `⚠️ Ada ${affectedTrades.length} trade menggunakan "${oldValue}".\n\nSemua trade akan diupdate ke "${newValue}".\n\nLanjutkan?`;
             
             if (!confirm(confirmMsg)) {
                 return;
@@ -755,9 +673,7 @@ function performDropdownEdit(type, oldKey, oldValue, newValue) {
         calculateRecapByMetode();
     }
     
-    showToast(`<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> ${typeName} "${oldValue}" berhasil diubah menjadi "${newValue}"!${updatedCount > 0 ? ` (${updatedCount} trade diupdate)` : ''}`);
+    showToast(`✅ ${typeName} "${oldValue}" berhasil diubah menjadi "${newValue}"!${updatedCount > 0 ? ` (${updatedCount} trade diupdate)` : ''}`);
 }
 
 // ===================== RISK MANAGEMENT FUNCTIONS =====================
@@ -866,9 +782,7 @@ function recalculatePeakBalance() {
     
     // Save new peak balance
     localStorage.setItem('peakBalance', peakBalance.toString());
-    console.log(`<svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Peak balance recalculated: ${formatRupiah(peakBalance)}`);
+    console.log(`📊 Peak balance recalculated: ${formatRupiah(peakBalance)}`);
     
     return peakBalance;
 }
@@ -903,9 +817,7 @@ function validateRiskLimits() {
         warnings.push({
             level: 'warning',
             type: 'daily',
-            message: `<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> <strong>MENDEKATI LIMIT HARIAN</strong><br><br>
+            message: `⚠️ <strong>MENDEKATI LIMIT HARIAN</strong><br><br>
                 Anda sudah menggunakan <strong>${dailyUsage.toFixed(1)}%</strong> dari limit harian.<br>
                 Loss hari ini: <strong>${formatRupiah(todayLoss)}</strong><br>
                 Sisa limit: <strong>${formatRupiah(dailyLimit - todayLoss)}</strong><br><br>
@@ -929,9 +841,7 @@ function validateRiskLimits() {
         warnings.push({
             level: 'warning',
             type: 'weekly',
-            message: `<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> <strong>MENDEKATI LIMIT MINGGUAN</strong><br><br>
+            message: `⚠️ <strong>MENDEKATI LIMIT MINGGUAN</strong><br><br>
                 Anda sudah menggunakan <strong>${weeklyUsage.toFixed(1)}%</strong> dari limit mingguan.<br>
                 Loss minggu ini: <strong>${formatRupiah(weeklyLoss)}</strong><br>
                 Sisa limit: <strong>${formatRupiah(weeklyLimit - weeklyLoss)}</strong>`
@@ -952,9 +862,7 @@ function validateRiskLimits() {
         warnings.push({
             level: 'warning',
             type: 'drawdown',
-            message: `<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> <strong>DRAWDOWN TINGGI</strong><br><br>
+            message: `⚠️ <strong>DRAWDOWN TINGGI</strong><br><br>
                 Drawdown Anda: <strong>${drawdownPercent.toFixed(2)}%</strong> / 8%<br>
                 Mendekati batas maksimal!<br><br>
                 <em>Pertimbangkan untuk mengurangi risk per trade.</em>`
@@ -1104,19 +1012,13 @@ function updateDrawdownStatus(drawdownPercent) {
         statusElement.textContent = '⛔ KRITIS';
         statusElement.style.color = '#ff3366';
     } else if (drawdownPercent >= 6) {
-        statusElement.textContent = '<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Tinggi';
+        statusElement.textContent = '⚠️ Tinggi';
         statusElement.style.color = '#ffa500';
     } else if (drawdownPercent >= 4) {
-        statusElement.textContent = '<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Waspada';
+        statusElement.textContent = '⚠️ Waspada';
         statusElement.style.color = '#ffd700';
     } else {
-        statusElement.textContent = '<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Aman';
+        statusElement.textContent = '✅ Aman';
         statusElement.style.color = '#00ff88';
     }
 }
@@ -1175,9 +1077,7 @@ function loadTodayData() {
     if (trades.length === 0) {
         listContainer.innerHTML = `
             <div class="empty-state">
-                <span class="empty-icon"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg></span>
+                <span class="empty-icon">✅</span>
                 <p>Tidak ada loss hari ini</p>
             </div>
         `;
@@ -1220,9 +1120,7 @@ function loadWeeklyData() {
     if (trades.length === 0) {
         listContainer.innerHTML = `
             <div class="empty-state">
-                <span class="empty-icon"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg></span>
+                <span class="empty-icon">✅</span>
                 <p>Tidak ada loss minggu ini</p>
             </div>
         `;
@@ -1276,25 +1174,19 @@ function loadDrawdownData() {
     } else if (drawdownPercent >= 6) {
         statusBox.style.background = 'rgba(255, 165, 0, 0.15)';
         statusBox.style.borderColor = '#ffa500';
-        statusTitle.textContent = '<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> TINGGI';
+        statusTitle.textContent = '⚠️ TINGGI';
         statusTitle.style.color = '#ffa500';
         statusText.textContent = 'Drawdown tinggi! Pertimbangkan untuk mengurangi risk per trade.';
     } else if (drawdownPercent >= 4) {
         statusBox.style.background = 'rgba(255, 215, 0, 0.15)';
         statusBox.style.borderColor = '#ffd700';
-        statusTitle.textContent = '<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> WASPADA';
+        statusTitle.textContent = '⚠️ WASPADA';
         statusTitle.style.color = '#ffd700';
         statusText.textContent = 'Drawdown sedang meningkat. Tetap waspada.';
     } else {
         statusBox.style.background = 'rgba(0, 255, 136, 0.15)';
         statusBox.style.borderColor = '#00ff88';
-        statusTitle.textContent = '<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> AMAN';
+        statusTitle.textContent = '✅ AMAN';
         statusTitle.style.color = '#00ff88';
         statusText.textContent = 'Drawdown Anda masih dalam batas aman.';
     }
@@ -1357,24 +1249,16 @@ function calculateRecapBySumber() {
                     <span class="recap-title">${sumber}</span>
                 </div>
                 <div class="recap-stats-row">
-                    <span class="recap-stat-item"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> <strong>${tpCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> <strong>${slCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
                     <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
                 </div>
                 <div class="recap-progress-bar">
                     <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
                 </div>
                 <div class="recap-footer">
-                    <span class="recap-winrate"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
                 </div>
                 <div class="recap-netpl ${netPLClass}">
@@ -1439,30 +1323,20 @@ function calculateRecapByMetode() {
         recapContainer.innerHTML += `
             <div class="recap-card-progress">
                 <div class="recap-card-header">
-                    <span class="recap-icon"><svg class="icon-svg icon-trending-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
-</svg></span>
+                    <span class="recap-icon">📈</span>
                     <span class="recap-title">${metode}</span>
                 </div>
                 <div class="recap-stats-row">
-                    <span class="recap-stat-item"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> <strong>${tpCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> <strong>${slCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
                     <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
                 </div>
                 <div class="recap-progress-bar">
                     <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
                 </div>
                 <div class="recap-footer">
-                    <span class="recap-winrate"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
                 </div>
                 <div class="recap-netpl ${netPLClass}">
@@ -1496,9 +1370,7 @@ function resetDrawdownPeak() {
 }
 
 function resetAllCounters() {
-    if (confirm('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Reset semua counter risk management? (Untuk testing only)')) {
+    if (confirm('⚠️ Reset semua counter risk management? (Untuk testing only)')) {
         // Reset peak balance
         const currentBalance = calculateCurrentBalance();
         localStorage.setItem('peakBalance', currentBalance.toString());
@@ -1536,9 +1408,7 @@ form.addEventListener('submit', function(e) {
     
     const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
     if (initialBalance === 0) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Please set your initial balance first!');
+        showToast('⚠️ Please set your initial balance first!');
         openBalanceModal();
         return;
     }
@@ -1706,24 +1576,16 @@ function filterRecapBySumber(selectedSumber = 'all') {
                     <span class="recap-title">${sumber}</span>
                 </div>
                 <div class="recap-stats-row">
-                    <span class="recap-stat-item"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> <strong>${tpCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> <strong>${slCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
                     <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
                 </div>
                 <div class="recap-progress-bar">
                     <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
                 </div>
                 <div class="recap-footer">
-                    <span class="recap-winrate"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
                 </div>
                 <div class="recap-netpl ${netPLClass}">
@@ -1804,30 +1666,20 @@ function filterRecapByMetode(selectedMetode = 'all') {
         recapContainer.innerHTML += `
             <div class="recap-card-progress">
                 <div class="recap-card-header">
-                    <span class="recap-icon"><svg class="icon-svg icon-trending-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
-</svg></span>
+                    <span class="recap-icon">📈</span>
                     <span class="recap-title">${metode}</span>
                 </div>
                 <div class="recap-stats-row">
-                    <span class="recap-stat-item"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> <strong>${tpCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> <strong>${slCount}</strong></span>
-                    <span class="recap-stat-item"><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> <strong>${partialCount}</strong></span>
+                    <span class="recap-stat-item">✅ <strong>${tpCount}</strong></span>
+                    <span class="recap-stat-item">❌ <strong>${slCount}</strong></span>
+                    <span class="recap-stat-item">🎯 <strong>${partialCount}</strong></span>
                     <span class="recap-stat-item">🔄 <strong>${bepCount}</strong></span>
                 </div>
                 <div class="recap-progress-bar">
                     <div class="recap-progress-fill" style="width: ${winRatePercent}%"></div>
                 </div>
                 <div class="recap-footer">
-                    <span class="recap-winrate"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Win Rate: <strong>${winRate}%</strong></span>
+                    <span class="recap-winrate">📊 Win Rate: <strong>${winRate}%</strong></span>
                     <span class="recap-total">Total: <strong>${totalTrades}</strong></span>
                 </div>
                 <div class="recap-netpl ${netPLClass}">
@@ -1881,9 +1733,7 @@ function renderTPLevels() {
             </td>
             <td class="tp-action">
                 ${tpLevels.length > 2 ? `
-                    <button type="button" class="btn-remove-tp" data-index="${index}"><svg class="icon-svg icon-trash" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));">
-    <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-</svg></button>
+                    <button type="button" class="btn-remove-tp" data-index="${index}">🗑️</button>
                 ` : ''}
             </td>
         `;
@@ -1925,9 +1775,7 @@ function attachTPEventListeners() {
 
 function addTPLevel() {
     if (tpLevels.length >= 5) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Maximum 5 TP levels!');
+        showToast('⚠️ Maximum 5 TP levels!');
         return;
     }
 
@@ -1938,9 +1786,7 @@ function addTPLevel() {
 
 function removeTPLevel(index) {
     if (tpLevels.length <= 2) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Minimum 2 TP levels!');
+        showToast('⚠️ Minimum 2 TP levels!');
         return;
     }
 
@@ -2285,24 +2131,18 @@ function showManualConfirmation() {
                     <span style="color: #ffa500; font-weight: 600;">$${userUSDT.toFixed(2)} USDT</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span style="color: #8b92b8;"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Recommended:</span>
+                    <span style="color: #8b92b8;">✅ Recommended:</span>
                     <span style="color: #00ff88; font-weight: 600;">$${recommendedUSDT.toFixed(2)} USDT</span>
                 </div>
                 <div style="display: flex; justify-content: space-between;">
-                    <span style="color: #8b92b8;"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Difference:</span>
+                    <span style="color: #8b92b8;">📊 Difference:</span>
                     <span style="color: ${difference > 0 ? '#ff3366' : '#00ff88'}; font-weight: 600;">
                         ${difference > 0 ? '+' : ''}${difference.toFixed(1)}% (${(userUSDT/recommendedUSDT).toFixed(2)}x)
                     </span>
                 </div>
             </div>
             
-            <p style="margin-bottom: 10px; color: #ffa500;"><strong><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> This means your actual risk is:</strong></p>
+            <p style="margin-bottom: 10px; color: #ffa500;"><strong>⚠️ This means your actual risk is:</strong></p>
             <ul style="margin-left: 20px; margin-bottom: 15px; color: #e0e0e0;">
                 <li>${actualRisk.toFixed(2)}% instead of ${recommendedRisk.toFixed(2)}%</li>
                 <li>You're risking ${formatRupiah(riskAmountIDR)} instead of ${formatRupiah(recommendedRiskIDR)}</li>
@@ -2311,9 +2151,7 @@ function showManualConfirmation() {
             <hr style="border: 1px solid rgba(255, 165, 0, 0.3); margin: 15px 0;">
             
             <p style="text-align: center; color: #8b92b8; font-size: 0.9rem;">
-                This trade will be marked as <strong style="color: #ffa500;">[<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> WARNING]</strong> in history.
+                This trade will be marked as <strong style="color: #ffa500;">[⚠️ WARNING]</strong> in history.
             </p>
         </div>
     `;
@@ -2329,9 +2167,7 @@ function calculate(e, useCurrentBalance = true) {
 
     const initialBalance = parseFloat(localStorage.getItem('initialBalance') || '0');
     if (initialBalance === 0) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Please set your initial balance first!');
+        showToast('⚠️ Please set your initial balance first!');
         openBalanceModal();
         return;
     }
@@ -2356,17 +2192,13 @@ function proceedWithCalculation(useCurrentBalance = true) {
     if (usePartialTP) {
         const totalPercentage = tpLevels.reduce((sum, tp) => sum + tp.percentage, 0);
         if (totalPercentage !== 100) {
-            showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Total percentage must be 100%!');
+            showToast('⚠️ Total percentage must be 100%!');
             return;
         }
 
         const allFilled = tpLevels.every(tp => tp.price && parseNumber(tp.price.replace(',', '.')) > 0);
         if (!allFilled) {
-            showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Please fill all TP prices!');
+            showToast('⚠️ Please fill all TP prices!');
             return;
         }
 
@@ -2738,95 +2570,57 @@ function copyResults() {
     if (!lastCalculation) return;
 
     let text = `
-<svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> TP/SL Calculator Results
+🎯 TP/SL Calculator Results
 
-<svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Pair: ${lastCalculation.pair.toUpperCase()}${lastCalculation.isManualPosition ? ' 🔧' : ''}
-<svg class="icon-svg icon-dollar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));">
-    <line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-</svg> Current Balance: ${currentCurrency === 'idr' ? formatRupiah(lastCalculation.modalIDR) : `$${(lastCalculation.modalIDR / currentKurs).toFixed(2)}`}
-<svg class="icon-svg icon-trending-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
-</svg> Entry: $${lastCalculation.entry}
+📊 Pair: ${lastCalculation.pair.toUpperCase()}${lastCalculation.isManualPosition ? ' 🔧' : ''}
+💰 Current Balance: ${currentCurrency === 'idr' ? formatRupiah(lastCalculation.modalIDR) : `$${(lastCalculation.modalIDR / currentKurs).toFixed(2)}`}
+📈 Entry: $${lastCalculation.entry}
 `;
 
     if (lastCalculation.usePartialTP) {
-        text += `\n<svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> Partial Take Profit:\n`;
+        text += `\n🎯 Partial Take Profit:\n`;
         lastCalculation.tpLevels.forEach((tp, index) => {
             text += `   TP${index + 1}: $${tp.price.toFixed(2)} (${tp.percentage}%) - Profit: ${formatRupiah(tp.profit)}\n`;
         });
-        text += `\n<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Total Profit if all TP hit: ${formatRupiah(lastCalculation.profit)}`;
+        text += `\n✅ Total Profit if all TP hit: ${formatRupiah(lastCalculation.profit)}`;
     } else {
-        text += `<svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> TP: $${lastCalculation.tp} (+${lastCalculation.tpPercent.toFixed(2)}%)`;
-        text += `\n<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Profit Potensial: ${formatRupiah(lastCalculation.profit)}`;
+        text += `🎯 TP: $${lastCalculation.tp} (+${lastCalculation.tpPercent.toFixed(2)}%)`;
+        text += `\n✅ Profit Potensial: ${formatRupiah(lastCalculation.profit)}`;
     }
 
     if (lastCalculation.slInProfit) {
         text += `\n🛑 SL: $${lastCalculation.sl} (+${lastCalculation.slPercent.toFixed(2)}%) - In Profit Zone`;
-        text += `\n<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Min Profit (SL): ${formatRupiah(lastCalculation.loss)}`;
+        text += `\n✅ Min Profit (SL): ${formatRupiah(lastCalculation.loss)}`;
     } else {
         text += `\n🛑 SL: $${lastCalculation.sl} (${lastCalculation.slPercent.toFixed(2)}%)`;
-        text += `\n<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Loss Potensial: ${formatRupiah(lastCalculation.loss)}`;
+        text += `\n❌ Loss Potensial: ${formatRupiah(lastCalculation.loss)}`;
     }
 
     text += `\n⚖️ Risk:Reward = 1:${lastCalculation.rrRatio.toFixed(2)}`;
-    text += `\n<svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> Risk % Used: ${lastCalculation.riskPercent ? lastCalculation.riskPercent.toFixed(1) + '%' : 'N/A'}`;
+    text += `\n🎯 Risk % Used: ${lastCalculation.riskPercent ? lastCalculation.riskPercent.toFixed(1) + '%' : 'N/A'}`;
     
     if (lastCalculation.isManualPosition) {
-        text += `\n\n<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> MANUAL POSITION OVERRIDE:`;
+        text += `\n\n⚠️ MANUAL POSITION OVERRIDE:`;
         text += `\n🔧 Position Used: $${lastCalculation.manualPositionUSDT.toFixed(2)} USDT`;
-        text += `\n<svg class="icon-svg icon-lightbulb" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffeb3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 235, 59, 0.5));">
-    <line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path>
-</svg> Recommended: $${lastCalculation.recommendedPositionUSDT.toFixed(2)} USDT`;
+        text += `\n💡 Recommended: $${lastCalculation.recommendedPositionUSDT.toFixed(2)} USDT`;
         const diff = ((lastCalculation.manualPositionUSDT / lastCalculation.recommendedPositionUSDT) - 1) * 100;
-        text += `\n<svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Difference: ${diff > 0 ? '+' : ''}${diff.toFixed(1)}% (${(lastCalculation.manualPositionUSDT / lastCalculation.recommendedPositionUSDT).toFixed(2)}x)`;
+        text += `\n📊 Difference: ${diff > 0 ? '+' : ''}${diff.toFixed(1)}% (${(lastCalculation.manualPositionUSDT / lastCalculation.recommendedPositionUSDT).toFixed(2)}x)`;
         const actualRisk = (lastCalculation.manualPositionUSDT / lastCalculation.recommendedPositionUSDT) * lastCalculation.riskPercent;
-        text += `\n<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Actual Risk: ${actualRisk.toFixed(2)}% (expected ${lastCalculation.riskPercent.toFixed(2)}%)`;
+        text += `\n⚠️ Actual Risk: ${actualRisk.toFixed(2)}% (expected ${lastCalculation.riskPercent.toFixed(2)}%)`;
     }
     
     if (lastCalculation.balanceProjection) {
         text += `\n\n💼 BALANCE PROJECTION:`;
-        text += `\n<svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Capital Used: ${formatRupiah(lastCalculation.balanceProjection.capitalUsed)} (${lastCalculation.balanceProjection.capitalPercent.toFixed(1)}%)`;
-        text += `\n<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> If TP Hit: ${formatRupiah(lastCalculation.balanceProjection.balanceIfTP)} (+${lastCalculation.balanceProjection.balanceTPPercent.toFixed(2)}%)`;
+        text += `\n📊 Capital Used: ${formatRupiah(lastCalculation.balanceProjection.capitalUsed)} (${lastCalculation.balanceProjection.capitalPercent.toFixed(1)}%)`;
+        text += `\n✅ If TP Hit: ${formatRupiah(lastCalculation.balanceProjection.balanceIfTP)} (+${lastCalculation.balanceProjection.balanceTPPercent.toFixed(2)}%)`;
         const slSign = lastCalculation.balanceProjection.balanceSLPercent >= 0 ? '+' : '';
-        text += `\n<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> If SL Hit: ${formatRupiah(lastCalculation.balanceProjection.balanceIfSL)} (${slSign}${lastCalculation.balanceProjection.balanceSLPercent.toFixed(2)}%)`;
+        text += `\n❌ If SL Hit: ${formatRupiah(lastCalculation.balanceProjection.balanceIfSL)} (${slSign}${lastCalculation.balanceProjection.balanceSLPercent.toFixed(2)}%)`;
     }
 
     text += `\n\nGenerated by TP/SL Calculator by RIFQI`;
 
     navigator.clipboard.writeText(text.trim()).then(() => {
-        showToast('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Results copied to clipboard!');
+        showToast('✅ Results copied to clipboard!');
     });
 }
 
@@ -2851,13 +2645,9 @@ function saveToHistory() {
     updateRiskDashboard();
     
     if (lastCalculation.isManualPosition) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Saved with MANUAL position! This trade is marked in history.');
+        showToast('⚠️ Saved with MANUAL position! This trade is marked in history.');
     } else {
-        showToast('<svg class="icon-svg icon-save" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.5));">
-    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>
-</svg> Saved to history!');
+        showToast('💾 Saved to history!');
     }
 }
 
@@ -2878,22 +2668,12 @@ function updateFilterCounts() {
     const newyorkCount = history.filter(t => t.sessions === 'newyork').length;
     
     document.querySelector('.filter-btn.all').textContent = `All (${allCount})`;
-    document.querySelector('.filter-btn.running').textContent = `<svg class="icon-svg icon-clock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
-</svg> Running (${runningCount})`;
-    document.querySelector('.filter-btn.partial').textContent = `<svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> Partial (${partialCount})`;
-    document.querySelector('.filter-btn.hit-tp').textContent = `<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Hit TP (${hitTpCount})`;
-    document.querySelector('.filter-btn.hit-sl').textContent = `<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Hit SL (${hitSlCount})`;
+    document.querySelector('.filter-btn.running').textContent = `⏳ Running (${runningCount})`;
+    document.querySelector('.filter-btn.partial').textContent = `🎯 Partial (${partialCount})`;
+    document.querySelector('.filter-btn.hit-tp').textContent = `✅ Hit TP (${hitTpCount})`;
+    document.querySelector('.filter-btn.hit-sl').textContent = `❌ Hit SL (${hitSlCount})`;
     document.querySelector('.filter-btn.break-even').textContent = `🔄 Break Even (${breakEvenCount})`;
-    document.querySelector('.filter-btn.warning').textContent = `<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Warning (${warningCount})`;
+    document.querySelector('.filter-btn.warning').textContent = `⚠️ Warning (${warningCount})`;
     
     // 🆕 NEW: Update session filters
     document.querySelector('.filter-btn.sessions-asia').textContent = `🌏 Asia (${asiaCount})`;
@@ -2990,18 +2770,10 @@ function loadHistory() {
 
         const status = item.status || 'running';
         const statusEmoji = {
-            'running': '<svg class="icon-svg icon-clock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
-</svg>',
-            'partial': '<svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg>',
-            'hit-tp': '<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg>',
-            'hit-sl': '<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg>',
+            'running': '⏳',
+            'partial': '🎯',
+            'hit-tp': '✅',
+            'hit-sl': '❌',
             'break-even': '🔄'
         };
 
@@ -3035,9 +2807,7 @@ function loadHistory() {
         row.dataset.index = actualIndex;
                // Add warning badge to pair if manual position
         const pairDisplay = item.isManualPosition 
-            ? `${item.pair.toUpperCase()} <span class="badge-warning"><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg></span>` 
+            ? `${item.pair.toUpperCase()} <span class="badge-warning">⚠️</span>` 
             : item.pair.toUpperCase();
         
         row.innerHTML = `
@@ -3078,9 +2848,7 @@ function toggleHistorySortOrder() {
     
     updateSortButton();
     loadHistory(); // Reload dengan sorting baru
-    showToast(`<svg class="icon-svg icon-calendar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00bcd4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.5));">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-</svg> Urutan: ${historySortOrder === 'newest' ? 'Terbaru Dahulu' : 'Terlama Dahulu'}`);
+    showToast(`📅 Urutan: ${historySortOrder === 'newest' ? 'Terbaru Dahulu' : 'Terlama Dahulu'}`);
 }
 
 /**
@@ -3415,9 +3183,7 @@ function saveEditTrade() {
 
         const totalPercentage = editedTPLevels.reduce((sum, tp) => sum + tp.percentage, 0);
         if (totalPercentage !== 100) {
-            showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Total percentage must be 100%!');
+            showToast('⚠️ Total percentage must be 100%!');
             return;
         }
 
@@ -3551,9 +3317,7 @@ function saveEditTrade() {
     updateFilterCounts();
     updateRiskDashboard();
     closeEditModal();
-    showToast('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Trade updated successfully!');
+    showToast('✅ Trade updated successfully!');
 }
 
 function deleteHistory(index) {
@@ -3570,9 +3334,7 @@ function deleteHistory(index) {
     updatePositionSize();
     updateFilterCounts();
     updateRiskDashboard();
-    showToast('<svg class="icon-svg icon-trash" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));">
-    <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-</svg> Deleted from history!');
+    showToast('🗑️ Deleted from history!');
 }
 
 function clearHistory() {
@@ -3584,9 +3346,7 @@ function clearHistory() {
         updatePositionSize();
         updateFilterCounts();
         updateRiskDashboard();
-        showToast('<svg class="icon-svg icon-trash" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));">
-    <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-</svg> All history cleared!');
+        showToast('🗑️ All history cleared!');
     }
 }
 
@@ -3701,19 +3461,13 @@ function openStatusModal(index) {
         statusModalContent.innerHTML = `
             <div class="status-options">
                 <div class="status-option running ${currentStatus === 'running' ? 'selected' : ''}" data-status="running">
-                    <svg class="icon-svg icon-clock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
-</svg> Running
+                    ⏳ Running
                 </div>
                 <div class="status-option hit-tp ${currentStatus === 'hit-tp' ? 'selected' : ''}" data-status="hit-tp">
-                    <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Hit TP
+                    ✅ Hit TP
                 </div>
                 <div class="status-option hit-sl ${currentStatus === 'hit-sl' ? 'selected' : ''}" data-status="hit-sl">
-                    <svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Hit SL
+                    ❌ Hit SL
                 </div>
                 <div class="status-option break-even ${currentStatus === 'break-even' ? 'selected' : ''}" data-status="break-even">
                     🔄 Break Even
@@ -3789,9 +3543,7 @@ function updateTradeStatus() {
     
     if (currentBalance > peakBalance) {
         localStorage.setItem('peakBalance', currentBalance.toString());
-        console.log(`<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Peak balance updated: ${formatRupiah(currentBalance)}`);
+        console.log(`✅ Peak balance updated: ${formatRupiah(currentBalance)}`);
     }
 
     loadHistory();
@@ -3802,9 +3554,7 @@ function updateTradeStatus() {
     updateRiskDashboard();
 
     closeStatusModal();
-    showToast('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Status updated!');
+    showToast('✅ Status updated!');
 }
 
 function loadInitialBalance() {
@@ -3836,9 +3586,7 @@ function closeBalanceModal() {
 function saveBalance() {
     const input = document.getElementById('balanceInput').value;
     if (!input || isNaN(parseNumber(input))) {
-        showToast('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Please enter a valid amount!');
+        showToast('⚠️ Please enter a valid amount!');
         return;
     }
 
@@ -3853,9 +3601,7 @@ function saveBalance() {
     updateRiskDashboard();
     
     closeBalanceModal();
-    showToast('<svg class="icon-svg icon-dollar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));">
-    <line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-</svg> Balance saved!');
+    showToast('💰 Balance saved!');
 }
 
 function updateStats() {
@@ -4068,9 +3814,7 @@ document.getElementById('btnExportDB').addEventListener('click', function() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
     
-    showToast('<svg class="icon-svg icon-save" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.5));">
-    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>
-</svg> Database exported successfully!');
+    showToast('💾 Database exported successfully!');
 });
 
 document.getElementById('btnImportDB').addEventListener('click', function() {
@@ -4086,9 +3830,7 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
         try {
             const data = JSON.parse(event.target.result);
             
-            if (confirm('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> This will replace ALL current data. Continue?')) {
+            if (confirm('⚠️ This will replace ALL current data. Continue?')) {
                 if (data.history) {
                     localStorage.setItem('tpslHistory', JSON.stringify(data.history));
                 }
@@ -4123,9 +3865,7 @@ document.getElementById('fileInput').addEventListener('change', function(e) {
                 showToast('📂 Database imported successfully!');
             }
         } catch (error) {
-            showToast('<svg class="icon-svg icon-x-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>
-</svg> Invalid backup file!');
+            showToast('❌ Invalid backup file!');
         }
         
         e.target.value = '';
@@ -4509,9 +4249,7 @@ window.logout = logout;
    Added: 6 Jan 2026
    =================================================================== */
 
-// <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Handle browser back/forward buttons
+// ✅ Handle browser back/forward buttons
 window.addEventListener('popstate', function(event) {
     console.log('🔙 Browser navigation detected');
     
@@ -4524,9 +4262,7 @@ window.addEventListener('popstate', function(event) {
     }
 });
 
-// <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Extract page name dari URL
+// ✅ Extract page name dari URL
 function extractPageFromUrl(pathname) {
     const match = pathname.match(/\/kalkulator\/([^\/]+)/);
     if (match && match[1]) {
@@ -4535,15 +4271,11 @@ function extractPageFromUrl(pathname) {
     return 'ringkasan';
 }
 
-// <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Initialize routing saat page load
+// ✅ Initialize routing saat page load
 function initializeRouting() {
     console.log('🚀 Initializing client-side routing...');
     
-    // <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Cek apakah ada requested page dari 404.html
+    // ✅ Cek apakah ada requested page dari 404.html
     const requestedPage = sessionStorage.getItem('requestedPage');
     if (requestedPage) {
         console.log('📄 Loading requested page from 404:', requestedPage);
@@ -4569,9 +4301,7 @@ function initializeRouting() {
             showPage(pageName, false);
             history.replaceState({ page: pageName }, '', currentPath);
         } else {
-            console.log('<svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Invalid page, redirecting to ringkasan');
+            console.log('⚠️ Invalid page, redirecting to ringkasan');
             showPage('ringkasan', true);
         }
     } else if (currentPath === '/kalkulator' || currentPath === '/kalkulator/') {
@@ -4579,18 +4309,14 @@ function initializeRouting() {
     }
 }
 
-// <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Initialize saat DOM ready
+// ✅ Initialize saat DOM ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeRouting);
 } else {
     initializeRouting();
 }
 
-console.log('<svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Client-side routing initialized!');
+console.log('✅ Client-side routing initialized!');
 
 /* ===================================================================
    END OF CLIENT-SIDE ROUTING
