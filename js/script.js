@@ -4217,3 +4217,23 @@ window.deleteDropdownOption = deleteDropdownOption;
 window.editDropdownOption = editDropdownOption;
 window.toggleHistorySortOrder = toggleHistorySortOrder;
 window.updateSortButton = updateSortButton;
+
+// ===================== LOGOUT FUNCTION =====================
+function logout() {
+    // Confirm logout
+    if (confirm('Apakah Anda yakin ingin logout?')) {
+        // Clear session
+        localStorage.removeItem('isLoggedIn');
+        
+        // Show toast notification
+        showToast('👋 Logout berhasil!');
+        
+        // Redirect to login page after short delay
+        setTimeout(() => {
+            window.location.href = 'login/index.html';
+        }, 500);
+    }
+}
+
+// Export logout to window global
+window.logout = logout;
