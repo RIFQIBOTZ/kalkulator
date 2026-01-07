@@ -1168,19 +1168,19 @@ function loadDrawdownData() {
     if (drawdownPercent >= 8) {
         statusBox.style.background = 'rgba(255, 51, 102, 0.15)';
         statusBox.style.borderColor = '#ff3366';
-        statusTitle.textContent = '⛔ KRITIS';
+        statusTitle.textContent = 'KRITIS';
         statusTitle.style.color = '#ff3366';
         statusText.textContent = 'Drawdown kritis! STOP semua trading dan evaluasi strategi.';
     } else if (drawdownPercent >= 6) {
         statusBox.style.background = 'rgba(255, 165, 0, 0.15)';
         statusBox.style.borderColor = '#ffa500';
-        statusTitle.textContent = '⚠️ TINGGI';
+        statusTitle.textContent = 'TINGGI';
         statusTitle.style.color = '#ffa500';
         statusText.textContent = 'Drawdown tinggi! Pertimbangkan untuk mengurangi risk per trade.';
     } else if (drawdownPercent >= 4) {
         statusBox.style.background = 'rgba(255, 215, 0, 0.15)';
         statusBox.style.borderColor = '#ffd700';
-        statusTitle.textContent = '⚠️ WASPADA';
+        statusTitle.textContent = 'WASPADA';
         statusTitle.style.color = '#ffd700';
         statusText.textContent = 'Drawdown sedang meningkat. Tetap waspada.';
     } else {
