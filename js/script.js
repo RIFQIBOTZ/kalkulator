@@ -1186,7 +1186,7 @@ function loadDrawdownData() {
     } else {
         statusBox.style.background = 'rgba(0, 255, 136, 0.15)';
         statusBox.style.borderColor = '#00ff88';
-        statusTitle.textContent = '✅ AMAN';
+        statusTitle.textContent = 'AMAN';
         statusTitle.style.color = '#00ff88';
         statusText.textContent = 'Drawdown Anda masih dalam batas aman.';
     }
