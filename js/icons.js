@@ -1,7 +1,7 @@
 // =====================================================
 // ICONS.JS - SVG Icon Management System
-// Version: 2.0.0 - ENHANCED CONTRAST
-// Enhanced with stronger glow and semantic colors
+// Auto-generated from index.html
+// Version: 1.0.0
 // =====================================================
 
 const ICONS = {
@@ -12,7 +12,7 @@ const ICONS = {
             { type: 'polyline', points: "22 4 12 14.01 9 11.01" }
         ],
         color: "#00ff88",
-        glow: "rgba(0, 255, 136, 0.8)"
+        glow: "rgba(0, 255, 136, 0.5)"
     },
     
     'chart': {
@@ -23,7 +23,7 @@ const ICONS = {
             { type: 'line', x1: "6", y1: "20", x2: "6", y2: "16" }
         ],
         color: "#00d4ff",
-        glow: "rgba(0, 212, 255, 0.8)"
+        glow: "rgba(0, 212, 255, 0.5)"
     },
     
     'home': {
@@ -33,7 +33,7 @@ const ICONS = {
             { type: 'polyline', points: "9 22 9 12 15 12 15 22" }
         ],
         color: "#00d4ff",
-        glow: "rgba(0, 212, 255, 0.8)"
+        glow: "rgba(0, 212, 255, 0.5)"
     },
     
     'calculator': {
@@ -47,7 +47,7 @@ const ICONS = {
             { type: 'line', x1: "12", y1: "18", x2: "12", y2: "18.01" }
         ],
         color: "#7b2ff7",
-        glow: "rgba(123, 47, 247, 0.8)"
+        glow: "rgba(123, 47, 247, 0.5)"
     },
     
     'file': {
@@ -60,7 +60,7 @@ const ICONS = {
             { type: 'polyline', points: "10 9 9 9 8 9" }
         ],
         color: "#00d4ff",
-        glow: "rgba(0, 212, 255, 0.8)"
+        glow: "rgba(0, 212, 255, 0.5)"
     },
     
     'warning': {
@@ -70,8 +70,8 @@ const ICONS = {
             { type: 'line', x1: "12", y1: "9", x2: "12", y2: "13" },
             { type: 'line', x1: "12", y1: "17", x2: "12.01", y2: "17" }
         ],
-        color: "#ffa500",
-        glow: "rgba(255, 165, 0, 0.8)"
+        color: "#ff9800",
+        glow: "rgba(255, 152, 0, 0.5)"
     },
     
     'dollar': {
@@ -81,7 +81,7 @@ const ICONS = {
             { type: 'path', d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" }
         ],
         color: "#ffd700",
-        glow: "rgba(255, 215, 0, 0.8)"
+        glow: "rgba(255, 215, 0, 0.5)"
     },
     
     'edit': {
@@ -91,7 +91,7 @@ const ICONS = {
             { type: 'path', d: "M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" }
         ],
         color: "#00d4ff",
-        glow: "rgba(0, 212, 255, 0.8)"
+        glow: "rgba(0, 212, 255, 0.5)"
     },
     
     'trending-up': {
@@ -101,7 +101,7 @@ const ICONS = {
             { type: 'polyline', points: "17 6 23 6 23 12" }
         ],
         color: "#00ff88",
-        glow: "rgba(0, 255, 136, 0.8)"
+        glow: "rgba(0, 255, 136, 0.5)"
     },
     
     'target': {
@@ -111,8 +111,8 @@ const ICONS = {
             { type: 'circle', cx: "12", cy: "12", r: "6" },
             { type: 'circle', cx: "12", cy: "12", r: "2" }
         ],
-        color: "#ffd700",
-        glow: "rgba(255, 215, 0, 0.8)"
+        color: "#ff6b6b",
+        glow: "rgba(255, 107, 107, 0.5)"
     },
     
     'plus': {
@@ -121,8 +121,8 @@ const ICONS = {
             { type: 'line', x1: "12", y1: "5", x2: "12", y2: "19" },
             { type: 'line', x1: "5", y1: "12", x2: "19", y2: "12" }
         ],
-        color: "#00ff88",
-        glow: "rgba(0, 255, 136, 0.8)"
+        color: "#4caf50",
+        glow: "rgba(76, 175, 80, 0.5)"
     },
     
     'save': {
@@ -132,8 +132,8 @@ const ICONS = {
             { type: 'polyline', points: "17 21 17 13 7 13 7 21" },
             { type: 'polyline', points: "7 3 7 8 15 8" }
         ],
-        color: "#00ff88",
-        glow: "rgba(0, 255, 136, 0.8)"
+        color: "#4caf50",
+        glow: "rgba(76, 175, 80, 0.5)"
     },
     
     'logout': {
@@ -144,7 +144,7 @@ const ICONS = {
             { type: 'line', x1: "21", y1: "12", x2: "9", y2: "12" }
         ],
         color: "#ff3366",
-        glow: "rgba(255, 51, 102, 0.8)"
+        glow: "rgba(255, 51, 102, 0.5)"
     },
     
     'lightbulb': {
@@ -155,7 +155,7 @@ const ICONS = {
             { type: 'path', d: "M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" }
         ],
         color: "#ffeb3b",
-        glow: "rgba(255, 235, 59, 0.8)"
+        glow: "rgba(255, 235, 59, 0.5)"
     },
     
     'calendar': {
@@ -166,8 +166,8 @@ const ICONS = {
             { type: 'line', x1: "8", y1: "2", x2: "8", y2: "6" },
             { type: 'line', x1: "3", y1: "10", x2: "21", y2: "10" }
         ],
-        color: "#00d4ff",
-        glow: "rgba(0, 212, 255, 0.8)"
+        color: "#00bcd4",
+        glow: "rgba(0, 188, 212, 0.5)"
     },
     
     'trending-down': {
@@ -177,7 +177,7 @@ const ICONS = {
             { type: 'polyline', points: "17 18 23 18 23 12" }
         ],
         color: "#ff3366",
-        glow: "rgba(255, 51, 102, 0.8)"
+        glow: "rgba(255, 51, 102, 0.5)"
     },
     
     'trash': {
@@ -186,8 +186,8 @@ const ICONS = {
             { type: 'polyline', points: "3 6 5 6 21 6" },
             { type: 'path', d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" }
         ],
-        color: "#ff3366",
-        glow: "rgba(255, 51, 102, 0.8)"
+        color: "#f44336",
+        glow: "rgba(244, 67, 54, 0.5)"
     },
     
     'lock': {
@@ -196,14 +196,14 @@ const ICONS = {
             { type: 'rect', x: "3", y: "11", width: "18", height: "11", rx: "2", ry: "2" },
             { type: 'path', d: "M7 11V7a5 5 0 0 1 10 0v4" }
         ],
-        color: "#7b2ff7",
-        glow: "rgba(123, 47, 247, 0.8)"
+        color: "#9e9e9e",
+        glow: "rgba(158, 158, 158, 0.5)"
     }
 };
 
 /**
- * Generate SVG icon HTML string with ENHANCED CONTRAST
- * @param {string} name - Icon name
+ * Generate SVG icon HTML string
+ * @param {string} name - Icon name (e.g., 'check', 'chart')
  * @param {number} size - Icon size in pixels (default: 16)
  * @returns {string} SVG HTML string
  */
@@ -239,8 +239,7 @@ function getIcon(name, size = 16) {
         return '';
     }).join('');
     
-    // ✅ ENHANCED: stroke-width increased to 2.5, stronger drop-shadow
-    return `<svg class="icon-svg icon-${name}" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${icon.viewBox}" fill="none" stroke="${icon.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 12px ${icon.glow});">${pathsHTML}</svg>`;
+    return `<svg class="icon-svg icon-${name}" xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="${icon.viewBox}" fill="none" stroke="${icon.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px ${icon.glow});">${pathsHTML}</svg>`;
 }
 
 /**
@@ -297,9 +296,7 @@ if (document.readyState === 'loading') {
 }
 
 // Log initialization
-console.log(`%c✅ ICONS.JS v2.0 ENHANCED Loaded`, 'color: #00ff88; font-weight: bold;');
-console.log(`%c  ${Object.keys(ICONS).length} icons with IMPROVED CONTRAST`, 'color: #00d4ff;');
-console.log(`%c  ✅ Glow increased: 0.5 → 0.8`, 'color: #ffd700;');
-console.log(`%c  ✅ Stroke width: 2 → 2.5`, 'color: #ffd700;');
-console.log(`%c  ✅ Semantic colors applied`, 'color: #ffd700;');
+console.log(`%c✓ ICONS.JS Loaded`, 'color: #00ff88; font-weight: bold;');
+console.log(`%c  ${Object.keys(ICONS).length} icons available`, 'color: #00d4ff;');
 console.log(`%c  Usage: getIcon('name', size)`, 'color: #8b92b8;');
+console.log(`%c  HTML: <span data-icon="name" data-size="20"></span>`, 'color: #8b92b8;');

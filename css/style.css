@@ -37,6 +37,114 @@ body::after {
     background: transparent;
 }
 
+/* ===================== ICON SYSTEM BASE STYLES ===================== */
+/* Added for icons.js compatibility - DO NOT MODIFY EXISTING ICON WRAPPERS */
+
+.icon-svg {
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+/* Icon spacing in flex containers */
+.icon-svg + * {
+    margin-left: 8px;
+}
+
+/* Icon size utilities - fallback if data-size not working */
+.icon-svg.icon-sm {
+    width: 14px;
+    height: 14px;
+}
+
+.icon-svg.icon-md {
+    width: 16px;
+    height: 16px;
+}
+
+.icon-svg.icon-lg {
+    width: 20px;
+    height: 20px;
+}
+
+.icon-svg.icon-xl {
+    width: 24px;
+    height: 24px;
+}
+
+/* Icon in buttons */
+button .icon-svg,
+.btn-quick-action .icon-svg,
+.btn-history .icon-svg,
+.modal-btn .icon-svg,
+.btn-calculate .icon-svg,
+.btn-copy .icon-svg,
+.btn-save .icon-svg,
+.btn-add-tp .icon-svg,
+.btn-edit-balance .icon-svg {
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+/* Icon in cards */
+.card-icon .icon-svg,
+.card-icon [data-icon] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Icon in sidebar */
+.sidebar-item .icon-svg,
+.sidebar-item [data-icon] {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ensure icons don't break layout */
+[data-icon] {
+    display: inline-block;
+    line-height: 0;
+}
+
+/* Icon hover effects - preserve existing glow */
+.icon-svg:hover {
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+/* Icon in headers */
+.header h1 .icon-svg,
+.card-header .icon-svg {
+    vertical-align: middle;
+    margin-right: 8px;
+}
+
+/* Icon in labels and spans */
+span[data-icon] {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+/* Icon alignment fix for inline elements */
+.sidebar-label + .icon-svg,
+.btn-text + .icon-svg {
+    margin-left: 0;
+    margin-right: 6px;
+}
+
+/* Icon in filter dropdowns */
+.filter-label .icon-svg {
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+/* ===================== END ICON SYSTEM STYLES ===================== */
+
 /* ===================== SIDEBAR NAVIGATION ===================== */
 
 .sidebar-nav {
@@ -282,7 +390,7 @@ body::after {
     overflow-x: hidden;
 
     /* padding: top | right | bottom | left */
-    padding: 30px 20px 30px 20px;
+    padding: 10px 20px 0px 20px;
 
     overscroll-behavior: none;
     overscroll-behavior-y: none;
@@ -546,6 +654,7 @@ body::after {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     margin-top: 20px;
+    margin-bottom: 25px;
 }
 
 .btn-quick-action {
@@ -3432,6 +3541,16 @@ textarea::placeholder {
 
     /* KEEP TABLE AS TABLE ON MOBILE - HORIZONTAL SCROLL */
     /* History table stays as table, no card transformation */
+    
+    /* Icon sizing for mobile */
+    .icon-svg {
+        flex-shrink: 0;
+    }
+    
+    .sidebar-item .icon-svg {
+        width: 18px;
+        height: 18px;
+    }
 }
 /* ===================== EDIT DROPDOWN MODAL ===================== */
 .edit-dropdown-modal {
@@ -3605,189 +3724,3 @@ textarea::placeholder {
     transform: translateY(-1px);
     box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
 }
-
-
-/* ========================================
-   SVG ICON STYLING WITH ENHANCED CONTRAST
-   Version: 2.0 - Moderate Contrast Enhancement
-   Updated: Semantic color coding + Stronger glow
-   ======================================== */
-
-/* ===== BASE ICON STYLING ===== */
-.icon-svg {
-    display: inline-block;
-    vertical-align: middle;
-    transition: all 0.3s ease;
-    stroke-width: 2.5; /* ✅ Increased from 2 to 2.5 */
-    filter: drop-shadow(0 0 10px currentColor); /* ✅ Added default glow */
-}
-
-/* ===== HOVER EFFECTS - ENHANCED ===== */
-.sidebar-item:hover .icon-svg,
-.btn:hover .icon-svg,
-button:hover .icon-svg,
-.card:hover .icon-svg {
-    transform: scale(1.15); /* ✅ Increased from 1.1 */
-    filter: drop-shadow(0 0 18px currentColor) !important; /* ✅ Stronger glow */
-}
-
-/* ===== ICON CONTAINERS ===== */
-.sidebar-icon,
-.card-icon,
-.btn-icon,
-.logout-icon,
-.icon-inline {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-/* ===== SEMANTIC COLOR-CODED ICONS ===== */
-
-/* Success Icons - Green */
-.icon-svg.icon-check,
-.icon-svg.icon-trending-up {
-    stroke: #00ff88 !important;
-    filter: drop-shadow(0 0 12px rgba(0, 255, 136, 0.7));
-    background: radial-gradient(circle, rgba(0, 255, 136, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    padding: 3px;
-}
-
-/* Danger Icons - Red */
-.icon-svg.icon-x-circle,
-.icon-svg.icon-trash,
-.icon-svg.icon-trending-down {
-    stroke: #ff3366 !important;
-    filter: drop-shadow(0 0 12px rgba(255, 51, 102, 0.7));
-    background: radial-gradient(circle, rgba(255, 51, 102, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    padding: 3px;
-}
-
-/* Warning Icons - Orange */
-.icon-svg.icon-warning,
-.icon-svg.icon-alert {
-    stroke: #ffa500 !important;
-    filter: drop-shadow(0 0 12px rgba(255, 165, 0, 0.7));
-    background: radial-gradient(circle, rgba(255, 165, 0, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    padding: 3px;
-}
-
-/* Financial Icons - Gold */
-.icon-svg.icon-dollar,
-.icon-svg.icon-target {
-    stroke: #ffd700 !important;
-    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.7));
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    padding: 3px;
-}
-
-/* Info Icons - Cyan */
-.icon-svg.icon-chart,
-.icon-svg.icon-home,
-.icon-svg.icon-calculator,
-.icon-svg.icon-file {
-    stroke: #00d4ff !important;
-    filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.7));
-    background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    padding: 3px;
-}
-
-/* Security Icons - Purple */
-.icon-svg.icon-lock,
-.icon-svg.icon-logout {
-    stroke: #7b2ff7 !important;
-    filter: drop-shadow(0 0 12px rgba(123, 47, 247, 0.7));
-    background: radial-gradient(circle, rgba(123, 47, 247, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    padding: 3px;
-}
-
-/* Neutral Icons - Theme Gradient */
-.icon-svg.icon-calendar,
-.icon-svg.icon-clock,
-.icon-svg.icon-edit,
-.icon-svg.icon-save,
-.icon-svg.icon-plus,
-.icon-svg.icon-lightbulb {
-    stroke: #00d4ff;
-    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
-}
-
-/* ===== ACTIVE STATE - EXTRA BRIGHT ===== */
-.sidebar-item.active .icon-svg {
-    stroke: #00ffff !important; /* ✅ Neon cyan for active */
-    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.9)) !important;
-    transform: scale(1.05);
-}
-
-/* ===== ANIMATIONS - ENHANCED ===== */
-@keyframes pulse-glow-strong {
-    0%, 100% {
-        filter: drop-shadow(0 0 10px currentColor);
-        transform: scale(1);
-    }
-    50% {
-        filter: drop-shadow(0 0 20px currentColor);
-        transform: scale(1.05);
-    }
-}
-
-.icon-svg.icon-clock,
-.icon-svg.icon-calendar {
-    animation: pulse-glow-strong 2.5s ease-in-out infinite;
-}
-
-/* ===== SPECIAL EFFECT FOR IMPORTANT ICONS ===== */
-.icon-svg.icon-warning {
-    animation: pulse-glow-strong 2s ease-in-out infinite;
-}
-
-/* ===== BUTTON ICON ENHANCEMENT ===== */
-.btn .icon-svg,
-button .icon-svg {
-    stroke-width: 2.5;
-    filter: drop-shadow(0 0 8px currentColor);
-}
-
-.btn:hover .icon-svg,
-button:hover .icon-svg {
-    filter: drop-shadow(0 0 18px currentColor) drop-shadow(0 0 30px currentColor);
-}
-
-/* ===== CARD HEADER ICON ENHANCEMENT ===== */
-.card-header .icon-svg,
-.card-icon {
-    stroke-width: 3; /* ✅ Extra bold for headers */
-    filter: drop-shadow(0 0 15px currentColor);
-}
-
-/* ===== SIDEBAR ICON SPECIFIC ===== */
-.sidebar-icon .icon-svg {
-    stroke-width: 2.5;
-    filter: drop-shadow(0 0 10px currentColor);
-}
-
-.sidebar-item:hover .sidebar-icon .icon-svg {
-    filter: drop-shadow(0 0 18px currentColor) drop-shadow(0 0 25px currentColor);
-    transform: scale(1.15) rotate(5deg); /* ✅ Subtle rotation on hover */
-}
-
-/* ===== RESPONSIVE - MAINTAIN VISIBILITY ===== */
-@media (max-width: 768px) {
-    .icon-svg {
-        stroke-width: 3; /* ✅ Thicker on mobile for better visibility */
-        filter: drop-shadow(0 0 12px currentColor);
-    }
-    
-    .card-header .icon-svg {
-        stroke-width: 3.5;
-    }
-}
-
-/* ======================================== */
