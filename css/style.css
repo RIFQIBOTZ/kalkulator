@@ -390,7 +390,7 @@ span[data-icon] {
     overflow-x: hidden;
 
     /* padding: top | right | bottom | left */
-    padding: 30px 20px 30px 20px;
+    padding: 10px 20px 0px 20px;
 
     overscroll-behavior: none;
     overscroll-behavior-y: none;
@@ -654,6 +654,7 @@ span[data-icon] {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     margin-top: 20px;
+    margin-bottom: 25px;
 }
 
 .btn-quick-action {
