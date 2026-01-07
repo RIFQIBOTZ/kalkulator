@@ -375,6 +375,7 @@
                                     <h3><span data-icon="target" data-size="16"></span> Take Profit Levels</h3>
                                 </div>
                                 
+                                <!-- Table Style TP Levels -->
                                 <table class="tp-table">
                                     <thead class="tp-table-header">
                                         <tr>
@@ -385,19 +386,18 @@
                                         </tr>
                                     </thead>
                                     <tbody id="tpLevelsContainer">
+                                        <!-- TP levels will be added dynamically -->
                                     </tbody>
                                 </table>
-
-                                <div class="percentage-info">
-                                    <span class="percentage-total" id="percentageTotal">Total: 0%</span>
-                                    <span class="percentage-status" id="percentageStatus"></span>
-                                </div>
-
-                                <button type="button" class="btn-add-tp" id="btnAddTP"><span data-icon="plus" data-size="16"></span> Add TP Level</button>
                                 
-                                <div class="form-group">
-                                    <label for="slPartial">Stop Loss (USD)</label>
-                                    <input type="tel" inputmode="decimal" id="slPartial" placeholder="3.800">
+                                <button type="button" class="btn-add-tp" id="btnAddTP">+ Add TP Level</button>
+                                <div class="percentage-total" id="percentageTotal">Total: 0%</div>
+
+                                <div class="form-grid" style="margin-top: 20px;">
+                                    <div class="form-group">
+                                        <label for="slPartial">Stop Loss (USD)</label>
+                                        <input type="tel" inputmode="decimal" id="slPartial" placeholder="3.800">
+                                    </div>
                                 </div>
                             </div>
 
