@@ -636,3 +636,83 @@ body::after {
 /* ===================================================================
    END OF LOGIN PAGE STYLING
    =================================================================== */
+
+/* ===================================================================
+   ENHANCED ICON CONTRAST - LOGIN PAGE
+   Version: 2.0 - Moderate Enhancement  
+   =================================================================== */
+
+/* Input Icons - Enhanced Visibility */
+.input-icon svg {
+    stroke: #00d4ff !important;
+    stroke-width: 2.5 !important;
+    filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6)) !important;
+}
+
+.form-input:focus ~ .input-icon svg {
+    stroke: #00ffff !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(0 0 18px rgba(0, 255, 255, 0.9)) !important;
+    transform: scale(1.15) !important;
+}
+
+/* Validation Icons - Enhanced */
+.validation-icon svg {
+    stroke-width: 3 !important;
+}
+
+.validation-icon.valid svg {
+    stroke: #00ff88 !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.9)) !important;
+}
+
+.validation-icon.invalid svg {
+    stroke: #ff3366 !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(0 0 15px rgba(255, 51, 102, 0.9)) !important;
+}
+
+.validation-icon.show {
+    animation: iconPop 0.3s ease;
+}
+
+@keyframes iconPop {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Button Icons - Enhanced */
+.button-icon svg,
+.login-button svg {
+    stroke-width: 2.5 !important;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6)) !important;
+}
+
+.login-button:hover .button-icon svg,
+.login-button:hover svg {
+    filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.9)) !important;
+    transform: translateX(6px) !important;
+}
+
+/* Logo SVG - Enhanced */
+.logo-icon svg {
+    filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.6));
+}
+
+.logo-icon:hover svg {
+    filter: drop-shadow(0 0 30px rgba(123, 47, 247, 0.8));
+}
+
+/* Message Icons - Enhanced */
+.message svg {
+    stroke-width: 2.5 !important;
+    filter: drop-shadow(0 0 12px currentColor) !important;
+}
+
+/* Loading Spinner - Enhanced Visibility */
+.loading.show {
+    border-width: 3.5px !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6) !important;
+}
