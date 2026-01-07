@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <!-- <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> LOGIN PROTECTION - MUST BE FIRST -->
+    <!-- ✅ LOGIN PROTECTION - MUST BE FIRST -->
     <script>
     // Check login status before loading anything
     if (localStorage.getItem('isLoggedIn') !== 'true') {
@@ -18,9 +16,10 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/winrate.css">
     
-    <!-- <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Logout Button Styling - ADDED -->
+    <!-- ✅ Icons System -->
+    <script src="js/icons.js"></script>
+    
+    <!-- ✅ Logout Button Styling - ADDED -->
     <style>
     /* Logout Button Styling */
     .btn-logout {
@@ -62,9 +61,7 @@
         letter-spacing: 0.5px;
     }
     
-    /* <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Loading Screen Animation */
+    /* ✅ Loading Screen Animation */
     @keyframes spin {
         to { transform: rotate(360deg); }
     }
@@ -72,14 +69,10 @@
 </head>
 <body>
 <div class="particles" id="particles"></div>
-    <!-- <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Loading Screen -->
+    <!-- ✅ Loading Screen -->
     <div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #0a0e27 0%, #1a1d3e 100%); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.3s ease;">
         <div style="text-align: center;">
-            <div style="font-size: 3rem; margin-bottom: 20px;"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg></div>
+            <div style="font-size: 3rem; margin-bottom: 20px;"><span data-icon="chart" data-size="48"></span></div>
             <div style="color: #00d4ff; font-size: 1.5rem; font-weight: 600; font-family: 'Poppins', sans-serif;">TP/SL Calculator</div>
             <div style="color: #8b92b8; margin-top: 10px; font-family: 'Poppins', sans-serif;">Loading...</div>
             <div style="margin-top: 20px;">
@@ -96,45 +89,31 @@
         
         <div class="sidebar-menu">
             <div class="sidebar-item active" data-nav="ringkasan">
-                <svg class="icon-svg icon-home" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>
-</svg>
+                <span data-icon="home" data-size="20"></span>
                 <span class="sidebar-label">Ringkasan</span>
             </div>
             <div class="sidebar-item" data-nav="kalkulator">
-                <svg class="icon-svg icon-calculator" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7b2ff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(123, 47, 247, 0.5));">
-    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="8" y1="18" x2="8" y2="18.01"></line><line x1="12" y1="18" x2="12" y2="18.01"></line>
-</svg>
+                <span data-icon="calculator" data-size="20"></span>
                 <span class="sidebar-label">Kalkulator</span>
             </div>
             <div class="sidebar-item" data-nav="riwayat">
-                <svg class="icon-svg icon-file" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
-</svg>
+                <span data-icon="file" data-size="20"></span>
                 <span class="sidebar-label">Riwayat</span>
             </div>
             <div class="sidebar-item" data-nav="winrate">
-                <svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg>
+                <span data-icon="chart" data-size="20"></span>
                 <span class="sidebar-label">Winrate Calculator</span>
             </div>
             <div class="sidebar-item" data-nav="risiko">
-                <svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg>
+                <span data-icon="warning" data-size="20"></span>
                 <span class="sidebar-label">Risiko</span>
             </div>
         </div>
         
-        <!-- <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Logout Button Added to Sidebar Footer -->
+        <!-- ✅ Logout Button Added to Sidebar Footer -->
         <div class="sidebar-footer">
             <button class="btn-logout" onclick="logout()">
-                <span class="logout-icon"><svg class="icon-svg icon-logout" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>
-</svg></span>
+                <span class="logout-icon"><span data-icon="logout" data-size="16"></span></span>
                 <span class="logout-text">Logout</span>
             </button>
             <p class="sidebar-version">v2.0</p>
@@ -152,17 +131,13 @@
             <div class="container">
                 <div class="page-content active" id="pageRingkasan" data-page="ringkasan">
                     <div class="header">
-                        <h1><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Dashboard Ringkasan</h1>
+                        <h1><span data-icon="chart" data-size="24"></span> Dashboard Ringkasan</h1>
                         <p>Monitor performa trading & manajemen risiko Anda</p>
                     </div>
 
                     <div class="dashboard-card">
                         <div class="card-header">
-                            <span class="card-icon"><svg class="icon-svg icon-dollar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));">
-    <line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-</svg></span>
+                            <span class="card-icon" data-icon="dollar" data-size="16"></span>
                             <span>BALANCE & PERFORMANCE</span>
                         </div>
                         
@@ -188,16 +163,12 @@
                             </div>
                         </div>
                         
-                        <button class="btn-edit-balance" id="btnEditBalanceDashboard"><svg class="icon-svg icon-edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-</svg> Edit Modal</button>
+                        <button class="btn-edit-balance" id="btnEditBalanceDashboard"><span data-icon="edit" data-size="16"></span> Edit Modal</button>
                     </div>
 
                     <div class="dashboard-card risk-card">
                         <div class="card-header">
-                            <span class="card-icon"><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg></span>
+                            <span class="card-icon" data-icon="warning" data-size="16"></span>
                             <span>MANAJEMEN RISIKO HARI INI</span>
                         </div>
                         
@@ -231,9 +202,7 @@
                             <div class="risk-progress-bar drawdown">
                                 <div class="risk-progress-fill" id="drawdownProgress" style="width: 0%"></div>
                             </div>
-                            <div class="risk-status" id="drawdownStatus"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Aman</div>
+                            <div class="risk-status" id="drawdownStatus"><span data-icon="check" data-size="16"></span> Aman</div>
                         </div>
                         
                         <div class="reset-countdown">
@@ -244,9 +213,7 @@
 
                     <div class="dashboard-card">
                         <div class="card-header">
-                            <span class="card-icon"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg></span>
+                            <span class="card-icon" data-icon="chart" data-size="16"></span>
                             <span>STATISTIK CEPAT</span>
                         </div>
                         
@@ -272,9 +239,7 @@
 
                     <div class="dashboard-card">
                         <div class="card-header">
-                            <span class="card-icon"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg></span>
+                            <span class="card-icon" data-icon="chart" data-size="16"></span>
                             <span>REKAP BY SUMBER SINYAL</span>
                             <select id="filterSumberSignal" class="filter-dropdown">
                                 <option value="all">Show All</option>
@@ -287,9 +252,7 @@
 
                     <div class="dashboard-card">
                         <div class="card-header">
-                            <span class="card-icon"><svg class="icon-svg icon-trending-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
-</svg></span>
+                            <span class="card-icon" data-icon="trending-up" data-size="16"></span>
                             <span>REKAP BY METODE</span>
                             <select id="filterMetode" class="filter-dropdown">
                                 <option value="all">Show All</option>
@@ -302,15 +265,11 @@
 
                     <div class="quick-actions">
                         <button class="btn-quick-action primary" id="btnQuickCalculator">
-                            <span class="btn-icon"><svg class="icon-svg icon-calculator" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7b2ff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(123, 47, 247, 0.5));">
-    <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="16" y1="14" x2="16" y2="18"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="8" y1="18" x2="8" y2="18.01"></line><line x1="12" y1="18" x2="12" y2="18.01"></line>
-</svg></span>
+                            <span class="btn-icon" data-icon="calculator" data-size="16"></span>
                             <span class="btn-text">Hitung Trade Baru</span>
                         </button>
                         <button class="btn-quick-action secondary" id="btnQuickHistory">
-                            <span class="btn-icon"><svg class="icon-svg icon-file" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
-</svg></span>
+                            <span class="btn-icon" data-icon="file" data-size="16"></span>
                             <span class="btn-text">Lihat Riwayat</span>
                         </button>
                     </div>
@@ -327,9 +286,7 @@
                         </div>
                         <div class="balance-amount" id="balanceAmount">Rp 0</div>
                         <div class="balance-conversion" id="balanceConversion">≈ $0.00 USD</div>
-                        <button type="button" class="btn-edit-balance" id="btnEditBalance"><svg class="icon-svg icon-edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-</svg> Edit Modal</button>
+                        <button type="button" class="btn-edit-balance" id="btnEditBalance"><span data-icon="edit" data-size="16"></span> Edit Modal</button>
                     </div>
 
                     <div class="calculator-card">
@@ -415,9 +372,7 @@
 
                             <div class="partial-tp-section" id="partialTPSection">
                                 <div class="partial-tp-header">
-                                    <h3><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> Take Profit Levels</h3>
+                                    <h3><span data-icon="target" data-size="16"></span> Take Profit Levels</h3>
                                 </div>
                                 
                                 <table class="tp-table">
@@ -438,9 +393,7 @@
                                     <span class="percentage-status" id="percentageStatus"></span>
                                 </div>
 
-                                <button type="button" class="btn-add-tp" id="btnAddTP"><svg class="icon-svg icon-plus" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.5));">
-    <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
-</svg> Add TP Level</button>
+                                <button type="button" class="btn-add-tp" id="btnAddTP"><span data-icon="plus" data-size="16"></span> Add TP Level</button>
                                 
                                 <div class="form-group">
                                     <label for="slPartial">Stop Loss (USD)</label>
@@ -467,9 +420,7 @@
 
                             <div class="position-size-info" id="positionSizeInfo">
                                 <div class="pos-size-header">
-                                    <span class="pos-size-icon"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg></span>
+                                    <span class="pos-size-icon" data-icon="chart" data-size="16"></span>
                                     <h3>POSITION SIZE RECOMMENDATION</h3>
                                 </div>
                                 
@@ -509,9 +460,7 @@
                                     
                                     <div class="manual-input-section" id="manualInputSection" style="display: none;">
                                         <div class="manual-warning-box">
-                                            <span class="warning-icon"><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg></span>
+                                            <span class="warning-icon" data-icon="warning" data-size="16"></span>
                                             <span class="warning-text">WARNING: This bypasses your risk management!</span>
                                         </div>
                                         
@@ -522,21 +471,15 @@
                                         
                                         <div class="manual-comparison" id="manualComparison">
                                             <div class="comparison-item">
-                                                <span class="comparison-label"><svg class="icon-svg icon-lightbulb" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffeb3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 235, 59, 0.5));">
-    <line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path>
-</svg> Recommended:</span>
+                                                <span class="comparison-label"><span data-icon="lightbulb" data-size="16"></span> Recommended:</span>
                                                 <span class="comparison-value" id="recommendedUSDT">$0.00 USDT</span>
                                             </div>
                                             <div class="comparison-item">
-                                                <span class="comparison-label"><svg class="icon-svg icon-trending-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
-</svg> Your input:</span>
+                                                <span class="comparison-label"><span data-icon="trending-up" data-size="16"></span> Your input:</span>
                                                 <span class="comparison-value" id="userInputUSDT">-</span>
                                             </div>
                                             <div class="comparison-item">
-                                                <span class="comparison-label"><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> Actual Risk:</span>
+                                                <span class="comparison-label"><span data-icon="target" data-size="16"></span> Actual Risk:</span>
                                                 <span class="comparison-value" id="actualRiskManual">-</span>
                                             </div>
                                         </div>
@@ -549,9 +492,7 @@
 
                         <div class="results" id="results">
                             <div class="partial-tp-results" id="partialTPResults">
-                                <h4><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> Partial Take Profit Breakdown</h4>
+                                <h4><span data-icon="target" data-size="16"></span> Partial Take Profit Breakdown</h4>
                                 <div id="partialTPResultsContent"></div>
                             </div>
 
@@ -628,9 +569,7 @@
 
                             <div class="btn-group">
                                 <button type="button" class="btn-copy" id="btnCopy">📋 Copy Results</button>
-                                <button type="button" class="btn-save" id="btnSave"><svg class="icon-svg icon-save" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4caf50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(76, 175, 80, 0.5));">
-    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline>
-</svg> Save to History</button>
+                                <button type="button" class="btn-save" id="btnSave"><span data-icon="save" data-size="16"></span> Save to History</button>
                             </div>
                         </div>
                     </div>
@@ -638,17 +577,13 @@
 
                 <div class="page-content" id="pageRiwayat" data-page="riwayat">
                     <div class="header">
-                        <h1><svg class="icon-svg icon-file" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
-</svg> Trading History</h1>
+                        <h1><span data-icon="file" data-size="24"></span> Trading History</h1>
                         <p>Track your trading performance & statistics</p>
                     </div>
 
                     <div class="calculator-card">
                         <div class="card-header">
-                            <span><svg class="icon-svg icon-dollar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));">
-    <line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-</svg></span>
+                            <span data-icon="dollar" data-size="16"></span>
                             <span>Performance Summary</span>
                         </div>
                         <div class="stats-grid" id="performanceStats">
@@ -680,9 +615,7 @@
 
                     <div class="calculator-card">
                         <div class="card-header">
-                            <span><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg></span>
+                            <span data-icon="chart" data-size="16"></span>
                             <span>Trading Statistics</span>
                         </div>
                         <div class="stats-grid" id="tradingStats">
@@ -740,9 +673,7 @@
                         
                         <div class="advanced-filters">
                             <div class="advanced-filter-group">
-                                <label for="filterMetodeHistory" class="filter-label"><svg class="icon-svg icon-trending-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
-</svg> Filter by Metode:</label>
+                                <label for="filterMetodeHistory" class="filter-label"><span data-icon="trending-up" data-size="16"></span> Filter by Metode:</label>
                                 <select id="filterMetodeHistory" class="filter-dropdown-history">
                                     <option value="all">Show All</option>
                                 </select>
@@ -769,16 +700,16 @@
                                         <th>Status</th>
                                         <th>P/L</th>
                                         <th class="actions-sort-column">
-    <div class="actions-header-wrapper">
-        <span class="actions-text">Actions</span>
-        <button class="btn-sort-history" id="btnSortHistory" title="Urutkan berdasarkan tanggal">
-            <svg class="sort-icon" id="sortIcon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 12L3 7h10l-5 5z"/>
-            </svg>
-            <span class="sort-label" id="sortLabel">BARU</span>
-        </button>
-    </div>
-</th>
+                                            <div class="actions-header-wrapper">
+                                                <span class="actions-text">Actions</span>
+                                                <button class="btn-sort-history" id="btnSortHistory" title="Urutkan berdasarkan tanggal">
+                                                    <svg class="sort-icon" id="sortIcon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                                                        <path d="M8 12L3 7h10l-5 5z"/>
+                                                    </svg>
+                                                    <span class="sort-label" id="sortLabel">BARU</span>
+                                                </button>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody id="historyTableBody">
@@ -795,218 +726,206 @@
 
                 <div class="page-content" id="pageWinrate" data-page="winrate">
                     <div class="winrate-container">
-                    <div class="header">
-    <h1><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg> Winrate Calculator</h1>
-    <p>Simulasi hasil trading berdasarkan winrate & risk management</p>
-</div>
+                        <div class="header">
+                            <h1><span data-icon="chart" data-size="24"></span> Winrate Calculator</h1>
+                            <p>Simulasi hasil trading berdasarkan winrate & risk management</p>
+                        </div>
 
-<div class="calculator-card">
-    <form id="winrateForm">
-        <div class="form-grid">
- <div class="winrate-balance-display" id="winrateBalanceDisplay">
-    <div class="balance-header">
-        <span class="balance-label">STARTING EQUITY</span>
-        <div class="currency-pill" id="winrateCurrencyPill">
-            <span class="currency-option active" data-currency="idr">IDR</span>
-            <span class="currency-option" data-currency="usd">USD</span>
-        </div>
-    </div>
-    <div class="balance-amount" id="winrateBalanceAmount">Rp 0</div>
-    <div class="balance-conversion" id="winrateBalanceConversion">≈ $0.00 USD</div>
-    <button type="button" class="btn-edit-balance" id="btnEditStartingEquity"><svg class="icon-svg icon-edit" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-</svg> Edit Starting Equity</button>
-</div>
+                        <div class="calculator-card">
+                            <form id="winrateForm">
+                                <div class="form-grid">
+                                    <div class="winrate-balance-display" id="winrateBalanceDisplay">
+                                        <div class="balance-header">
+                                            <span class="balance-label">STARTING EQUITY</span>
+                                            <div class="currency-pill" id="winrateCurrencyPill">
+                                                <span class="currency-option active" data-currency="idr">IDR</span>
+                                                <span class="currency-option" data-currency="usd">USD</span>
+                                            </div>
+                                        </div>
+                                        <div class="balance-amount" id="winrateBalanceAmount">Rp 0</div>
+                                        <div class="balance-conversion" id="winrateBalanceConversion">≈ $0.00 USD</div>
+                                        <button type="button" class="btn-edit-balance" id="btnEditStartingEquity"><span data-icon="edit" data-size="16"></span> Edit Starting Equity</button>
+                                    </div>
 
-<button type="button" class="btn-use-balance" id="useCurrentBalanceWinrate">
-    <svg class="icon-svg icon-dollar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffd700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));">
-    <line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-</svg> Use Current Balance
-</button>
+                                    <button type="button" class="btn-use-balance" id="useCurrentBalanceWinrate">
+                                        <span data-icon="dollar" data-size="16"></span> Use Current Balance
+                                    </button>
 
-            <div class="form-group">
-                <label for="maxEntrySelect">Max Entry Per Day</label>
-                <select id="maxEntrySelect" required>
-                    <option value="1">1x Entry</option>
-                    <option value="3" selected>3x Entry</option>
-                    <option value="5">5x Entry</option>
-                    <option value="10">10x Entry</option>
-                    <option value="custom">Custom</option>
-                </select>
-                <div id="maxEntryCustomContainer" style="display: none; margin-top: 10px;">
-                    <input type="number" id="maxEntryCustom" placeholder="Custom value" min="1" max="100">
-                </div>
-            </div>
+                                    <div class="form-group">
+                                        <label for="maxEntrySelect">Max Entry Per Day</label>
+                                        <select id="maxEntrySelect" required>
+                                            <option value="1">1x Entry</option>
+                                            <option value="3" selected>3x Entry</option>
+                                            <option value="5">5x Entry</option>
+                                            <option value="10">10x Entry</option>
+                                            <option value="custom">Custom</option>
+                                        </select>
+                                        <div id="maxEntryCustomContainer" style="display: none; margin-top: 10px;">
+                                            <input type="number" id="maxEntryCustom" placeholder="Custom value" min="1" max="100">
+                                        </div>
+                                    </div>
 
-            <div class="form-group">
-                <label for="riskPercentWinrate">Risk Per Trade (%)</label>
-                <select id="riskPercentWinrate" required>
-                    <option value="1" selected>1% Risk</option>
-                    <option value="2">2% Risk</option>
-                    <option value="3">3% Risk</option>
-                    <option value="5">5% Risk</option>
-                </select>
-            </div>
+                                    <div class="form-group">
+                                        <label for="riskPercentWinrate">Risk Per Trade (%)</label>
+                                        <select id="riskPercentWinrate" required>
+                                            <option value="1" selected>1% Risk</option>
+                                            <option value="2">2% Risk</option>
+                                            <option value="3">3% Risk</option>
+                                            <option value="5">5% Risk</option>
+                                        </select>
+                                    </div>
 
-            <div class="form-group">
-                                <label for="totalTrades">Total Trades</label>
-                                <input type="number" id="totalTrades" placeholder="100" min="1" max="10000" value="100" required>
-                            </div>
+                                    <div class="form-group">
+                                        <label for="totalTrades">Total Trades</label>
+                                        <input type="number" id="totalTrades" placeholder="100" min="1" max="10000" value="100" required>
+                                    </div>
 
-                            <div class="form-group" style="grid-column: 1 / -1;">
-                                <label for="winRate">Win Rate (%)</label>
-                                <div style="display: flex; gap: 15px; align-items: center;">
-                                    <input type="range" id="winRateSlider" class="winrate-slider" min="0" max="100" value="50" step="1" style="flex: 1;">
-                                    <input type="number" id="winRate" style="width: 80px;" min="0" max="100" value="50" step="1" required>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="winRate">Win Rate (%)</label>
+                                        <div style="display: flex; gap: 15px; align-items: center;">
+                                            <input type="range" id="winRateSlider" class="winrate-slider" min="0" max="100" value="50" step="1" style="flex: 1;">
+                                            <input type="number" id="winRate" style="width: 80px;" min="0" max="100" value="50" step="1" required>
+                                        </div>
+                                        <div class="winrate-display">
+                                            <div class="winrate-value" id="winRateDisplay">50%</div>
+                                            <div class="winrate-label">Current Win Rate</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="avgWinPercent">Average Win (%)</label>
+                                        <input type="number" id="avgWinPercent" placeholder="5" min="0.1" step="0.1" value="5" required>
+                                        <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
+                                            Jarak rata-rata dari entry ke TP
+                                        </small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="avgLossPercent">Average Loss (%)</label>
+                                        <input type="number" id="avgLossPercent" placeholder="2" min="0.1" step="0.1" value="2" required>
+                                        <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
+                                            Jarak rata-rata dari entry ke SL
+                                        </small>
+                                    </div>
                                 </div>
-                                <div class="winrate-display">
-                                    <div class="winrate-value" id="winRateDisplay">50%</div>
-                                    <div class="winrate-label">Current Win Rate</div>
-                                </div>
+
+                                <button type="submit" class="btn-calculate" id="btnCalculateWinrate">
+                                    🎲 Run Simulation
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="results" id="winrateResults" style="display: none;">
+                            <div class="winrate-risk-warning" id="riskWarnings" style="display: none;">
                             </div>
 
-                            <div class="form-group">
-                                <label for="avgWinPercent">Average Win (%)</label>
-                                <input type="number" id="avgWinPercent" placeholder="5" min="0.1" step="0.1" value="5" required>
-                                <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
-                                    Jarak rata-rata dari entry ke TP
-                                </small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="avgLossPercent">Average Loss (%)</label>
-                                <input type="number" id="avgLossPercent" placeholder="2" min="0.1" step="0.1" value="2" required>
-                                <small style="display: block; margin-top: 5px; font-size: 0.75rem; color: #8b92b8;">
-                                    Jarak rata-rata dari entry ke SL
-                                </small>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-calculate" id="btnCalculateWinrate">
-                            🎲 Run Simulation
-                        </button>
-                    </form>
-                </div>
-
-                <div class="results" id="winrateResults" style="display: none;">
-                    <div class="winrate-risk-warning" id="riskWarnings" style="display: none;">
-                    </div>
-
-                    <div class="winrate-results-grid">
-                        <div class="winrate-result-card positive">
-                            <div class="winrate-result-label">Final Equity</div>
-                            <div class="winrate-result-value" id="finalEquityValue">-</div>
-                            <div class="winrate-result-subtitle">After all trades</div>
-                        </div>
-                        
-                        <div class="winrate-result-card neutral">
-                            <div class="winrate-result-label">Net Profit/Loss</div>
-                            <div class="winrate-result-value" id="netPLValue">-</div>
-                            <div class="winrate-result-subtitle">Total P/L</div>
-                        </div>
-                        
-<div class="winrate-result-card neutral">
-    <div class="winrate-result-label">ROI (%)</div>
-    <div class="winrate-result-value" id="roiValueWinrate">-</div>
-    <div class="winrate-result-subtitle">Return on investment</div>
-</div>
-                        
-                        <div class="winrate-result-card positive">
-                            <div class="winrate-result-label">Total Win Trades</div>
-                            <div class="winrate-result-value" id="winTradesValue">-</div>
-                            <div class="winrate-result-subtitle">Winning trades</div>
-                        </div>
-                        
-                        <div class="winrate-result-card negative">
-                            <div class="winrate-result-label">Total Loss Trades</div>
-                            <div class="winrate-result-value" id="lossTradesValue">-</div>
-                            <div class="winrate-result-subtitle">Losing trades</div>
-                        </div>
-                        
-                        <div class="winrate-result-card neutral">
-                            <div class="winrate-result-label">Expected Value</div>
-                            <div class="winrate-result-value" id="expectedValueValue">-</div>
-                            <div class="winrate-result-subtitle">Per trade expectancy</div>
-                        </div>
-                        
-                        <div class="winrate-result-card neutral">
-                            <div class="winrate-result-label">Risk:Reward Ratio</div>
-                            <div class="winrate-result-value" id="rrRatioValue">-</div>
-                            <div class="winrate-result-subtitle">Average R:R</div>
-                        </div>
-                        
-                        <div class="winrate-result-card neutral">
-                            <div class="winrate-result-label">Additional Stats</div>
-                            <div class="winrate-result-value" style="font-size: 0.9rem;" id="additionalStats">-</div>
-                            <div class="winrate-result-subtitle">More metrics</div>
-                        </div>
-                    </div>
-
-                    <div class="winrate-chart-container">
-                        <div class="winrate-chart-header">
-                            <span class="card-icon"><svg class="icon-svg icon-trending-up" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline>
-</svg></span>
-                            <h3 class="winrate-chart-title">Equity Curve Progression</h3>
-                        </div>
-                        <div class="winrate-chart-wrapper">
-                            <canvas id="equityChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="winrate-chart-container">
-                        <div class="winrate-chart-header">
-                            <span class="card-icon"><svg class="icon-svg icon-chart" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));">
-    <line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line>
-</svg></span>
-                            <h3 class="winrate-chart-title">Win vs Loss Distribution</h3>
-                        </div>
-                        <div class="winrate-chart-wrapper">
-                            <canvas id="distributionChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="monte-carlo-section" id="monteCarloSection" style="display: none;">
-                        <div class="monte-carlo-header" onclick="this.parentElement.classList.toggle('expanded')">
-                            <h3 class="monte-carlo-title">
-                                <span>🎲</span>
-                                Monte Carlo Simulation (1000 runs)
-                            </h3>
-                            <div class="monte-carlo-toggle">▼</div>
-                        </div>
-                        <div class="monte-carlo-content">
-                            <div class="monte-carlo-grid">
-                                <div class="scenario-card best">
-                                    <div class="scenario-label">Best Case Scenario</div>
-                                    <div class="scenario-value" id="bestCaseValue">-</div>
-                                    <div class="scenario-subtitle">Top 5% outcomes</div>
+                            <div class="winrate-results-grid">
+                                <div class="winrate-result-card positive">
+                                    <div class="winrate-result-label">Final Equity</div>
+                                    <div class="winrate-result-value" id="finalEquityValue">-</div>
+                                    <div class="winrate-result-subtitle">After all trades</div>
                                 </div>
                                 
-                                <div class="scenario-card average">
-                                    <div class="scenario-label">Average Case</div>
-                                    <div class="scenario-value" id="averageCaseValue">-</div>
-                                    <div class="scenario-subtitle">Median outcome</div>
+                                <div class="winrate-result-card neutral">
+                                    <div class="winrate-result-label">Net Profit/Loss</div>
+                                    <div class="winrate-result-value" id="netPLValue">-</div>
+                                    <div class="winrate-result-subtitle">Total P/L</div>
                                 </div>
                                 
-                                <div class="scenario-card worst">
-                                    <div class="scenario-label">Worst Case Scenario</div>
-                                    <div class="scenario-value" id="worstCaseValue">-</div>
-                                    <div class="scenario-subtitle">Bottom 5% outcomes</div>
+                                <div class="winrate-result-card neutral">
+                                    <div class="winrate-result-label">ROI (%)</div>
+                                    <div class="winrate-result-value" id="roiValueWinrate">-</div>
+                                    <div class="winrate-result-subtitle">Return on investment</div>
+                                </div>
+                                
+                                <div class="winrate-result-card positive">
+                                    <div class="winrate-result-label">Total Win Trades</div>
+                                    <div class="winrate-result-value" id="winTradesValue">-</div>
+                                    <div class="winrate-result-subtitle">Winning trades</div>
+                                </div>
+                                
+                                <div class="winrate-result-card negative">
+                                    <div class="winrate-result-label">Total Loss Trades</div>
+                                    <div class="winrate-result-value" id="lossTradesValue">-</div>
+                                    <div class="winrate-result-subtitle">Losing trades</div>
+                                </div>
+                                
+                                <div class="winrate-result-card neutral">
+                                    <div class="winrate-result-label">Expected Value</div>
+                                    <div class="winrate-result-value" id="expectedValueValue">-</div>
+                                    <div class="winrate-result-subtitle">Per trade expectancy</div>
+                                </div>
+                                
+                                <div class="winrate-result-card neutral">
+                                    <div class="winrate-result-label">Risk:Reward Ratio</div>
+                                    <div class="winrate-result-value" id="rrRatioValue">-</div>
+                                    <div class="winrate-result-subtitle">Average R:R</div>
+                                </div>
+                                
+                                <div class="winrate-result-card neutral">
+                                    <div class="winrate-result-label">Additional Stats</div>
+                                    <div class="winrate-result-value" style="font-size: 0.9rem;" id="additionalStats">-</div>
+                                    <div class="winrate-result-subtitle">More metrics</div>
+                                </div>
+                            </div>
+
+                            <div class="winrate-chart-container">
+                                <div class="winrate-chart-header">
+                                    <span class="card-icon" data-icon="trending-up" data-size="16"></span>
+                                    <h3 class="winrate-chart-title">Equity Curve Progression</h3>
+                                </div>
+                                <div class="winrate-chart-wrapper">
+                                    <canvas id="equityChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="winrate-chart-container">
+                                <div class="winrate-chart-header">
+                                    <span class="card-icon" data-icon="chart" data-size="16"></span>
+                                    <h3 class="winrate-chart-title">Win vs Loss Distribution</h3>
+                                </div>
+                                <div class="winrate-chart-wrapper">
+                                    <canvas id="distributionChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="monte-carlo-section" id="monteCarloSection" style="display: none;">
+                                <div class="monte-carlo-header" onclick="this.parentElement.classList.toggle('expanded')">
+                                    <h3 class="monte-carlo-title">
+                                        <span>🎲</span>
+                                        Monte Carlo Simulation (1000 runs)
+                                    </h3>
+                                    <div class="monte-carlo-toggle">▼</div>
+                                </div>
+                                <div class="monte-carlo-content">
+                                    <div class="monte-carlo-grid">
+                                        <div class="scenario-card best">
+                                            <div class="scenario-label">Best Case Scenario</div>
+                                            <div class="scenario-value" id="bestCaseValue">-</div>
+                                            <div class="scenario-subtitle">Top 5% outcomes</div>
+                                        </div>
+                                        
+                                        <div class="scenario-card average">
+                                            <div class="scenario-label">Average Case</div>
+                                            <div class="scenario-value" id="averageCaseValue">-</div>
+                                            <div class="scenario-subtitle">Median outcome</div>
+                                        </div>
+                                        
+                                        <div class="scenario-card worst">
+                                            <div class="scenario-label">Worst Case Scenario</div>
+                                            <div class="scenario-value" id="worstCaseValue">-</div>
+                                            <div class="scenario-subtitle">Bottom 5% outcomes</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
                     </div>
                 </div>
 
                 <div class="page-content" id="pageRisiko" data-page="risiko">
                     <div class="header">
-                        <h1><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> Manajemen Risiko</h1>
+                        <h1><span data-icon="warning" data-size="24"></span> Manajemen Risiko</h1>
                         <p>Pantau limit loss harian, mingguan, dan drawdown</p>
                     </div>
 
@@ -1020,9 +939,7 @@
                     <div class="risk-tab-content active" data-content="today">
                         <div class="dashboard-card">
                             <div class="card-header">
-                                <span class="card-icon"><svg class="icon-svg icon-calendar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00bcd4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.5));">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-</svg></span>
+                                <span class="card-icon" data-icon="calendar" data-size="16"></span>
                                 <span>TRADING HARI INI</span>
                             </div>
                             
@@ -1043,9 +960,7 @@
                                 <h4 class="section-title">Loss Terealisasi:</h4>
                                 <div class="loss-trades-list" id="lossTradesToday">
                                     <div class="empty-state">
-                                        <span class="empty-icon"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg></span>
+                                        <span class="empty-icon" data-icon="check" data-size="24"></span>
                                         <p>Tidak ada loss hari ini</p>
                                     </div>
                                 </div>
@@ -1065,9 +980,7 @@
                             
                             <div class="warning-box" style="display: none;" id="dailyWarningBox">
                                 <div class="warning-box-header">
-                                    <span class="warning-box-icon"><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg></span>
+                                    <span class="warning-box-icon" data-icon="warning" data-size="16"></span>
                                     <span class="warning-box-title">PERINGATAN</span>
                                 </div>
                                 <p class="warning-box-text">Anda sudah mendekati limit harian! Pertimbangkan untuk berhenti trading.</p>
@@ -1080,9 +993,7 @@
                     <div class="risk-tab-content" data-content="weekly">
                         <div class="dashboard-card">
                             <div class="card-header">
-                                <span class="card-icon"><svg class="icon-svg icon-calendar" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00bcd4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 188, 212, 0.5));">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-</svg></span>
+                                <span class="card-icon" data-icon="calendar" data-size="16"></span>
                                 <span>TRADING MINGGU INI</span>
                             </div>
                             
@@ -1101,9 +1012,7 @@
                                 <h4 class="section-title">Loss Terealisasi:</h4>
                                 <div class="loss-trades-list" id="lossTradesWeekly">
                                     <div class="empty-state">
-                                        <span class="empty-icon"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg></span>
+                                        <span class="empty-icon" data-icon="check" data-size="24"></span>
                                         <p>Tidak ada loss minggu ini</p>
                                     </div>
                                 </div>
@@ -1123,9 +1032,7 @@
                             
                             <div class="warning-box" style="display: none;" id="weeklyWarningBox">
                                 <div class="warning-box-header">
-                                    <span class="warning-box-icon"><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg></span>
+                                    <span class="warning-box-icon" data-icon="warning" data-size="16"></span>
                                     <span class="warning-box-title">PERINGATAN</span>
                                 </div>
                                 <p class="warning-box-text">Anda sudah mendekati limit mingguan! Hati-hati dengan trade berikutnya.</p>
@@ -1136,9 +1043,7 @@
                     <div class="risk-tab-content" data-content="drawdown">
                         <div class="dashboard-card">
                             <div class="card-header">
-                                <span class="card-icon"><svg class="icon-svg icon-trending-down" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 51, 102, 0.5));">
-    <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline>
-</svg></span>
+                                <span class="card-icon" data-icon="trending-down" data-size="16"></span>
                                 <span>DRAWDOWN ANALISIS</span>
                             </div>
                             
@@ -1171,9 +1076,7 @@
                             
                             <div class="warning-box" id="ddStatusBox" style="background: rgba(0, 255, 136, 0.15); border-color: #00ff88;">
                                 <div class="warning-box-header">
-                                    <span class="warning-box-icon"><svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg></span>
+                                    <span class="warning-box-icon" data-icon="check" data-size="16"></span>
                                     <span class="warning-box-title" id="ddStatusTitle">AMAN</span>
                                 </div>
                                 <p class="warning-box-text" id="ddStatusText">Drawdown Anda masih dalam batas aman.</p>
@@ -1233,9 +1136,7 @@
                             
                             <div class="warning-box">
                                 <div class="warning-box-header">
-                                    <span class="warning-box-icon"><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg></span>
+                                    <span class="warning-box-icon" data-icon="warning" data-size="16"></span>
                                     <span class="warning-box-title">RESET MANUAL</span>
                                 </div>
                                 <p class="warning-box-text">
@@ -1245,9 +1146,7 @@
                             </div>
 
                             <div style="margin-top: 30px;">
-                                <h4 style="color: #00d4ff; margin-bottom: 15px;"><svg class="icon-svg icon-target" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));">
-    <circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>
-</svg> MANAGE DROPDOWN OPTIONS</h4>
+                                <h4 style="color: #00d4ff; margin-bottom: 15px;"><span data-icon="target" data-size="16"></span> MANAGE DROPDOWN OPTIONS</h4>
                                 
                                 <div class="dropdown-manager">
                                     <div class="dropdown-manager-header">
@@ -1257,9 +1156,7 @@
                                     <div class="dropdown-list" id="metodeList">
                                         <div class="dropdown-item">
                                             <span>Breakout</span>
-                                            <button class="btn-delete-option" data-type="metode" data-value="breakout"><svg class="icon-svg icon-trash" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(244, 67, 54, 0.5));">
-    <polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-</svg></button>
+                                            <button class="btn-delete-option" data-type="metode" data-value="breakout"><span data-icon="trash" data-size="16"></span></button>
                                         </div>
                                     </div>
                                 </div>
@@ -1272,17 +1169,13 @@
                                     <div class="dropdown-list" id="sumberList">
                                         <div class="dropdown-item">
                                             <span>Analisa Sendiri</span>
-                                            <button class="btn-delete-option disabled" data-type="sumber" data-value="analisa-sendiri"><svg class="icon-svg icon-lock" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9e9e9e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(158, 158, 158, 0.5));">
-    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-</svg></button>
+                                            <button class="btn-delete-option disabled" data-type="sumber" data-value="analisa-sendiri"><span data-icon="lock" data-size="16"></span></button>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <p style="color: #8b92b8; font-size: 0.8rem; margin-top: 15px;">
-                                    <svg class="icon-svg icon-lightbulb" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffeb3b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 235, 59, 0.5));">
-    <line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path>
-</svg> "Analisa Sendiri" tidak bisa dihapus (default option)
+                                    <span data-icon="lightbulb" data-size="16"></span> "Analisa Sendiri" tidak bisa dihapus (default option)
                                 </p>
                             </div>
                         </div>
@@ -1331,9 +1224,7 @@
 
     <div class="confirmation-modal" id="manualConfirmModal">
         <div class="confirmation-modal-content">
-            <h3><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg> MANUAL POSITION WARNING</h3>
+            <h3><span data-icon="warning" data-size="16"></span> MANUAL POSITION WARNING</h3>
             <div id="manualConfirmContent">
             </div>
             <div class="modal-buttons">
@@ -1346,9 +1237,7 @@
     <div class="risk-warning-modal" id="riskWarningModal">
         <div class="risk-warning-content">
             <div class="warning-header">
-                <span class="warning-icon"><svg class="icon-svg icon-warning" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));">
-    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg></span>
+                <span class="warning-icon" data-icon="warning" data-size="24"></span>
                 <h3>PERINGATAN MANAJEMEN RISIKO</h3>
             </div>
             
@@ -1424,30 +1313,28 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-<script src="js/auth.js"></script>
-<script src="js/script.js"></script>
-<script src="js/winrate.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/winrate.js"></script>
 
-<!-- <svg class="icon-svg icon-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.5));">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
-</svg> Loading Screen Handler - Inline for faster execution -->
-<script>
-// Hide loading screen setelah semua ready
-window.addEventListener('load', function() {
-    const loadingScreen = document.getElementById('loadingScreen');
-    if (loadingScreen) {
-        // Delay 300ms untuk smooth transition
-        setTimeout(() => {
-            loadingScreen.style.opacity = '0';
+    <!-- ✅ Loading Screen Handler - Inline for faster execution -->
+    <script>
+    // Hide loading screen setelah semua ready
+    window.addEventListener('load', function() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            // Delay 300ms untuk smooth transition
             setTimeout(() => {
-                loadingScreen.remove();
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.remove();
+                }, 300);
             }, 300);
-        }, 300);
-    }
-});
-</script>
+        }
+    });
+    </script>
 </body>
 </html>
